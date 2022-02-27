@@ -90,7 +90,7 @@ class Functions:
             
     def make_dicts(self):
         months = {
-            "01": 31, "02": 28, "03": 31, "04": 30,
+            "01": 31, "02": 29, "03": 31, "04": 30,
             "05": 31, "06": 30, "07": 31, "08": 31,
             "09": 30, "10": 31, "11": 30, "12": 31
         }
@@ -159,8 +159,8 @@ class Functions:
             diffd -= 1
         if diffd < 0:
             diffd = monthsdict.get(str(tnm)) + diffd
-            if int(tnm) == 2 and int(tny) % 4 == 0:
-                diffd += 1
+            if int(tnm) == 2 and int(tny) % 4 != 0:
+                diffd -= 1
             diffm -= 1
         if diffm < 0:
             diffm = 12 + diffm
@@ -445,7 +445,7 @@ class Functions:
                 self.log(f"[INFO] month input: {tmonth}")
                 twordmonth = None
                 if tmonth == "cancel":
-                    self.log("f[INFO] user chose to cancel new task addition")
+                    self.log("[INFO] user chose to cancel new task addition")
                     self.log("[FUNCTION] ends -> new_task_time()")
                     return 0, 0, 0, 0, 0
                 elif tmonth.isalpha():
@@ -499,7 +499,7 @@ class Functions:
                     tyear = input("Year (yyyy) (2000-99): ").strip()
                     self.log(f"[INFO] year input: {tyear}")
                     if tyear.lower() == "cancel":
-                        self.log("f[INFO] user chose to cancel new task addition")
+                        self.log("[INFO] user chose to cancel new task addition")
                         self.log("[FUNCTION] ends -> new_task_time()")
                         return 0, 0, 0, 0, 0
                     elif tyear.isdecimal() and (int(tyear) in range(2000, 2100)):
@@ -529,7 +529,7 @@ class Functions:
             thour = input("Hours (24h format): ").strip()
             self.log(f"[INFO] received hour input: {thour}")
             if thour.lower() == "cancel":
-                self.log("f[INFO] user chose to cancel new task addition")
+                self.log("[INFO] user chose to cancel new task addition")
                 self.log("[FUNCTION] ends -> new_task_time()")
                 return 0, 0, 0, 0, 0
             elif thour.isdecimal() and (int(thour) in range(24)) and thour != "":
@@ -548,7 +548,7 @@ class Functions:
             tmin = input("Minutes: ").strip()
             self.log(f"[INFO] minute input received: {tmin}")
             if tmin == "cancel":
-                self.log("f[INFO] user chose to cancel new task addition")
+                self.log("[INFO] user chose to cancel new task addition")
                 self.log("[FUNCTION] ends -> new_task_time()")
                 return 0, 0, 0, 0, 0
             elif tmin.isdecimal() and (int(tmin) in range(60)) and tmin != '':
@@ -627,8 +627,8 @@ class App(Functions):
                         self.log("[INFO] user chose to exit program")
                         sysend()
                     elif user_inp.startswith("debug"):
-                        self.info_bar("opening logs folder for debugging", months)
                         self.log("[DEBUG] opening logs folder for debugging")
+                        self.info_bar("opening logs folder for debugging", months)
                         os.startfile(f"{self.home_path}\\Tasky\\taskylogs\\")
                     elif user_inp.startswith("help"):
                         self.log("[INFO] user chose help, displaying available commands")
