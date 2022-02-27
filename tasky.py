@@ -730,12 +730,25 @@ class App(Functions):
                     # (not so) secret commands
                     elif user_inp[:5] == "hello" or user_inp[:2] == "hi" or user_inp[:3] == "hey":
 
-                        hello_list = ["hello there :)", "hii :D", "hey-hey user ;)", "hola mi amigo ^-^", "hi again? ;)", "hey :)", "hehe hello ^o^", "hello! type 'help' for other commands", "hi, view other commands! (type help)", "isn't that enough greeting for now?", "dear user, please get 'help' (literally)", f"please stop... with the hellos", "don't-", "don't you have anything else to do", "jeez how many times will you do this", "fine i'll wait till you do something", "still waiting...", "Tasky "
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "isn't a "
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "chatbot "
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "._.",
-                                      "did i refer to myself in third person?", "GAAAAAAAAAAHHH STOP IT! WILL YOU?", "you doing this to annoy me?", "computers can't get annoyed, can they?", "what do you want >_<", "thanks, i hate these greetings now", "seriously what do you want?", "you want food?", "i have some cookies", "i wanna eat these though", "but you won't stop... hmmph", "aaaah you want a cookie?", "ugh, fine. you earned a cookie i guess", "here take this cookie. keep it with you",
-                                      "I GAVE YOU A COOKIE, PLEASE STOP", "dont look at my other cookies", "no more cookies for you >:(", "enough with these greetings >_<", "i wont respond to these keywords now", "nope. not doing it.", "ill be here if you need me >:(", "not responding to greetings for real now", "go complete your tasks user :/", "BYE", "type 'help' ._."]
+                        hello_list = ["hello there :)", "hii :D", "hey-hey user ;)", "hola mi amigo ^-^",
+                                      "hi again? ;)", "hey :)", "hehe hello ^o^",
+                                      "hello! type 'help' for other commands", "hi, view other commands! (type help)",
+                                      "isn't that enough greeting for now?", "dear user, please get 'help' (literally)",
+                                      f"please stop... with the hellos", "don't-", "don't you have anything else to do",
+                                      "jeez how many times will you do this", "fine i'll wait till you do something",
+                                      "still waiting...", "Tasky isn't a chatbot...", "did i refer to myself in third person?",
+                                      "GAAAAAAAAAAHHH STOP IT! WILL YOU?", "you doing this to annoy me?",
+                                      "computers can't get annoyed, can they?", "what do you want >_<",
+                                      "thanks, i hate these greetings now", "seriously what do you want?",
+                                      "you want food?", "i have some cookies", "i wanna eat these though",
+                                      "but you won't stop... hmmph", "aaaah you want a cookie?",
+                                      "ugh, fine. you earned a cookie i guess", "here take this cookie. keep it with you",
+                                      "I GAVE YOU A COOKIE, PLEASE STOP", "dont look at my other cookies",
+                                      "no more cookies for you >:(", "enough with these greetings >_<",
+                                      "i wont respond to these keywords now", "nope. not doing it.",
+                                      "ill be here if you need me >:(", "not responding to greetings for real now",
+                                      "go complete your tasks user :/", "BYE", "type 'help' ._."]
+
                         self.log(f"[INFO] user greeted Tasky")
 
                         if not cookie:
