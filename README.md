@@ -9,7 +9,8 @@ This program will show you the time remaining for each task you feed in it.
 - Tasky will show you the time remaining for each task in a list form
 - Interactive terminal where you can use commands to make changes in the task list or a certain task.
 - Once the deadline of a certain task is crossed, Tasky will print "Task Expired" for that particular task.
-- Add as many tasks you want!
+- Add as many tasks you want
+- Tasky creates logs each time it is opened, stored in a remote logs folder which can be accessed using command "debug"
 
 ![display](https://user-images.githubusercontent.com/68178267/155871056-dde47e06-20e1-4c7d-bc37-07de243df4d1.png)
 
