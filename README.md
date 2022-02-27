@@ -11,7 +11,7 @@ This program will show you the time remaining for each task you feed in it.
 - Once the deadline of a certain task is crossed, Tasky will print "Task Expired" for that particular task.
 - Add as many tasks you want!
 
-![display](https://user-images.githubusercontent.com/68178267/155870913-e87ef963-39c9-47c7-bcb8-1c9aec166483.png)
+![display](https://user-images.githubusercontent.com/68178267/155871056-dde47e06-20e1-4c7d-bc37-07de243df4d1.png)
 
 ## Thank You
 Hope this program is helpful for you in keeping track the deadlines of your tasks!
