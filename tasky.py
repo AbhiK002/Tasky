@@ -8,20 +8,17 @@ from pathlib import Path
 class Functions:
     def __init__(self):
         self.log_prefix = self.log_dated_names()
+        self.home_path = Path.home()
 
-    @staticmethod
-    def check_tasky_folders():
-        home_path = Path.home()
-        taskylog_path = f'{home_path}\\Tasky\\taskylogs'
+    def check_tasky_folders(self):
+        taskylog_path = f'{self.home_path}\\Tasky\\taskylogs'
         try:
             os.makedirs(f'{taskylog_path}')
         except FileExistsError:
             pass
 
-    @staticmethod
-    def cookie_dir():
-        home_path = Path.home()
-        tasky_cookie = f'{home_path}\\Tasky\\taskylogs\\cookie'
+    def cookie_dir(self):
+        tasky_cookie = f'{self.home_path}\\Tasky\\taskylogs\\cookie'
         if os.path.isdir(tasky_cookie):
             if os.path.isfile(f'{tasky_cookie}\\cookies.txt'):
                 cookiefile = open(f'{tasky_cookie}\\cookies.txt', 'r')
@@ -45,16 +42,12 @@ class Functions:
         else:
             return False, tasky_cookie, 0
 
-    @staticmethod
-    def main_dir():
-        home_path = Path.home()
-        taskymain_path = f'{home_path}\\Tasky'
+    def main_dir(self):
+        taskymain_path = f'{self.home_path}\\Tasky'
         return taskymain_path
 
-    @staticmethod
-    def log_dir():
-        home_path = Path.home()
-        taskylog_path = f'{home_path}\\Tasky\\taskylogs'
+    def log_dir(self):
+        taskylog_path = f'{self.home_path}\\Tasky\\taskylogs'
         return taskylog_path
 
     @staticmethod
@@ -633,6 +626,10 @@ class App(Functions):
                     if words[0] == "quit" or words[0] == "q" or user_inp[:3] == "bye":
                         self.log("[INFO] user chose to exit program")
                         sysend()
+                    elif user_inp.startswith("debug"):
+                        self.info_bar("opening logs folder for debugging", months)
+                        self.log("[DEBUG] opening logs folder for debugging")
+                        os.startfile(f"{self.home_path}\\Tasky\\taskylogs\\")
                     elif words[0] == "help":
                         self.log("[INFO] user chose help, displaying available commands")
                         self.info_bar("displaying available commands", months)
