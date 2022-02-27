@@ -14,6 +14,15 @@ This program will show you the time remaining for each task you feed in it.
 
 ![display](https://user-images.githubusercontent.com/68178267/155871056-dde47e06-20e1-4c7d-bc37-07de243df4d1.png)
 
+## Usage/Commands
+- `help` : View all the available commands
+- `debug` : Open the Tasky logs folder
+- `add`, `new`, `create` : Add a new task
+- `remove N`, `rem N`, `delete N`, `del N` : Delete task number N
+- `edit N`, `ed N`, `change N` : Edit details of task number N
+- `ref`, `status` : Refresh the tasks list with updated time
+- `quit`, `bye`, `q`: Quit the program
+
 ## Coming Soon
 A GUI version of Tasky will be released soon :)
 
