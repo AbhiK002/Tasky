@@ -623,14 +623,14 @@ class App(Functions):
                 words = user_inp.split()
                 if user_inp != '':
                     self.log("[INFO] user input empty = False")
-                    if words[0] == "quit" or words[0] == "q" or user_inp[:3] == "bye":
+                    if user_inp.startswith(("quit", "bye")):
                         self.log("[INFO] user chose to exit program")
                         sysend()
                     elif user_inp.startswith("debug"):
                         self.info_bar("opening logs folder for debugging", months)
                         self.log("[DEBUG] opening logs folder for debugging")
                         os.startfile(f"{self.home_path}\\Tasky\\taskylogs\\")
-                    elif words[0] == "help":
+                    elif user_inp.startswith("help"):
                         self.log("[INFO] user chose help, displaying available commands")
                         self.info_bar("displaying available commands", months)
                         print("add / new / create".rjust(35) + " : Add a new Task\n" + "remove N / delete N / del N / rem N : Remove task number 'N'\n" + "(press enter key) / status / ref".rjust(35) + " : Refresh the remaining tasks list\n" + "edit N / change N / ed N".rjust(35) + " : Modify task number 'N' details")
@@ -640,7 +640,7 @@ class App(Functions):
                                 print("\n type 'eat cookie' to eat your cookie")
                             elif cookie_count == 0:
                                 print("\n you're out of cookies :(\n(type 'cookie' to hopefully get a cookie)")
-                    elif ("add" == words[0]) or ("new" == words[0]) or ("create" == words[0]):
+                    elif user_inp.startswith(("add", "new", "create")):
                         self.log("[INFO] user requested to add a new task")
                         while True:
                             self.log("[WAITING] for confirmation")
@@ -719,13 +719,13 @@ class App(Functions):
                         else:
                             self.log(f"[ERROR] command used incorrectly: {user_inp}")
                             self.info_bar("error! try again like 'edit 4'", months)
-                    elif (words[0] == "status" or words[0] == "ref") and len(words) == 1:
+                    elif user_inp.startswith(("ref", "status")):
                         self.log(f"[INFO] user requested updated task status: {user_inp}")
                         self.log("[INFO] refreshing output screen with new tasks")
                         self.info_bar("refreshed tasks list", months)
 
                     # (not so) secret commands
-                    elif user_inp[:5] == "hello" or user_inp[:2] == "hi" or user_inp[:3] == "hey":
+                    elif user_inp.startswith(("hi", "hello", "hey")):
 
                         hello_list = ["hello there :)", "hii :D", "hey-hey user ;)", "hola mi amigo ^-^",
                                       "hi again? ;)", "hey :)", "hehe hello ^o^",
