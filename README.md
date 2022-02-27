@@ -21,7 +21,7 @@ This program will show you the time remaining for each task you feed in it.
 - `remove N`, `rem N`, `delete N`, `del N` : Delete task number N
 - `edit N`, `ed N`, `change N` : Edit details of task number N
 - `ref`, `status` : Refresh the tasks list with updated time
-- `quit`, `bye`, `q`: Quit the program
+- `quit`, `bye`, `q` : Quit the program
 
 ## Coming Soon
 A GUI version of Tasky will be released soon :)
