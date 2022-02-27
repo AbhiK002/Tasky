@@ -13,5 +13,8 @@ This program will show you the time remaining for each task you feed in it.
 
 ![display](https://user-images.githubusercontent.com/68178267/155871056-dde47e06-20e1-4c7d-bc37-07de243df4d1.png)
 
+### Coming Soon!
+A GUI version of Tasky will be released soon :)
+
 ## Thank You
 Hope this program is helpful to you in keeping track the deadlines of your tasks.
