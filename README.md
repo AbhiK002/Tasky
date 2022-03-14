@@ -5,26 +5,40 @@ Task Deadline Tracker
 This program will show you the time remaining for each task you feed in it.
 
 ## Features
-- Add, remove and edit tasks in Tasky using their respective commands
+- Add, delete or edit tasks in Tasky using their respective buttons
 - Tasky will show you the time remaining for each task in a list form
-- Interactive terminal where you can use commands to make changes in the task list or a certain task.
+- Interactive GUI where the tasks list will update every minute
+- Tasky has 2 Color Themes: Dark Mode and Light Mode. Switch easily between these using just a button.
 - Once the deadline of a certain task is crossed, Tasky will print "Task Expired" for that particular task.
-- Add as many tasks you want
-- Tasky creates logs each time it is opened, stored in a remote logs folder which can be accessed using command "debug"
+- Add upto 20 tasks at a time
 
-![display](https://user-images.githubusercontent.com/68178267/155871056-dde47e06-20e1-4c7d-bc37-07de243df4d1.png)
+## Images
+- 2 color schemes available - Dark Mode and Light Mode
 
-## Usage/Commands
-- `help` : View all the available commands
-- `debug` : Open the Tasky logs folder
-- `add`, `new`, `create` : Add a new task
-- `remove N`, `rem N`, `delete N`, `del N` : Delete task number N
-- `edit N`, `ed N`, `change N` : Edit details of task number N
-- `ref`, `status` : Refresh the tasks list with updated time
-- `quit`, `bye` : Quit the program
+![modes](https://user-images.githubusercontent.com/68178267/158247840-6d14ab01-cb82-40be-9351-46d5dea032c9.png)
 
-## Coming Soon
-A GUI version of Tasky will be released soon :)
+- "edit" and "delete" buttons show up when mouse pointer hovers over any task
+
+![hover](https://user-images.githubusercontent.com/68178267/158247837-e3e6b5bc-7bc6-4b1b-b5d3-50503d42de31.png)
+
+- Tasky confirms the action before deleting a requested task
+
+![delete](https://user-images.githubusercontent.com/68178267/158247824-e7987f8f-931d-40aa-8f2e-a8257dcc484a.png)
+
+- New task window
+
+![new](https://user-images.githubusercontent.com/68178267/158247842-df7f291a-2ed2-44ec-8481-0b3986217c03.png)
+
+- Editing a task
+
+![edit](https://user-images.githubusercontent.com/68178267/158247833-98cfe927-de8d-473f-b69c-05c82f68022f.png)
+
+## Usage
+![help](https://user-images.githubusercontent.com/68178267/158245764-b723f05b-3371-42c2-b00c-cc9bd3466926.png)
+- Run the file `tasky_gui.py`.
+- Create "New Task" button to create new tasks.
+- Hover over any task in the list to show the "Edit" and "Delete" buttons for that task.
+- To change the color scheme of the program, just click the "Light Mode"/"Dark Mode" button (depends on the current color scheme)
 
 ## Thank You
 Hope this program is helpful to you in keeping track the deadlines of your tasks.
