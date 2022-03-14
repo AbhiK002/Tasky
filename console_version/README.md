@@ -1,4 +1,4 @@
-### This is the old non-GUI version of Tasky. Use it anytime instead of the GUI version and they'll both still work in sync.
+### This is the latest non-GUI (console) version of Tasky. Use it anytime instead of the GUI version and they'll both still work in sync.
 ![tlogosmol](https://user-images.githubusercontent.com/68178267/155870910-63057524-5817-4ae1-9c21-79b90d0d16d6.png)
 # Tasky
 Task Deadline Tracker
