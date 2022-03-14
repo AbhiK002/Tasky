@@ -4,6 +4,8 @@ Task Deadline Tracker
 
 This program will show you the time remaining for each task you feed in it.
 
+(Click [here](https://github.com/AbhiK002/Tasky/console_version) to check out the non-GUI (console) version of Tasky)
+
 ## Features
 - Add, delete or edit tasks in Tasky using their respective buttons
 - Tasky will show you the time remaining for each task in a list form
