@@ -38,7 +38,7 @@ This program will show you the time remaining for each task you feed in it.
 ## Usage
 ![help](https://user-images.githubusercontent.com/68178267/158245764-b723f05b-3371-42c2-b00c-cc9bd3466926.png)
 - Run the file `tasky_gui.py`.
-- Create "New Task" button to create new tasks.
+- In the Tasky window, click "New Task" button to create new tasks.
 - Hover over any task in the list to show the "Edit" and "Delete" buttons for that task.
 - To change the color scheme of the program, just click the "Light Mode"/"Dark Mode" button (depends on the current color scheme)
 
