@@ -618,7 +618,7 @@ class App(Functions):
                 if cookie and cookie_count > 0:
                     print("Your cookies:" + " @"*cookie_count)
                 self.log("[WAITING] FOR MAIN USER INPUT")
-                user_inp = input("\n> ").lower().lstrip()
+                user_inp = input("\n > ").lower().lstrip()
                 self.log(f"[INFO] user input: {user_inp}")
                 words = user_inp.split()
                 if user_inp != '':
