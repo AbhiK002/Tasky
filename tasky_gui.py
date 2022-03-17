@@ -201,8 +201,6 @@ class App:
         # main window
         self.root = Tk()
         self.root.title("Tasky - Deadline Tracker")
-        self.root.geometry(f"600x720+{int(self.root.winfo_screenwidth() / 2 - 300)}+{int(self.root.winfo_screenheight() / 2 - 360)}")
-        self.root.resizable(False, False)
         self.root.config(bg=self.minor_bg)
 
         try:
@@ -211,6 +209,24 @@ class App:
         except TclError:
             # logo not found locally
             pass
+
+        # sizes
+        tasky_width = 600
+        tasky_height = 720
+        self.title_font_size = 18
+        self.text_font_size = 14
+        self.task_height = 30
+
+        user_y = self.root.winfo_screenheight()
+        if user_y < 900:
+            tasky_width = 500
+            tasky_height = 652
+            self.title_font_size = 16
+            self.text_font_size = 12
+            self.task_height = 27
+
+        self.root.geometry(f"{tasky_width}x{tasky_height}+{int(self.root.winfo_screenwidth()/2 - tasky_width/2)}+{int(self.root.winfo_screenheight()/2 - tasky_height/2)}")
+        self.root.resizable(False, False)
 
         # main frame and menu frame
         self.root.columnconfigure(0, weight=1)
@@ -225,10 +241,10 @@ class App:
         # menu frame
         self.menuframe.rowconfigure(0, weight=1)
 
-        self.new_task_button = Button(self.menuframe, disabledforeground="red", text="New Task", fg=self.text_fg, activeforeground=self.text_fg, font=('calibri', 14, 'bold'), bg=self.major_bg, activebackground=self.major_abg, width=9, border=1, command=lambda n_e_inp="new": self.task_details_window(n_e_inp))
+        self.new_task_button = Button(self.menuframe, disabledforeground="red", text="New Task", fg=self.text_fg, activeforeground=self.text_fg, font=('calibri', self.text_font_size, 'bold'), bg=self.major_bg, activebackground=self.major_abg, width=9, border=1, command=lambda n_e_inp="new": self.task_details_window(n_e_inp))
         self.new_task_button.grid(row=0, column=0, padx=5, pady=6, sticky=W)
 
-        self.mode_button = Button(self.menuframe, text="Dark Mode", fg=self.mode_fg, activeforeground=self.mode_fg, font=('calibri', 14, 'bold'), bg=self.mode_bg, activebackground=self.mode_bg, width=9, border=1, command=self.dark_mode)
+        self.mode_button = Button(self.menuframe, text="Dark Mode", fg=self.mode_fg, activeforeground=self.mode_fg, font=('calibri', self.text_font_size, 'bold'), bg=self.mode_bg, activebackground=self.mode_bg, width=10, border=1, command=self.dark_mode)
         self.mode_button.grid(row=0, column=1, padx=2, pady=6, sticky=W)
 
         self.menuframe.columnconfigure(2, weight=1)
@@ -243,12 +259,12 @@ class App:
         self.mainframe.rowconfigure(1, weight=1)
 
         # title frame in main frame
-        self.title_frame = Frame(self.mainframe, bg=self.major_bg, height=50)
+        self.title_frame = Frame(self.mainframe, bg=self.major_bg)
         self.title_frame.grid(row=0, column=0, sticky=EW)
 
         self.title_frame.rowconfigure(0, weight=1)
         self.title_frame.columnconfigure(0, weight=1)
-        self.title_label = Label(self.title_frame, text="~  TASKS REMAINING  ~", fg=self.text_fg, bg=self.major_bg, anchor=CENTER, font=('Calibri', 20, 'bold'))
+        self.title_label = Label(self.title_frame, text="~  TASKS REMAINING  ~", fg=self.text_fg, bg=self.major_bg, anchor=CENTER, font=('Calibri', self.title_font_size, 'bold'))
         self.title_label.grid(row=0, column=0, pady=5, sticky=NSEW)
 
         # tasks frame
@@ -297,22 +313,22 @@ class App:
             final_task_info = rawtaskinfo.title()
             rawtasktime = rawtask[:14]
             final_task_time = self.fn.timediff(rawtasktime)
-            frame = Frame(self.tasks_frame, height=30, bg=self.major_bg)
+            frame = Frame(self.tasks_frame, height=self.task_height, bg=self.major_bg)
             frame.grid_propagate(False)
             frame.rowconfigure(0, weight=1)
             frame.columnconfigure(2, weight=1)
 
-            numlabel = Label(frame, text=str(ind + 1) + ".", width=2, bg=self.major_bg, fg=self.text_fg, font=('calibri', 15, 'normal'), anchor=E)
+            numlabel = Label(frame, text=str(ind + 1) + ".", width=2, bg=self.major_bg, fg=self.text_fg, font=('calibri', self.text_font_size, 'normal'), anchor=E)
             numlabel.grid(row=0, column=0, sticky=W)
 
-            timelabel = Label(frame, text=final_task_time, width=19, bg=self.major_bg, fg=self.text_fg, font=('calibri', 15, 'bold'), anchor=E)
+            timelabel = Label(frame, text=final_task_time, width=19, bg=self.major_bg, fg=self.text_fg, font=('calibri', self.text_font_size, 'bold'), anchor=E)
             timelabel.grid(row=0, column=1, padx=4)
 
-            textlabel = Label(frame, text=final_task_info[:35], width=30, fg=self.text_fg, bg=self.major_bg, anchor=W)
+            textlabel = Label(frame, text=final_task_info[:35], width=30, fg=self.text_fg, font=('calibri', self.text_font_size, 'normal'), bg=self.major_bg, anchor=W)
             textlabel.grid(row=0, column=2, sticky=W)
 
-            a = Button(frame, text="...", width=1, fg="black", bg=self.blue, activebackground=self.dark_blue, font=('calibri', 14, 'bold'), activeforeground="black", command=lambda n_e_inp=ind: self.task_details_window(n_e_inp))
-            b = Button(frame, text="x", width=1, fg="black", bg=self.red, activebackground=self.dark_red, font=('calibri', 14, 'bold'), activeforeground="black", command=lambda j=ind: self.delete_confirmation(j))
+            a = Button(frame, text="...", width=1, fg="black", bg=self.blue, activebackground=self.dark_blue, font=('calibri', self.text_font_size, 'bold'), activeforeground="black", command=lambda n_e_inp=ind: self.task_details_window(n_e_inp))
+            b = Button(frame, text="x", width=1, fg="black", bg=self.red, activebackground=self.dark_red, font=('calibri', self.text_font_size, 'bold'), activeforeground="black", command=lambda j=ind: self.delete_confirmation(j))
 
             frame.bind('<Enter>', lambda event="<Enter>", a=a, b=b: self.show_task_actions(event, a, b))
             frame.bind('<Leave>', lambda event="<Leave>", a=a, b=b: self.hide_task_actions(event, a, b))
