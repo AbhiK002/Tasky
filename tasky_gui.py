@@ -707,7 +707,10 @@ class App:
                         elif int(raw_data) == 0:
                             msg_label.config(text="Converted 24h To 12h Format")
                             data.set(str(int(raw_data) + 12).zfill(2))
-                            am_pm_var.set("AM/Noon")
+                            if int(date_var_tk.get()) == 0:
+                                am_pm_var.set("AM/Noon")
+                            else:
+                                am_pm_var.set("PM/Night")
                         else:
                             msg_label.config(text="Hours Should Lie Between 1 And 12")
                             data.set(str(c_hours).zfill(2))
