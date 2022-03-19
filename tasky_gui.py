@@ -511,7 +511,7 @@ class App:
         hours_label.grid(row=7, column=0, sticky=W)
 
         current_hours = current_dt.strftime("%H")
-        am_pm_var.set("AM/Night")
+        am_pm_var.set("AM/Noon")
 
         if int(current_hours) > 12:
             current_hours = str(int(current_hours) - 12).zfill(2)
