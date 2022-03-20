@@ -1,7 +1,23 @@
 from datetime import datetime
 from os import makedirs
 from pathlib import Path
-from tkinter import *
+from tkinter import (
+    Tk,
+    PhotoImage,
+    TclError,
+    Frame,
+    Button,
+    NSEW,
+    E, W,
+    EW,
+    Label,
+    CENTER,
+    DISABLED, NORMAL,
+    StringVar,
+    Toplevel,
+    Entry,
+    OptionMenu,
+)
 
 
 class Functions:
