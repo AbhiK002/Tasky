@@ -13,6 +13,7 @@ This program will show you the time remaining for each task you feed in it.
 - Tasky has 2 Color Themes: Dark Mode and Light Mode. Switch easily between these using just a button.
 - Once the deadline of a certain task is crossed, Tasky will print "Task Expired" for that particular task.
 - Add upto 20 tasks at a time
+- Your tasks information is stored in a remote location, so Tasky will always show your tasks even if you close and reopen it.
 
 ## Images
 - 2 color schemes available - Dark Mode and Light Mode
