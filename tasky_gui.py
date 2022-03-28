@@ -18,6 +18,7 @@ from tkinter import (
     Entry,
     OptionMenu,
 )
+from tkinter.messagebox import askyesno
 
 
 class Functions:
@@ -436,17 +437,9 @@ class App:
             i.destroy()
 
     def delete_confirmation(self, j):
-        self.status_frame.rowconfigure(0, weight=1)
-        self.status_frame.columnconfigure(0, weight=1)
-
-        self.question_label = Label(self.status_frame, bg=self.minor_bg, fg="black", text=f"Delete Task {j + 1} ?", anchor=E, font=('Calibri', 15, 'bold'))
-        self.question_label.grid(row=0, column=0, sticky=NSEW)
-
-        yes_button = Button(self.status_frame, width=6, bg="red", fg="black", activeforeground="black", text="DELETE", font=('Calibri', 13, 'bold'), command=lambda ind=j: self.delete_task(ind))
-        yes_button.grid(row=0, column=1, sticky=W, padx=3, pady=2)
-
-        no_button = Button(self.status_frame, width=6, bg="green", fg="black", activeforeground="black", text="CANCEL", font=('Calibri', 13, 'bold'), command=self.cancel_delete_task)
-        no_button.grid(row=0, column=2, sticky=W, padx=3, pady=2)
+        response = askyesno(f'Delete Task {j+1}', f'Do you want to delete Task {j+1}?')
+        if response:
+            self.delete_task(j)
 
     def task_details_window(self, n_e_inp):
         self.cancel_delete_task()
@@ -828,6 +821,7 @@ class App:
         hours_entry.bind('<KeyRelease>', lambda event="<KeyRelease>", typ="hours", data=hours_var_tk: live_input(event, typ, data))
         mins_entry.bind('<KeyRelease>', lambda event="<KeyRelease>", typ="mins", data=mins_var_tk: live_input(event, typ, data))
 
+        td_window.bind('<Return>', lambda e: check_inputs())
         save_button.config(command=check_inputs)
 
         td_window.mainloop()
