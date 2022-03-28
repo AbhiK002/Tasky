@@ -26,7 +26,7 @@ This program will show you the time remaining for each task you feed in it.
 
 - Tasky confirms the action before deleting a requested task
 
-![delete](https://user-images.githubusercontent.com/68178267/158247824-e7987f8f-931d-40aa-8f2e-a8257dcc484a.png)
+![delete](https://user-images.githubusercontent.com/68178267/160482501-ed3143d5-cfd5-493f-be3e-ab35bb8635c8.png)
 
 - New task window
 
