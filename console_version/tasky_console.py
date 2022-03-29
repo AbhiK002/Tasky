@@ -1,6 +1,6 @@
 import contextlib
 import datetime
-import os
+from os import makedirs, startfile, system, path
 from pathlib import Path
 from random import randint
 from sys import exit as sysend
@@ -10,40 +10,36 @@ class Functions:
     def __init__(self):
         self.log_prefix = self.log_dated_names()
         self.home_path = Path.home()
+        self.taskymain_path = path.join(self.home_path, "Tasky")
+        self.tasks_path = path.join(self.taskymain_path, "tasks.txt")
+
+        self.taskylog_path = path.join(self.taskymain_path, "taskylogs")
+
+        self.cookie_folder_path = path.join(self.taskylog_path, "cookie")
 
     def check_tasky_folders(self):
-        taskylog_path = f"{self.home_path}\\Tasky\\taskylogs"
         with contextlib.suppress(FileExistsError):
-            os.makedirs(f"{taskylog_path}")
+            makedirs(f"{self.taskylog_path}")
 
     def cookie_dir(self):
-        tasky_cookie = f"{self.home_path}\\Tasky\\taskylogs\\cookie"
-        if not os.path.isdir(tasky_cookie):
-            return False, tasky_cookie, 0
-        if not os.path.isfile(f"{tasky_cookie}\\cookies.txt"):
-            return True, tasky_cookie, 0
-        with open(f"{tasky_cookie}\\cookies.txt", "r") as cookiefile:
+        if not path.isdir(self.cookie_folder_path):
+            return False, self.cookie_folder_path, 0
+        if not path.isfile(path.join(self.cookie_folder_path, "cookies.txt")):
+            return True, self.cookie_folder_path, 0
+        with open(path.join(self.cookie_folder_path, "cookies.txt"), "r") as cookiefile:
             count = cookiefile.readlines()
         while "\n" in count:
             count.remove("\n")
             for i in range(len(count)):
                 count[i] = count[i].replace("\n", "")
         if len(count) != 1 or not count[0].isdecimal():
-            return True, tasky_cookie, 0
+            return True, self.cookie_folder_path, 0
         if 0 <= int(count[0]) <= 15:
-            return True, tasky_cookie, int(count[0])
+            return True, self.cookie_folder_path, int(count[0])
         elif int(count[0]) > 15:
-            return True, tasky_cookie, 15
+            return True, self.cookie_folder_path, 15
         else:
-            return True, tasky_cookie, 0
-
-    def main_dir(self):
-        taskymain_path = f"{self.home_path}\\Tasky"
-        return taskymain_path
-
-    def log_dir(self):
-        taskylog_path = f"{self.home_path}\\Tasky\\taskylogs"
-        return taskylog_path
+            return True, self.cookie_folder_path, 0
 
     @staticmethod
     def log_dated_names():
@@ -55,29 +51,26 @@ class Functions:
         return str(a)
 
     def check_tasky_log(self):
-        logdir = self.log_dir()
         try:
-            log_file = open(f"{logdir}\\{self.log_prefix}.log", "r")
+            log_file = open(path.join(self.taskylog_path, f"{self.log_prefix}.log"), "r")
             log_file.close()
         except FileNotFoundError:
-            log_file = open(f"{logdir}\\{self.log_prefix}.log", "w")
+            log_file = open(path.join(self.taskylog_path, f"{self.log_prefix}.log"), "w")
             log_file.close()
 
     def log(self, data):
-        logdir = self.log_dir()
-        with open(f"{logdir}\\{self.log_prefix}.log", "a") as file:
+        with open(path.join(self.taskylog_path, f"{self.log_prefix}.log"), "a") as file:
             current_dt = str(datetime.datetime.now())[:-4]
             file.write(f"{current_dt} >> {str(data)}" + "\n")
 
     def check_tasks_txt(self):
-        maindir = self.main_dir()
         try:
             self.log("[INFO] attempted to open tasks.txt in read mode")
-            with open(f"{maindir}\\tasks.txt", "r") as b:
+            with open(self.tasks_path, "r") as b:
                 self.log("[INFO] attempt successful")
         except FileNotFoundError:
             self.log("[ERROR] attempt failed, can't find tasks.txt")
-            with open(f"{maindir}\\tasks.txt", "w") as b:
+            with open(self.tasks_path, "w") as b:
                 self.log("[INFO] created empty text file 'tasks.txt'")
 
     def make_dicts(self):
@@ -117,7 +110,7 @@ class Functions:
 
     def clear(self):
         self.log("[FUNCTION] starts -> clear()")
-        os.system("cls")
+        system("cls")
         self.log("[INFO] output screen cleared")
         self.log("[FUNCTION] ends -> clear()")
 
@@ -192,24 +185,24 @@ class Functions:
 
             if int(diffy) >= 1:
                 output = (
-                    f"{diffy}y".rjust(3)
-                    + f"{diffm}M".rjust(4)
-                    + f"{diffd}d".rjust(4)
-                    + f"{diffh}h".rjust(4)
-                    + f"{diffmin}m".rjust(4)
+                        f"{diffy}y".rjust(3)
+                        + f"{diffm}M".rjust(4)
+                        + f"{diffd}d".rjust(4)
+                        + f"{diffh}h".rjust(4)
+                        + f"{diffmin}m".rjust(4)
                 )
             elif int(diffm) >= 1:
                 output = (
-                    f"{diffm}M".rjust(4 + 3)
-                    + f"{diffd}d".rjust(4)
-                    + f"{diffh}h".rjust(4)
-                    + f"{diffmin}m".rjust(4)
+                        f"{diffm}M".rjust(4 + 3)
+                        + f"{diffd}d".rjust(4)
+                        + f"{diffh}h".rjust(4)
+                        + f"{diffmin}m".rjust(4)
                 )
             elif int(diffd) >= 1:
                 output = (
-                    f"{diffd}d".rjust(4 + 7)
-                    + f"{diffh}h".rjust(4)
-                    + f"{diffmin}m".rjust(4)
+                        f"{diffd}d".rjust(4 + 7)
+                        + f"{diffh}h".rjust(4)
+                        + f"{diffmin}m".rjust(4)
                 )
             elif int(diffh) >= 1:
                 output = f"{diffh}h".rjust(4 + 11) + f"{diffmin}m".rjust(4)
@@ -224,11 +217,10 @@ class Functions:
         return output
 
     def read_and_sort_tasks_file(
-        self,
+            self,
     ):  # returns the current data sorted and separately in list
         self.log("[FUNCTION] starts -> read_and_sort_tasks_file()")
-        maindir = self.main_dir()
-        with open(f"{maindir}\\tasks.txt", "r") as a:
+        with open(self.tasks_path, "r") as a:
             self.log("[INFO] opened 'tasks.txt' in read mode")
             x = a.readlines()
         self.log("[INFO] stored every raw line of 'tasks.txt' in a list called 'x'")
@@ -244,12 +236,12 @@ class Functions:
 
         self.log("[INFO] removed newline characters from every item of 'x'")
         self.log(y)
-        tasklist = self.sort_tasks(y, maindir)
+        tasklist = self.sort_tasks(y)
         self.log("[INFO] returned sorted list = tasklist")
         self.log("[FUNCTION] ends -> read_and_sort_tasks_file()")
         return tasklist
 
-    def sort_tasks(self, tlist, tdir):
+    def sort_tasks(self, tlist):
         self.log("[FUNCTION] starts -> sort_tasks(tlist, tdir)")
         nums = []
         self.log("[INFO] created empty list nums")
@@ -271,7 +263,7 @@ class Functions:
         )
 
         sorted_output = "\n".join(nums)
-        with open(f"{str(tdir)}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             taskfile.write(sorted_output)
         self.log("[INFO] sorted output written to tasks.txt")
         self.log(f"[INFO] returned nums = {nums}")
@@ -294,7 +286,7 @@ class Functions:
             rawtaskinfo = taskparts[1]
             self.log(f"[INFO] rawtaskinfo: {rawtaskinfo}")
             taskoutput = [
-                f"({task_list.index(taskline)+1}) {rawtasktime} >>> {rawtaskinfo.title()}"
+                f"({task_list.index(taskline) + 1}) {rawtasktime} >>> {rawtaskinfo.title()}"
             ]
             outputs += taskoutput
         self.log(
@@ -310,7 +302,6 @@ class Functions:
     def remove(self, num, monthsdict):
         self.log(f"[FUNCTION] starts -> remove({num})")
         last = self.read_and_sort_tasks_file()
-        maindir = self.main_dir()
         self.log("[INFO] stored returned 'y' as 'last'")
         self.log(f"[INFO] task {num} requested to be removed ")
         rem_index = int(num) - 1
@@ -319,7 +310,7 @@ class Functions:
         self.log(f"[INFO] removed requested task [{rem_task}] from the list")
         self.log(last)
         new_output = "\n".join(last)
-        with open(f"{maindir}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             self.log("[INFO] opened 'tasks.txt' in write mode")
             taskfile.write(new_output)
             self.log("[INFO] wrote new output to 'tasks.txt'")
@@ -403,8 +394,7 @@ class Functions:
                     last[task_ind] = edited_task
                     self.log("[INFO] replaced old task in 'last' with edited task")
                     self.log(f"[INFO] new task: {edited_task}")
-                    maindir = self.main_dir()
-                    with open(f"{maindir}\\tasks.txt", "w") as taskfile:
+                    with open(self.tasks_path, "w") as taskfile:
                         new_output = "\n".join(last)
                         taskfile.write(new_output)
                         self.log("[INFO] updated output written to 'tasks.txt'")
@@ -654,10 +644,9 @@ class Functions:
         self.log("[FUNCTION] ends -> new_task()")
 
     def add(self, new):
-        maindir = self.main_dir()
         self.log("[FUNCTION] starts -> add(new)")
         self.log(f"[INFO] appending [{new}] to 'tasks.txt'")
-        taskfile = open(f"{maindir}\\tasks.txt", "a")
+        taskfile = open(self.tasks_path, "a")
         taskfile.write("\n" + new)
         taskfile.close()
         self.log("[INFO] appended successfully")
@@ -697,7 +686,7 @@ class App(Functions):
                     elif user_inp.startswith("debug"):
                         self.log("[DEBUG] opening logs folder for debugging")
                         self.info_bar("opening logs folder for debugging", months)
-                        os.startfile(f"{self.home_path}\\Tasky\\taskylogs\\")
+                        startfile(self.taskylog_path)
                     elif user_inp.startswith("help"):
                         self.log("[INFO] user chose help, displaying available commands")
                         self.info_bar("displaying available commands", months)
@@ -744,10 +733,10 @@ class App(Functions):
                                 )
                                 self.info_bar("please enter yes/no", months)
                     elif (
-                        ("remove" == words[0])
-                        or ("delete" == words[0])
-                        or ("del" == words[0])
-                        or ("rem" == words[0])
+                            ("remove" == words[0])
+                            or ("delete" == words[0])
+                            or ("del" == words[0])
+                            or ("rem" == words[0])
                     ):
                         if len(words) == 2 and words[1].isdecimal():
                             self.log(
@@ -793,9 +782,9 @@ class App(Functions):
                             self.log(f"[ERROR] command used incorrectly: {user_inp}")
                             self.info_bar("error! try again like 'remove 5'", months)
                     elif (
-                        ("edit" == words[0])
-                        or ("change" == words[0])
-                        or ("ed" == words[0])
+                            ("edit" == words[0])
+                            or ("change" == words[0])
+                            or ("ed" == words[0])
                     ):
                         if len(words) == 2 and words[1].isdecimal():
                             self.log(
@@ -899,9 +888,9 @@ class App(Functions):
                         if not cookie:
                             if n == 31:
                                 cookie = True
-                                os.makedirs(f"{ckdir}")
+                                makedirs(f"{ckdir}")
                                 cookie_count += 1
-                                cookiefile = open(f"{ckdir}\\cookies.txt", "w")
+                                cookiefile = open(path.join(self.cookie_folder_path, "cookies.txt"), "w")
                                 cookiefile.write(str(cookie_count))
                                 cookiefile.close()
                             self.info_bar(hello_list[n], months)
@@ -923,20 +912,20 @@ class App(Functions):
                             n += 1
 
                     elif (
-                        user_inp.startswith(":)")
-                        or user_inp.upper().startswith(":D")
-                        or user_inp.startswith(":(")
-                        or user_inp.startswith(":>")
-                        or user_inp.startswith(":<")
+                            user_inp.startswith(":)")
+                            or user_inp.upper().startswith(":D")
+                            or user_inp.startswith(":(")
+                            or user_inp.startswith(":>")
+                            or user_inp.startswith(":<")
                     ):
                         self.log(f"[INFO] {user_inp[:2]}")
                         self.info_bar(f"{user_inp[:2].upper()}", months)
                     elif (
-                        user_inp.startswith(">:(")
-                        or user_inp.upper().startswith(">:)")
-                        or user_inp.startswith("._.")
-                        or user_inp.startswith(".-.")
-                        or user_inp.lower().startswith("o_o")
+                            user_inp.startswith(">:(")
+                            or user_inp.upper().startswith(">:)")
+                            or user_inp.startswith("._.")
+                            or user_inp.startswith(".-.")
+                            or user_inp.lower().startswith("o_o")
                     ):
                         self.log(f"[INFO] {user_inp[:3]}")
                         self.info_bar(f"{user_inp[:3].upper()}", months)
@@ -950,7 +939,7 @@ class App(Functions):
                                         "ooh! found a cookie. ugh fine take it", months
                                     )
                                     cookie_count += 1
-                                    cookiefile = open(f"{ckdir}\\cookies.txt", "w")
+                                    cookiefile = open(path.join(self.cookie_folder_path, "cookies.txt"), "w")
                                     cookiefile.write(str(cookie_count))
                                     cookiefile.close()
                                 else:
@@ -970,7 +959,7 @@ class App(Functions):
                             if cookie_count > 0:
                                 self.info_bar("huh? what was that crunch sound", months)
                                 cookie_count -= 1
-                                cookiefile = open(f"{ckdir}\\cookies.txt", "w")
+                                cookiefile = open(path.join(self.cookie_folder_path, "cookies.txt"), "w")
                                 cookiefile.write(str(cookie_count))
                                 cookiefile.close()
                             elif cookie_count == 0:
