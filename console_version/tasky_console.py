@@ -1,5 +1,5 @@
 import datetime
-from os import makedirs, startfile, system
+from os import startfile, system
 from pathlib import Path
 from random import randint
 from sys import exit as sysend
