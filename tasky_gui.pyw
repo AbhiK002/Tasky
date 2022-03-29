@@ -1,6 +1,6 @@
 import contextlib
 from datetime import datetime
-from os import makedirs
+from os import makedirs, path
 from pathlib import Path
 from tkinter import (
     CENTER,
@@ -28,7 +28,8 @@ class Functions:
     def __init__(self):
         # paths defined
         self.home_path = Path.home()
-        self.taskymain_path = f"{self.home_path}\\Tasky"
+        self.taskymain_path = path.join(self.home_path, "Tasky")
+        self.tasks_path = path.join(self.taskymain_path, "tasks.txt")
 
         self.check_sourcefiles()
 
@@ -68,22 +69,23 @@ class Functions:
 
     def check_tasks_txt(self):
         try:
-            b = open(f"{self.taskymain_path}\\tasks.txt", "r")
+            b = open(self.tasks_path, "r")
             b.close()
         except FileNotFoundError:
-            b = open(f"{self.taskymain_path}\\tasks.txt", "w")
+            b = open(self.tasks_path, "w")
             b.close()
 
     def check_settings(self):
+        settings_path = path.join(self.taskymain_path, "settings.txt")
         try:
-            b = open(f"{self.taskymain_path}\\settings.txt", "r")
+            b = open(settings_path, "r")
             if "light" in "".join(b.read()) or "dark" in "".join(b.read()):
                 b.close()
             else:
-                with open(f"{self.taskymain_path}\\settings.txt", "w") as c:
+                with open(settings_path, "w") as c:
                     c.write("dark")
         except FileNotFoundError:
-            with open(f"{self.taskymain_path}\\settings.txt", "w") as b:
+            with open(settings_path, "w") as b:
                 b.write("dark")
 
     def check_sourcefiles(self):
@@ -170,7 +172,7 @@ class Functions:
         self,
     ):  # returns the current data sorted and separately in list
         self.check_sourcefiles()
-        with open(f"{self.taskymain_path}\\tasks.txt", "r") as a:
+        with open(self.tasks_path, "r") as a:
             x = a.readlines()
         y = []
         while "\n" in x:
@@ -197,7 +199,7 @@ class Functions:
                 while o in nums:
                     nums.remove(o)
         sorted_output = "\n".join(nums)
-        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             taskfile.write(sorted_output)
         return nums
 
@@ -206,14 +208,14 @@ class Functions:
         target_task = tasklist[ind]
         tasklist.remove(target_task)
         new_output = "\n".join(tasklist)
-        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             taskfile.write(new_output)
 
     def add_task(self, task):
         tasklist = self.read_and_sort_tasks_file()
         tasklist.append(task)
         new_output = "\n".join(tasklist)
-        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             taskfile.write(new_output)
 
 
@@ -480,7 +482,7 @@ class App:
         b.grid_forget()
 
     def is_light(self):
-        a = open(f"{self.fn.taskymain_path}\\settings.txt", "r")
+        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "r")
         b = a.read()
         a.close()
         if "".join(b) == "light":
@@ -505,7 +507,7 @@ class App:
             activebackground=self.mode_bg,
             activeforeground=self.mode_fg,
         )
-        a = open(f"{self.fn.taskymain_path}\\settings.txt", "w")
+        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "w")
         a.write("dark")
         a.close()
 
@@ -526,7 +528,7 @@ class App:
             activebackground=self.mode_bg,
             activeforeground=self.mode_fg,
         )
-        a = open(f"{self.fn.taskymain_path}\\settings.txt", "w")
+        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "w")
         a.write("light")
         a.close()
 
@@ -581,7 +583,7 @@ class App:
     def task_details_window(self, n_e_inp):
         self.cancel_delete_task()
         tasky_new_x = self.root.winfo_x() + int(self.root.winfo_width() / 2 - 245)
-        tasky_new_y = self.root.winfo_y() + int(self.root.winfo_height() / 2 - 200)
+        tasky_new_y = self.root.winfo_y() + int(self.root.winfo_height() / 2 - 210)
 
         desc_var_tk = StringVar()
         date_var_tk = StringVar()
@@ -596,9 +598,9 @@ class App:
 
         td_window = Toplevel()
         td_window.title("New Task")
-        td_window.minsize(490, 400)
+        td_window.minsize(490, 420)
         td_window.resizable(False, False)
-        td_window.geometry(f"490x400+{tasky_new_x}+{tasky_new_y}")
+        td_window.geometry(f"490x420+{tasky_new_x}+{tasky_new_y}")
         td_window.config(bg=self.major_bg)
 
         td_window.grab_set()
@@ -615,13 +617,13 @@ class App:
         title = Label(
             mainframe,
             text="New Task Details",
-            height=2,
+            height=1,
             bg=self.major_bg,
             anchor=CENTER,
             fg="orange",
             font=("Calibri", 20, "bold"),
         )
-        title.grid(row=0, column=0, columnspan=2, sticky=EW)
+        title.grid(row=0, column=0, columnspan=2, sticky=EW, pady=8)
 
         desc_label = Label(
             mainframe,
@@ -645,8 +647,9 @@ class App:
         desc_entry.grid(row=1, column=1, sticky=NSEW, padx=8)
         desc_entry.focus_set()
 
-        Frame(mainframe, height=20, bg=self.major_bg).grid(
-            row=2, column=0, columnspan=2, sticky=EW
+        mainframe.rowconfigure(2, weight=1)
+        Frame(mainframe, height=10, bg=self.major_bg).grid(
+            row=2, column=0, columnspan=2, sticky=NSEW
         )
 
         current_date = current_dt.strftime("%d")
@@ -728,8 +731,9 @@ class App:
         )
         year_entry.grid(row=5, column=1, sticky=W, padx=8)
 
-        Frame(mainframe, height=20, bg=self.major_bg).grid(
-            row=6, column=0, columnspan=2, sticky=EW
+        mainframe.rowconfigure(6, weight=1)
+        Frame(mainframe, bg=self.major_bg).grid(
+            row=6, column=0, columnspan=2, sticky=NSEW
         )
 
         hours_label = Label(
@@ -809,9 +813,9 @@ class App:
         am_pm_option["menu"].config(
             bg=self.major_bg, fg="white", font=("Calibri", 14, "bold")
         )
-        am_pm_option.grid(row=9, column=1, sticky=W, pady=3, padx=8)
+        am_pm_option.grid(row=9, column=1, sticky=W, pady=2, padx=8)
 
-        msg_frame = Frame(mainframe, height=30, bg=self.major_bg)
+        msg_frame = Frame(mainframe, bg=self.major_bg, height=15)
         msg_frame.grid(row=10, column=0, columnspan=2, sticky=EW)
         msg_frame.grid_propagate(False)
         msg_frame.rowconfigure(0, weight=1)
@@ -823,12 +827,13 @@ class App:
             fg="cyan",
             text="",
             anchor=CENTER,
-            font=("Calibri", 13, "normal"),
+            font=("Calibri", 12, "normal"),
         )
         msg_label.grid(row=0, column=0, sticky=NSEW)
 
         button_frame = Frame(mainframe, bg=self.major_bg, height=30)
-        button_frame.grid(row=11, column=0, columnspan=2, sticky=EW, pady=8)
+
+        button_frame.grid(row=11, column=0, columnspan=2, sticky=NSEW, pady=4)
         button_frame.rowconfigure(0, weight=1)
         button_frame.columnconfigure(0, weight=1)
         button_frame.columnconfigure(1, weight=1)
@@ -842,7 +847,7 @@ class App:
             activeforeground="white",
             text="SAVE",
             width=6,
-            font=("Calibri", 16, "bold"),
+            font=("Calibri", 14, "bold"),
         )
         save_button.grid(row=0, column=0, sticky=E, padx=4)
 
@@ -853,7 +858,7 @@ class App:
             fg="black",
             text="CANCEL",
             width=7,
-            font=("Calibri", 16, "bold"),
+            font=("Calibri", 14, "bold"),
             command=td_window.destroy,
         )
         cancel_button.grid(row=0, column=1, sticky=W, padx=4)
