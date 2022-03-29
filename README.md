@@ -42,6 +42,9 @@ This program will show you the time remaining for each task you feed in it.
 - In the Tasky window, click "New Task" button to create new tasks.
 - Hover over any task in the list to show the "Edit" and "Delete" buttons for that task.
 - To change the color scheme of the program, just click the "Light Mode"/"Dark Mode" button (depends on the current color scheme)
+  
+### Windows Specific Executable
+Check Releases for Windows Executable which you can run on any Windows Devices without installing Python
 
 ## Thank You
 Hope this program is helpful to you in keeping track the deadlines of your tasks.
