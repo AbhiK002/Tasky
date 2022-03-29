@@ -1,6 +1,4 @@
-import contextlib
 from datetime import datetime
-from os import makedirs
 from pathlib import Path
 from tkinter import (
     CENTER,
@@ -64,8 +62,7 @@ class Functions:
         }
 
     def check_tasky_folders(self):
-        with contextlib.suppress(FileExistsError):
-            makedirs(self.taskymain_path)
+        self.taskymain_path.mkdir(parents=True,exist_ok=True)
 
     def check_tasks_txt(self):
         try:
