@@ -216,7 +216,7 @@ class Functions:
             elif int(diffmin) >= 1 and int(diffmin) >= 30:
                 output = f"{diffmin}m".rjust(4 + 15)
             else:
-                output = "LESS THAN 30 MIN".rjust(19)
+                output = f"LESS THAN {diffmin} MIN".rjust(19)
             self.log("[INFO] calculated time remaining for output")
             self.log(f"[INFO] {output}")
         self.log("[INFO] returned output")
