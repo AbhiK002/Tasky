@@ -1,6 +1,6 @@
 import contextlib
 import datetime
-from os import makedirs, startfile, system, path
+from os import makedirs, startfile, system
 from pathlib import Path
 from random import randint
 from sys import exit as sysend
@@ -22,9 +22,9 @@ class Functions:
             makedirs(f"{self.taskylog_path}")
 
     def cookie_dir(self):
-        if not path.isdir(self.cookie_folder_path):
+        if not self.cookie_folder_path.is_dir() :
             return False, self.cookie_folder_path, 0
-        if not path.isfile(self.cookie_folder_path / "cookies.txt"):
+        if not (self.cookie_folder_path / "cookies.txt").is_file():
             return True, self.cookie_folder_path, 0
         with open(self.cookie_folder_path / "cookies.txt", "r") as cookiefile:
             count = cookiefile.readlines()

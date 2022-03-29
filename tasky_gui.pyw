@@ -1,6 +1,6 @@
 import contextlib
 from datetime import datetime
-from os import makedirs, path
+from os import makedirs
 from pathlib import Path
 from tkinter import (
     CENTER,
