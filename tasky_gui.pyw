@@ -3,21 +3,23 @@ from datetime import datetime
 from os import makedirs
 from pathlib import Path
 from tkinter import (
-    Tk,
-    PhotoImage,
-    TclError,
-    Frame,
-    Button,
-    NSEW,
-    E, W,
-    EW,
-    Label,
     CENTER,
-    DISABLED, NORMAL,
-    StringVar,
-    Toplevel,
+    DISABLED,
+    EW,
+    NORMAL,
+    NSEW,
+    Button,
+    E,
     Entry,
+    Frame,
+    Label,
     OptionMenu,
+    PhotoImage,
+    StringVar,
+    TclError,
+    Tk,
+    Toplevel,
+    W,
 )
 from tkinter.messagebox import askyesno
 
@@ -26,20 +28,38 @@ class Functions:
     def __init__(self):
         # paths defined
         self.home_path = Path.home()
-        self.taskymain_path = f'{self.home_path}\\Tasky'
+        self.taskymain_path = f"{self.home_path}\\Tasky"
 
         self.check_sourcefiles()
 
         self.months_maxdays = {
-            "01": 31, "02": 29, "03": 31, "04": 30,
-            "05": 31, "06": 30, "07": 31, "08": 31,
-            "09": 30, "10": 31, "11": 30, "12": 31
+            "01": 31,
+            "02": 29,
+            "03": 31,
+            "04": 30,
+            "05": 31,
+            "06": 30,
+            "07": 31,
+            "08": 31,
+            "09": 30,
+            "10": 31,
+            "11": 30,
+            "12": 31,
         }
 
         self.month_names = {
-            "January": 1, "February": 2, "March": 3, "April": 4,
-            "May": 5, "June": 6, "July": 7, "August": 8,
-            "September": 9, "October": 10, "November": 11, "December": 12
+            "January": 1,
+            "February": 2,
+            "March": 3,
+            "April": 4,
+            "May": 5,
+            "June": 6,
+            "July": 7,
+            "August": 8,
+            "September": 9,
+            "October": 10,
+            "November": 11,
+            "December": 12,
         }
 
     def check_tasky_folders(self):
@@ -48,22 +68,22 @@ class Functions:
 
     def check_tasks_txt(self):
         try:
-            b = open(f'{self.taskymain_path}\\tasks.txt', 'r')
+            b = open(f"{self.taskymain_path}\\tasks.txt", "r")
             b.close()
         except FileNotFoundError:
-            b = open(f'{self.taskymain_path}\\tasks.txt', 'w')
+            b = open(f"{self.taskymain_path}\\tasks.txt", "w")
             b.close()
 
     def check_settings(self):
         try:
-            b = open(f'{self.taskymain_path}\\settings.txt', 'r')
-            if "light" in ''.join(b.read()) or "dark" in ''.join(b.read()):
+            b = open(f"{self.taskymain_path}\\settings.txt", "r")
+            if "light" in "".join(b.read()) or "dark" in "".join(b.read()):
                 b.close()
             else:
-                with open(f'{self.taskymain_path}\\settings.txt', 'w') as c:
+                with open(f"{self.taskymain_path}\\settings.txt", "w") as c:
                     c.write("dark")
         except FileNotFoundError:
-            with open(f'{self.taskymain_path}\\settings.txt', 'w') as b:
+            with open(f"{self.taskymain_path}\\settings.txt", "w") as b:
                 b.write("dark")
 
     def check_sourcefiles(self):
@@ -72,14 +92,14 @@ class Functions:
         self.check_settings()
 
     def timediff(self, tt):
-        tt = tt.split(':')
+        tt = tt.split(":")
         # time now
         tn = datetime.today()
-        tny = tn.strftime('%y')
-        tnm = tn.strftime('%m')
-        tnd = tn.strftime('%d')
-        tnh = tn.strftime('%H')
-        tnmin = tn.strftime('%M')
+        tny = tn.strftime("%y")
+        tnm = tn.strftime("%m")
+        tnd = tn.strftime("%d")
+        tnh = tn.strftime("%H")
+        tnmin = tn.strftime("%M")
 
         # task time
         tty = tt[0]
@@ -118,11 +138,26 @@ class Functions:
             diffmin = str(diffmin)
 
             if int(diffy) >= 1:
-                output = f"{diffy}y".rjust(3) + f"{diffm}M".rjust(4) + f"{diffd}d".rjust(4) + f"{diffh}h".rjust(4) + f"{diffmin}m".rjust(4)
+                output = (
+                    f"{diffy}y".rjust(3)
+                    + f"{diffm}M".rjust(4)
+                    + f"{diffd}d".rjust(4)
+                    + f"{diffh}h".rjust(4)
+                    + f"{diffmin}m".rjust(4)
+                )
             elif int(diffm) >= 1:
-                output = f"{diffm}M".rjust(4 + 3) + f"{diffd}d".rjust(4) + f"{diffh}h".rjust(4) + f"{diffmin}m".rjust(4)
+                output = (
+                    f"{diffm}M".rjust(4 + 3)
+                    + f"{diffd}d".rjust(4)
+                    + f"{diffh}h".rjust(4)
+                    + f"{diffmin}m".rjust(4)
+                )
             elif int(diffd) >= 1:
-                output = f"{diffd}d".rjust(4 + 7) + f"{diffh}h".rjust(4) + f"{diffmin}m".rjust(4)
+                output = (
+                    f"{diffd}d".rjust(4 + 7)
+                    + f"{diffh}h".rjust(4)
+                    + f"{diffmin}m".rjust(4)
+                )
             elif int(diffh) >= 1:
                 output = f"{diffh}h".rjust(4 + 11) + f"{diffmin}m".rjust(4)
             elif int(diffmin) >= 1 and int(diffmin) >= 30:
@@ -131,15 +166,17 @@ class Functions:
                 output = "LESS THAN 30 MIN".rjust(19)
         return output
 
-    def read_and_sort_tasks_file(self):  # returns the current data sorted and separately in list
+    def read_and_sort_tasks_file(
+        self,
+    ):  # returns the current data sorted and separately in list
         self.check_sourcefiles()
-        with open(f'{self.taskymain_path}\\tasks.txt', 'r') as a:
+        with open(f"{self.taskymain_path}\\tasks.txt", "r") as a:
             x = a.readlines()
         y = []
-        while '\n' in x:
-            x.remove('\n')
+        while "\n" in x:
+            x.remove("\n")
         for item in x:
-            item = item.replace('\n', '')
+            item = item.replace("\n", "")
             y += [item]
 
         return self.sort_tasks(y)
@@ -159,8 +196,8 @@ class Functions:
             if str(o).isdecimal():
                 while o in nums:
                     nums.remove(o)
-        sorted_output = '\n'.join(nums)
-        with open(f"{self.taskymain_path}\\tasks.txt", 'w') as taskfile:
+        sorted_output = "\n".join(nums)
+        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
             taskfile.write(sorted_output)
         return nums
 
@@ -168,15 +205,15 @@ class Functions:
         tasklist = self.read_and_sort_tasks_file()
         target_task = tasklist[ind]
         tasklist.remove(target_task)
-        new_output = '\n'.join(tasklist)
-        with open(f'{self.taskymain_path}\\tasks.txt', 'w') as taskfile:
+        new_output = "\n".join(tasklist)
+        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
             taskfile.write(new_output)
 
     def add_task(self, task):
         tasklist = self.read_and_sort_tasks_file()
         tasklist.append(task)
-        new_output = '\n'.join(tasklist)
-        with open(f'{self.taskymain_path}\\tasks.txt', 'w') as taskfile:
+        new_output = "\n".join(tasklist)
+        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
             taskfile.write(new_output)
 
 
@@ -234,14 +271,18 @@ class App:
             self.text_font_size = 12
             self.task_height = 27
 
-        self.root.geometry(f"{tasky_width}x{tasky_height}+{int(self.root.winfo_screenwidth()/2 - tasky_width/2)}+{int(self.root.winfo_screenheight()/2 - tasky_height/2)}")
+        self.root.geometry(
+            f"{tasky_width}x{tasky_height}+{int(self.root.winfo_screenwidth()/2 - tasky_width/2)}+{int(self.root.winfo_screenheight()/2 - tasky_height/2)}"
+        )
         self.root.resizable(False, False)
 
         # main frame and menu frame
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
 
-        self.mainframe = Frame(self.root, bg=self.major_bg, highlightbackground="black", highlightthickness=3)
+        self.mainframe = Frame(
+            self.root, bg=self.major_bg, highlightbackground="black", highlightthickness=3
+        )
         self.menuframe = Frame(self.root, height=50, bg=self.minor_bg)
 
         self.mainframe.grid(row=0, column=0, sticky=NSEW, padx=5, pady=5)
@@ -250,10 +291,33 @@ class App:
         # menu frame
         self.menuframe.rowconfigure(0, weight=1)
 
-        self.new_task_button = Button(self.menuframe, disabledforeground="red", text="New Task", fg=self.text_fg, activeforeground=self.text_fg, font=('calibri', self.text_font_size, 'bold'), bg=self.major_bg, activebackground=self.major_abg, width=9, border=1, command=lambda n_e_inp="new": self.task_details_window(n_e_inp))
+        self.new_task_button = Button(
+            self.menuframe,
+            disabledforeground="red",
+            text="New Task",
+            fg=self.text_fg,
+            activeforeground=self.text_fg,
+            font=("calibri", self.text_font_size, "bold"),
+            bg=self.major_bg,
+            activebackground=self.major_abg,
+            width=9,
+            border=1,
+            command=lambda n_e_inp="new": self.task_details_window(n_e_inp),
+        )
         self.new_task_button.grid(row=0, column=0, padx=5, pady=6, sticky=W)
 
-        self.mode_button = Button(self.menuframe, text="Dark Mode", fg=self.mode_fg, activeforeground=self.mode_fg, font=('calibri', self.text_font_size, 'bold'), bg=self.mode_bg, activebackground=self.mode_bg, width=10, border=1, command=self.dark_mode)
+        self.mode_button = Button(
+            self.menuframe,
+            text="Dark Mode",
+            fg=self.mode_fg,
+            activeforeground=self.mode_fg,
+            font=("calibri", self.text_font_size, "bold"),
+            bg=self.mode_bg,
+            activebackground=self.mode_bg,
+            width=10,
+            border=1,
+            command=self.dark_mode,
+        )
         self.mode_button.grid(row=0, column=1, padx=2, pady=6, sticky=W)
 
         self.menuframe.columnconfigure(2, weight=1)
@@ -273,11 +337,23 @@ class App:
 
         self.title_frame.rowconfigure(0, weight=1)
         self.title_frame.columnconfigure(0, weight=1)
-        self.title_label = Label(self.title_frame, text="~  TASKS REMAINING  ~", fg=self.text_fg, bg=self.major_bg, anchor=CENTER, font=('Calibri', self.title_font_size, 'bold'))
+        self.title_label = Label(
+            self.title_frame,
+            text="~  TASKS REMAINING  ~",
+            fg=self.text_fg,
+            bg=self.major_bg,
+            anchor=CENTER,
+            font=("Calibri", self.title_font_size, "bold"),
+        )
         self.title_label.grid(row=0, column=0, pady=5, sticky=NSEW)
 
         # tasks frame
-        self.tasks_frame = Frame(self.mainframe, bg=self.major_bg, highlightthickness=1, highlightbackground=self.major_bg)
+        self.tasks_frame = Frame(
+            self.mainframe,
+            bg=self.major_bg,
+            highlightthickness=1,
+            highlightbackground=self.major_bg,
+        )
         self.tasks_frame.grid(row=1, column=0, padx=3, sticky=NSEW)
         self.tasks_frame.columnconfigure(0, weight=1)
 
@@ -293,7 +369,7 @@ class App:
 
         # live update
         curr_time = datetime.today()
-        curr_secs = int(curr_time.strftime('%S'))
+        curr_secs = int(curr_time.strftime("%S"))
         self.root.after((60 - curr_secs) * 1000, self.update_time_remaining)
 
     def sync_tasks_display(self):
@@ -306,7 +382,7 @@ class App:
                 self.fn.remove_task(ind)
                 task_list = self.fn.read_and_sort_tasks_file()
         else:
-            if self.new_task_button.cget('state') == DISABLED:
+            if self.new_task_button.cget("state") == DISABLED:
                 self.new_task_button.config(state=NORMAL)
 
         for i in self.tasks_frame.winfo_children():
@@ -327,20 +403,70 @@ class App:
             frame.rowconfigure(0, weight=1)
             frame.columnconfigure(2, weight=1)
 
-            numlabel = Label(frame, text=str(ind + 1) + ".", width=2, bg=self.major_bg, fg=self.text_fg, font=('calibri', self.text_font_size, 'normal'), anchor=E)
+            numlabel = Label(
+                frame,
+                text=str(ind + 1) + ".",
+                width=2,
+                bg=self.major_bg,
+                fg=self.text_fg,
+                font=("calibri", self.text_font_size, "normal"),
+                anchor=E,
+            )
             numlabel.grid(row=0, column=0, sticky=W)
 
-            timelabel = Label(frame, text=final_task_time, width=19, bg=self.major_bg, fg=self.text_fg, font=('calibri', self.text_font_size, 'bold'), anchor=E)
+            timelabel = Label(
+                frame,
+                text=final_task_time,
+                width=19,
+                bg=self.major_bg,
+                fg=self.text_fg,
+                font=("calibri", self.text_font_size, "bold"),
+                anchor=E,
+            )
             timelabel.grid(row=0, column=1, padx=4)
 
-            textlabel = Label(frame, text=final_task_info[:35], width=30, fg=self.text_fg, font=('calibri', self.text_font_size, 'normal'), bg=self.major_bg, anchor=W)
+            textlabel = Label(
+                frame,
+                text=final_task_info[:35],
+                width=30,
+                fg=self.text_fg,
+                font=("calibri", self.text_font_size, "normal"),
+                bg=self.major_bg,
+                anchor=W,
+            )
             textlabel.grid(row=0, column=2, sticky=W)
 
-            a = Button(frame, text="...", width=1, fg="black", bg=self.blue, activebackground=self.dark_blue, font=('calibri', self.text_font_size, 'bold'), activeforeground="black", command=lambda n_e_inp=ind: self.task_details_window(n_e_inp))
-            b = Button(frame, text="x", width=1, fg="black", bg=self.red, activebackground=self.dark_red, font=('calibri', self.text_font_size, 'bold'), activeforeground="black", command=lambda j=ind: self.delete_confirmation(j))
+            a = Button(
+                frame,
+                text="...",
+                width=1,
+                fg="black",
+                bg=self.blue,
+                activebackground=self.dark_blue,
+                font=("calibri", self.text_font_size, "bold"),
+                activeforeground="black",
+                command=lambda n_e_inp=ind: self.task_details_window(n_e_inp),
+            )
+            b = Button(
+                frame,
+                text="x",
+                width=1,
+                fg="black",
+                bg=self.red,
+                activebackground=self.dark_red,
+                font=("calibri", self.text_font_size, "bold"),
+                activeforeground="black",
+                command=lambda j=ind: self.delete_confirmation(j),
+            )
 
-            frame.bind('<Enter>', lambda event="<Enter>", a=a, b=b: self.show_task_actions(event, a, b))
-            frame.bind('<Leave>', lambda event="<Leave>", a=a, b=b: self.hide_task_actions(event, a, b))
+            frame.bind(
+                "<Enter>",
+                lambda event="<Enter>", a=a, b=b: self.show_task_actions(event, a, b),
+            )
+            frame.bind(
+                "<Leave>",
+                lambda event="<Leave>", a=a, b=b: self.hide_task_actions(event, a, b),
+            )
 
             frame.grid(row=ind, column=0, sticky=EW)
             self.tasks_list.append(frame)
@@ -357,7 +483,7 @@ class App:
         a = open(f"{self.fn.taskymain_path}\\settings.txt", "r")
         b = a.read()
         a.close()
-        if ''.join(b) == "light":
+        if "".join(b) == "light":
             return True
         else:
             return False
@@ -371,7 +497,14 @@ class App:
         self.mode_bg = self.yellow
 
         self.update_colors()
-        self.mode_button.config(text="Light Mode", command=self.light_mode, bg=self.mode_bg, fg=self.mode_fg, activebackground=self.mode_bg, activeforeground=self.mode_fg)
+        self.mode_button.config(
+            text="Light Mode",
+            command=self.light_mode,
+            bg=self.mode_bg,
+            fg=self.mode_fg,
+            activebackground=self.mode_bg,
+            activeforeground=self.mode_fg,
+        )
         a = open(f"{self.fn.taskymain_path}\\settings.txt", "w")
         a.write("dark")
         a.close()
@@ -385,7 +518,14 @@ class App:
         self.mode_bg = self.dark_gray
 
         self.update_colors()
-        self.mode_button.config(text="Dark Mode", command=self.dark_mode, bg=self.mode_bg, fg=self.mode_fg, activebackground=self.mode_bg, activeforeground=self.mode_fg)
+        self.mode_button.config(
+            text="Dark Mode",
+            command=self.dark_mode,
+            bg=self.mode_bg,
+            fg=self.mode_fg,
+            activebackground=self.mode_bg,
+            activeforeground=self.mode_fg,
+        )
         a = open(f"{self.fn.taskymain_path}\\settings.txt", "w")
         a.write("light")
         a.close()
@@ -401,7 +541,12 @@ class App:
         self.sync_tasks_display()
 
         self.menuframe.config(bg=self.minor_bg)
-        self.new_task_button.config(bg=self.major_bg, activebackground=self.major_abg, fg=self.text_fg, activeforeground=self.text_fg)
+        self.new_task_button.config(
+            bg=self.major_bg,
+            activebackground=self.major_abg,
+            fg=self.text_fg,
+            activeforeground=self.text_fg,
+        )
         self.status_frame.config(bg=self.minor_bg)
 
         try:
@@ -429,7 +574,7 @@ class App:
             i.destroy()
 
     def delete_confirmation(self, j):
-        response = askyesno(f'Delete Task {j+1}', f'Do you want to delete Task {j+1}?')
+        response = askyesno(f"Delete Task {j+1}", f"Do you want to delete Task {j+1}?")
         if response:
             self.delete_task(j)
 
@@ -467,48 +612,135 @@ class App:
         mainframe.rowconfigure(10, weight=1)
 
         mainframe.columnconfigure(1, weight=1)
-        title = Label(mainframe, text="New Task Details", height=2, bg=self.major_bg, anchor=CENTER, fg="orange", font=('Calibri', 20, 'bold'))
+        title = Label(
+            mainframe,
+            text="New Task Details",
+            height=2,
+            bg=self.major_bg,
+            anchor=CENTER,
+            fg="orange",
+            font=("Calibri", 20, "bold"),
+        )
         title.grid(row=0, column=0, columnspan=2, sticky=EW)
 
-        desc_label = Label(mainframe, width=16, text="Task Description: ", bg=self.major_bg, anchor=E, fg=self.text_fg, font=('Calibri', 14, 'bold'))
+        desc_label = Label(
+            mainframe,
+            width=16,
+            text="Task Description: ",
+            bg=self.major_bg,
+            anchor=E,
+            fg=self.text_fg,
+            font=("Calibri", 14, "bold"),
+        )
         desc_label.grid(row=1, column=0, sticky=W)
 
         desc_var_tk.set(f"Task{len(self.tasks_list) + 1}")
-        desc_entry = Entry(mainframe, textvariable=desc_var_tk, bg=self.major_bg, fg="white", font=('Calibri', 14, 'normal'))
+        desc_entry = Entry(
+            mainframe,
+            textvariable=desc_var_tk,
+            bg=self.major_bg,
+            fg="white",
+            font=("Calibri", 14, "normal"),
+        )
         desc_entry.grid(row=1, column=1, sticky=NSEW, padx=8)
         desc_entry.focus_set()
 
-        Frame(mainframe, height=20, bg=self.major_bg).grid(row=2, column=0, columnspan=2, sticky=EW)
+        Frame(mainframe, height=20, bg=self.major_bg).grid(
+            row=2, column=0, columnspan=2, sticky=EW
+        )
 
         current_date = current_dt.strftime("%d")
         date_var_tk.set(str(current_date))
-        date_label = Label(mainframe, width=16, text="Date: ", bg=self.major_bg, anchor=E, fg=self.text_fg, font=('Calibri', 14, 'bold'))
+        date_label = Label(
+            mainframe,
+            width=16,
+            text="Date: ",
+            bg=self.major_bg,
+            anchor=E,
+            fg=self.text_fg,
+            font=("Calibri", 14, "bold"),
+        )
         date_label.grid(row=3, column=0, sticky=W)
 
-        date_entry = Entry(mainframe, width=3, textvariable=date_var_tk, bg=self.major_bg, fg="white", font=('Calibri', 14, 'normal'))
+        date_entry = Entry(
+            mainframe,
+            width=3,
+            textvariable=date_var_tk,
+            bg=self.major_bg,
+            fg="white",
+            font=("Calibri", 14, "normal"),
+        )
         date_entry.grid(row=3, column=1, sticky=W, padx=8)
 
-        month_label = Label(mainframe, width=16, text="Month: ", bg=self.major_bg, anchor=E, fg=self.text_fg, font=('Calibri', 14, 'bold'))
+        month_label = Label(
+            mainframe,
+            width=16,
+            text="Month: ",
+            bg=self.major_bg,
+            anchor=E,
+            fg=self.text_fg,
+            font=("Calibri", 14, "bold"),
+        )
         month_label.grid(row=4, column=0, sticky=W)
 
         current_month = current_dt.strftime("%B")
         month_var_tk.set(current_month)
-        month_menu = OptionMenu(mainframe, month_var_tk, *self.fn.month_names.keys(), command=lambda event="<KeyRelease>", typ="month", data=month_var_tk: live_input(event, typ, data))
-        month_menu.config(width=8, bg=self.major_bg, fg="white", font=('Calibri', 14, 'normal'), highlightthickness=0)
-        month_menu["menu"].config(bg=self.major_bg, fg="white", font=('Calibri', 14, 'normal'))
+        month_menu = OptionMenu(
+            mainframe,
+            month_var_tk,
+            *self.fn.month_names.keys(),
+            command=lambda event="<KeyRelease>", typ="month", data=month_var_tk: live_input(
+                event, typ, data
+            ),
+        )
+        month_menu.config(
+            width=8,
+            bg=self.major_bg,
+            fg="white",
+            font=("Calibri", 14, "normal"),
+            highlightthickness=0,
+        )
+        month_menu["menu"].config(
+            bg=self.major_bg, fg="white", font=("Calibri", 14, "normal")
+        )
         month_menu.grid(row=4, column=1, sticky=W, padx=8, pady=3)
 
-        year_label = Label(mainframe, width=16, text="Year: ", bg=self.major_bg, anchor=E, fg=self.text_fg, font=('Calibri', 14, 'bold'))
+        year_label = Label(
+            mainframe,
+            width=16,
+            text="Year: ",
+            bg=self.major_bg,
+            anchor=E,
+            fg=self.text_fg,
+            font=("Calibri", 14, "bold"),
+        )
         year_label.grid(row=5, column=0, sticky=W)
 
         current_year = current_dt.strftime("%Y")
         year_var_tk.set(str(current_year))
-        year_entry = Entry(mainframe, width=5, textvariable=year_var_tk, bg=self.major_bg, fg="white", font=('Calibri', 14, 'normal'))
+        year_entry = Entry(
+            mainframe,
+            width=5,
+            textvariable=year_var_tk,
+            bg=self.major_bg,
+            fg="white",
+            font=("Calibri", 14, "normal"),
+        )
         year_entry.grid(row=5, column=1, sticky=W, padx=8)
 
-        Frame(mainframe, height=20, bg=self.major_bg).grid(row=6, column=0, columnspan=2, sticky=EW)
+        Frame(mainframe, height=20, bg=self.major_bg).grid(
+            row=6, column=0, columnspan=2, sticky=EW
+        )
 
-        hours_label = Label(mainframe, width=16, text="Hours: ", bg=self.major_bg, anchor=E, fg=self.text_fg, font=('Calibri', 14, 'bold'))
+        hours_label = Label(
+            mainframe,
+            width=16,
+            text="Hours: ",
+            bg=self.major_bg,
+            anchor=E,
+            fg=self.text_fg,
+            font=("Calibri", 14, "bold"),
+        )
         hours_label.grid(row=7, column=0, sticky=W)
 
         current_hours = current_dt.strftime("%H")
@@ -522,23 +754,61 @@ class App:
             am_pm_var.set("PM/Night")
 
         hours_var_tk.set(current_hours)
-        hours_entry = Entry(mainframe, width=3, textvariable=hours_var_tk, bg=self.major_bg, fg="white", font=('Calibri', 14, 'normal'))
+        hours_entry = Entry(
+            mainframe,
+            width=3,
+            textvariable=hours_var_tk,
+            bg=self.major_bg,
+            fg="white",
+            font=("Calibri", 14, "normal"),
+        )
         hours_entry.grid(row=7, column=1, sticky=W, padx=8)
 
-        mins_label = Label(mainframe, width=16, text="Minutes: ", bg=self.major_bg, anchor=E, fg=self.text_fg, font=('Calibri', 14, 'bold'))
+        mins_label = Label(
+            mainframe,
+            width=16,
+            text="Minutes: ",
+            bg=self.major_bg,
+            anchor=E,
+            fg=self.text_fg,
+            font=("Calibri", 14, "bold"),
+        )
         mins_label.grid(row=8, column=0, sticky=W)
 
         current_mins = current_dt.strftime("%M")
         mins_var_tk.set(current_mins)
-        mins_entry = Entry(mainframe, width=3, textvariable=mins_var_tk, bg=self.major_bg, fg="white", font=('Calibri', 14, 'normal'))
+        mins_entry = Entry(
+            mainframe,
+            width=3,
+            textvariable=mins_var_tk,
+            bg=self.major_bg,
+            fg="white",
+            font=("Calibri", 14, "normal"),
+        )
         mins_entry.grid(row=8, column=1, sticky=W, padx=8)
 
-        am_pm_label = Label(mainframe, width=16, text="AM or PM: ", bg=self.major_bg, anchor=E, fg=self.text_fg, font=('Calibri', 14, 'bold'))
+        am_pm_label = Label(
+            mainframe,
+            width=16,
+            text="AM or PM: ",
+            bg=self.major_bg,
+            anchor=E,
+            fg=self.text_fg,
+            font=("Calibri", 14, "bold"),
+        )
         am_pm_label.grid(row=9, column=0, sticky=W)
 
         am_pm_option = OptionMenu(mainframe, am_pm_var, *["AM/Noon", "PM/Night"])
-        am_pm_option.config(bg=self.major_bg, fg="white", width=8, highlightthickness=0, font=('Calibri', 14, 'bold'))
-        am_pm_option["menu"].config(bg=self.major_bg, fg="white", font=('Calibri', 14, 'bold'))
+        am_pm_option.config(
+            bg=self.major_bg,
+            fg="white",
+            width=8,
+            highlightthickness=0,
+            font=("Calibri", 14, "bold"),
+        )
+        am_pm_option["menu"].config(
+            bg=self.major_bg, fg="white", font=("Calibri", 14, "bold")
+        )
         am_pm_option.grid(row=9, column=1, sticky=W, pady=3, padx=8)
 
         msg_frame = Frame(mainframe, height=30, bg=self.major_bg)
@@ -547,7 +817,14 @@ class App:
         msg_frame.rowconfigure(0, weight=1)
         msg_frame.columnconfigure(0, weight=1)
 
-        msg_label = Label(msg_frame, bg=self.major_bg, fg="cyan", text="", anchor=CENTER, font=('Calibri', 13, 'normal'))
+        msg_label = Label(
+            msg_frame,
+            bg=self.major_bg,
+            fg="cyan",
+            text="",
+            anchor=CENTER,
+            font=("Calibri", 13, "normal"),
+        )
         msg_label.grid(row=0, column=0, sticky=NSEW)
 
         button_frame = Frame(mainframe, bg=self.major_bg, height=30)
@@ -557,10 +834,28 @@ class App:
         button_frame.columnconfigure(1, weight=1)
         button_frame.grid_propagate(False)
 
-        save_button = Button(button_frame, bg="green", activebackground="green", fg="white", activeforeground="white", text="SAVE", width=6, font=('Calibri', 16, 'bold'))
+        save_button = Button(
+            button_frame,
+            bg="green",
+            activebackground="green",
+            fg="white",
+            activeforeground="white",
+            text="SAVE",
+            width=6,
+            font=("Calibri", 16, "bold"),
+        )
         save_button.grid(row=0, column=0, sticky=E, padx=4)
 
-        cancel_button = Button(button_frame, bg=self.light_red, activebackground=self.light_red, fg="black", text="CANCEL", width=7, font=('Calibri', 16, 'bold'), command=td_window.destroy)
+        cancel_button = Button(
+            button_frame,
+            bg=self.light_red,
+            activebackground=self.light_red,
+            fg="black",
+            text="CANCEL",
+            width=7,
+            font=("Calibri", 16, "bold"),
+            command=td_window.destroy,
+        )
         cancel_button.grid(row=0, column=1, sticky=W, padx=4)
 
         if self.is_light():
@@ -586,7 +881,11 @@ class App:
 
             p1s = p1.split(":")
             year_var_tk.set(f"20{p1s[0]}")
-            month_var_tk.set(list(self.fn.month_names.keys())[(list(self.fn.month_names.values()).index(int(p1s[1])))])
+            month_var_tk.set(
+                list(self.fn.month_names.keys())[
+                    (list(self.fn.month_names.values()).index(int(p1s[1])))
+                ]
+            )
             date_var_tk.set(p1s[2])
             mins_var_tk.set(p1s[4])
             desc_var_tk.set(p2)
@@ -599,7 +898,7 @@ class App:
                     if p1s[4] == "00":
                         am_pm_var.set("PM/Night")
             elif int(p1s[3]) in range(12, 23):
-                hours_var_tk.set(str(int(p1s[3])-12).zfill(2))
+                hours_var_tk.set(str(int(p1s[3]) - 12).zfill(2))
                 if p1s[3] == "12":
                     hours_var_tk.set("12")
                 am_pm_var.set("PM/Night")
@@ -638,7 +937,13 @@ class App:
                     data.set(temp)
                 else:
                     if len(raw_data) >= 2:
-                        temp = int(str(self.fn.months_maxdays[str(self.fn.month_names[month_var_tk.get()]).zfill(2)]))
+                        temp = int(
+                            str(
+                                self.fn.months_maxdays[
+                                    str(self.fn.month_names[month_var_tk.get()]).zfill(2)
+                                ]
+                            )
+                        )
                         if 1 <= int(raw_data) <= temp:
                             data.set(str(int(raw_data)).zfill(2))
                             if month_var_tk.get() == "February":
@@ -659,7 +964,13 @@ class App:
                         msg_label.config(text="")
 
             elif typ == "month":
-                temp = int(str(self.fn.months_maxdays[str(self.fn.month_names[month_var_tk.get()]).zfill(2)]))
+                temp = int(
+                    str(
+                        self.fn.months_maxdays[
+                            str(self.fn.month_names[month_var_tk.get()]).zfill(2)
+                        ]
+                    )
+                )
                 try:
                     if int(date_var_tk.get()) > temp:
                         date_var_tk.set(str(temp).zfill(2))
@@ -774,7 +1085,7 @@ class App:
                 msg_label.config(text="Hours Input Cannot Be Empty")
                 hours_entry.focus_set()
             elif raw_hour == "0":
-                msg_label.config(text='Hours Should Be In 12h Format'.title())
+                msg_label.config(text="Hours Should Be In 12h Format".title())
                 hours_var_tk.set("12")
             elif raw_mins == "" or (not raw_mins.isdecimal()):
                 mins_var_tk.set("")
@@ -807,13 +1118,38 @@ class App:
                     self.sync_tasks_display()
                     td_window.destroy()
 
-        desc_entry.bind('<KeyRelease>', lambda event="<KeyRelease>", typ="desc", data=desc_var_tk: live_input(event, typ, data))
-        date_entry.bind('<KeyRelease>', lambda event="<KeyRelease>", typ="date", data=date_var_tk: live_input(event, typ, data))
-        year_entry.bind('<KeyRelease>', lambda event="<KeyRelease>", typ="year", data=year_var_tk: live_input(event, typ, data))
-        hours_entry.bind('<KeyRelease>', lambda event="<KeyRelease>", typ="hours", data=hours_var_tk: live_input(event, typ, data))
-        mins_entry.bind('<KeyRelease>', lambda event="<KeyRelease>", typ="mins", data=mins_var_tk: live_input(event, typ, data))
+        desc_entry.bind(
+            "<KeyRelease>",
+            lambda event="<KeyRelease>", typ="desc", data=desc_var_tk: live_input(
+                event, typ, data
+            ),
+        )
+        date_entry.bind(
+            "<KeyRelease>",
+            lambda event="<KeyRelease>", typ="date", data=date_var_tk: live_input(
+                event, typ, data
+            ),
+        )
+        year_entry.bind(
+            "<KeyRelease>",
+            lambda event="<KeyRelease>", typ="year", data=year_var_tk: live_input(
+                event, typ, data
+            ),
+        )
+        hours_entry.bind(
+            "<KeyRelease>",
+            lambda event="<KeyRelease>", typ="hours", data=hours_var_tk: live_input(
+                event, typ, data
+            ),
+        )
+        mins_entry.bind(
+            "<KeyRelease>",
+            lambda event="<KeyRelease>", typ="mins", data=mins_var_tk: live_input(
+                event, typ, data
+            ),
+        )
 
-        td_window.bind('<Return>', lambda e: check_inputs())
+        td_window.bind("<Return>", lambda e: check_inputs())
         save_button.config(command=check_inputs)
 
         td_window.mainloop()
