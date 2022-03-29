@@ -1,3 +1,4 @@
+import contextlib
 from datetime import datetime
 from os import makedirs
 from pathlib import Path
@@ -42,10 +43,8 @@ class Functions:
         }
 
     def check_tasky_folders(self):
-        try:
+        with contextlib.suppress(FileExistsError):
             makedirs(self.taskymain_path)
-        except FileExistsError:
-            pass
 
     def check_tasks_txt(self):
         try:
@@ -61,13 +60,11 @@ class Functions:
             if "light" in ''.join(b.read()) or "dark" in ''.join(b.read()):
                 b.close()
             else:
-                c = open(f'{self.taskymain_path}\\settings.txt', 'w')
-                c.write("dark")
-                c.close()
+                with open(f'{self.taskymain_path}\\settings.txt', 'w') as c:
+                    c.write("dark")
         except FileNotFoundError:
-            b = open(f'{self.taskymain_path}\\settings.txt', 'w')
-            b.write("dark")
-            b.close()
+            with open(f'{self.taskymain_path}\\settings.txt', 'w') as b:
+                b.write("dark")
 
     def check_sourcefiles(self):
         self.check_tasky_folders()
@@ -136,9 +133,8 @@ class Functions:
 
     def read_and_sort_tasks_file(self):  # returns the current data sorted and separately in list
         self.check_sourcefiles()
-        a = open(f'{self.taskymain_path}\\tasks.txt', 'r')
-        x = a.readlines()
-        a.close()
+        with open(f'{self.taskymain_path}\\tasks.txt', 'r') as a:
+            x = a.readlines()
         y = []
         while '\n' in x:
             x.remove('\n')
@@ -146,8 +142,7 @@ class Functions:
             item = item.replace('\n', '')
             y += [item]
 
-        tasklist = self.sort_tasks(y)
-        return tasklist
+        return self.sort_tasks(y)
 
     def sort_tasks(self, tlist):
         nums = []
@@ -165,9 +160,8 @@ class Functions:
                 while o in nums:
                     nums.remove(o)
         sorted_output = '\n'.join(nums)
-        taskfile = open(f"{self.taskymain_path}\\tasks.txt", 'w')
-        taskfile.write(sorted_output)
-        taskfile.close()
+        with open(f"{self.taskymain_path}\\tasks.txt", 'w') as taskfile:
+            taskfile.write(sorted_output)
         return nums
 
     def remove_task(self, ind):
@@ -175,17 +169,15 @@ class Functions:
         target_task = tasklist[ind]
         tasklist.remove(target_task)
         new_output = '\n'.join(tasklist)
-        taskfile = open(f'{self.taskymain_path}\\tasks.txt', 'w')
-        taskfile.write(new_output)
-        taskfile.close()
+        with open(f'{self.taskymain_path}\\tasks.txt', 'w') as taskfile:
+            taskfile.write(new_output)
 
     def add_task(self, task):
         tasklist = self.read_and_sort_tasks_file()
         tasklist.append(task)
         new_output = '\n'.join(tasklist)
-        taskfile = open(f'{self.taskymain_path}\\tasks.txt', 'w')
-        taskfile.write(new_output)
-        taskfile.close()
+        with open(f'{self.taskymain_path}\\tasks.txt', 'w') as taskfile:
+            taskfile.write(new_output)
 
 
 class App:
