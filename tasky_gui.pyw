@@ -1,6 +1,4 @@
-import contextlib
 from datetime import datetime
-from os import makedirs, path
 from pathlib import Path
 from tkinter import (
     CENTER,
@@ -28,8 +26,8 @@ class Functions:
     def __init__(self):
         # paths defined
         self.home_path = Path.home()
-        self.taskymain_path = path.join(self.home_path, "Tasky")
-        self.tasks_path = path.join(self.taskymain_path, "tasks.txt")
+        self.taskymain_path = self.home_path / "Tasky"
+        self.tasks_path = self.taskymain_path / "tasks.txt"
 
         self.check_sourcefiles()
 
@@ -64,8 +62,7 @@ class Functions:
         }
 
     def check_tasky_folders(self):
-        with contextlib.suppress(FileExistsError):
-            makedirs(self.taskymain_path)
+        self.taskymain_path.mkdir(parents=True,exist_ok=True)
 
     def check_tasks_txt(self):
         try:
@@ -76,7 +73,7 @@ class Functions:
             b.close()
 
     def check_settings(self):
-        settings_path = path.join(self.taskymain_path, "settings.txt")
+        settings_path = self.taskymain_path / "settings.txt"
         try:
             b = open(settings_path, "r")
             if "light" in "".join(b.read()) or "dark" in "".join(b.read()):
@@ -482,7 +479,7 @@ class App:
         b.grid_forget()
 
     def is_light(self):
-        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "r")
+        a = open(self.fn.taskymain_path / "settings.txt", "r")
         b = a.read()
         a.close()
         if "".join(b) == "light":
@@ -507,7 +504,7 @@ class App:
             activebackground=self.mode_bg,
             activeforeground=self.mode_fg,
         )
-        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "w")
+        a = open(self.fn.taskymain_path / "settings.txt", "w")
         a.write("dark")
         a.close()
 
@@ -528,7 +525,7 @@ class App:
             activebackground=self.mode_bg,
             activeforeground=self.mode_fg,
         )
-        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "w")
+        a = open(self.fn.taskymain_path / "settings.txt", "w")
         a.write("light")
         a.close()
 

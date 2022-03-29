@@ -1,6 +1,5 @@
-import contextlib
 import datetime
-from os import makedirs, startfile, system, path
+from os import startfile, system
 from pathlib import Path
 from random import randint
 from sys import exit as sysend
@@ -10,23 +9,22 @@ class Functions:
     def __init__(self):
         self.log_prefix = self.log_dated_names()
         self.home_path = Path.home()
-        self.taskymain_path = path.join(self.home_path, "Tasky")
-        self.tasks_path = path.join(self.taskymain_path, "tasks.txt")
+        self.taskymain_path = self.home_path / "Tasky"
+        self.tasks_path = self.taskymain_path / "tasks.txt"
 
-        self.taskylog_path = path.join(self.taskymain_path, "taskylogs")
+        self.taskylog_path = self.taskymain_path / "taskylogs"
 
-        self.cookie_folder_path = path.join(self.taskylog_path, "cookie")
+        self.cookie_folder_path = self.taskylog_path/ "cookie"
 
     def check_tasky_folders(self):
-        with contextlib.suppress(FileExistsError):
-            makedirs(f"{self.taskylog_path}")
+            self.taskylog_path.mkdir(parents=True,exist_ok=True)
 
     def cookie_dir(self):
-        if not path.isdir(self.cookie_folder_path):
+        if not self.cookie_folder_path.is_dir() :
             return False, self.cookie_folder_path, 0
-        if not path.isfile(path.join(self.cookie_folder_path, "cookies.txt")):
+        if not (self.cookie_folder_path / "cookies.txt").is_file():
             return True, self.cookie_folder_path, 0
-        with open(path.join(self.cookie_folder_path, "cookies.txt"), "r") as cookiefile:
+        with open(self.cookie_folder_path / "cookies.txt", "r") as cookiefile:
             count = cookiefile.readlines()
         while "\n" in count:
             count.remove("\n")
@@ -52,14 +50,14 @@ class Functions:
 
     def check_tasky_log(self):
         try:
-            log_file = open(path.join(self.taskylog_path, f"{self.log_prefix}.log"), "r")
+            log_file = open(self.taskylog_path / f"{self.log_prefix}.log", "r")
             log_file.close()
         except FileNotFoundError:
-            log_file = open(path.join(self.taskylog_path, f"{self.log_prefix}.log"), "w")
+            log_file = open(self.taskylog_path / f"{self.log_prefix}.log", "w")
             log_file.close()
 
     def log(self, data):
-        with open(path.join(self.taskylog_path, f"{self.log_prefix}.log"), "a") as file:
+        with open(self.taskylog_path / f"{self.log_prefix}.log", "a") as file:
             current_dt = str(datetime.datetime.now())[:-4]
             file.write(f"{current_dt} >> {str(data)}" + "\n")
 
@@ -888,9 +886,9 @@ class App(Functions):
                         if not cookie:
                             if n == 31:
                                 cookie = True
-                                makedirs(f"{ckdir}")
+                                ckdir.mkdir(parents=True,exist_ok=True)
                                 cookie_count += 1
-                                cookiefile = open(path.join(self.cookie_folder_path, "cookies.txt"), "w")
+                                cookiefile = open(self.cookie_folder_path / "cookies.txt", "w")
                                 cookiefile.write(str(cookie_count))
                                 cookiefile.close()
                             self.info_bar(hello_list[n], months)
@@ -939,7 +937,7 @@ class App(Functions):
                                         "ooh! found a cookie. ugh fine take it", months
                                     )
                                     cookie_count += 1
-                                    cookiefile = open(path.join(self.cookie_folder_path, "cookies.txt"), "w")
+                                    cookiefile = open(self.cookie_folder_path / "cookies.txt", "w")
                                     cookiefile.write(str(cookie_count))
                                     cookiefile.close()
                                 else:
@@ -959,7 +957,7 @@ class App(Functions):
                             if cookie_count > 0:
                                 self.info_bar("huh? what was that crunch sound", months)
                                 cookie_count -= 1
-                                cookiefile = open(path.join(self.cookie_folder_path, "cookies.txt"), "w")
+                                cookiefile = open(self.cookie_folder_path / "cookies.txt", "w")
                                 cookiefile.write(str(cookie_count))
                                 cookiefile.close()
                             elif cookie_count == 0:
