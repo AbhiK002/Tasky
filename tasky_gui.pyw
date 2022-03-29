@@ -1,6 +1,6 @@
 import contextlib
 from datetime import datetime
-from os import makedirs
+from os import makedirs, path
 from pathlib import Path
 from tkinter import (
     CENTER,
@@ -28,7 +28,8 @@ class Functions:
     def __init__(self):
         # paths defined
         self.home_path = Path.home()
-        self.taskymain_path = f"{self.home_path}\\Tasky"
+        self.taskymain_path = path.join(self.home_path, "Tasky")
+        self.tasks_path = path.join(self.taskymain_path, "tasks.txt")
 
         self.check_sourcefiles()
 
@@ -68,22 +69,23 @@ class Functions:
 
     def check_tasks_txt(self):
         try:
-            b = open(f"{self.taskymain_path}\\tasks.txt", "r")
+            b = open(self.tasks_path, "r")
             b.close()
         except FileNotFoundError:
-            b = open(f"{self.taskymain_path}\\tasks.txt", "w")
+            b = open(self.tasks_path, "w")
             b.close()
 
     def check_settings(self):
+        settings_path = path.join(self.taskymain_path, "settings.txt")
         try:
-            b = open(f"{self.taskymain_path}\\settings.txt", "r")
+            b = open(settings_path, "r")
             if "light" in "".join(b.read()) or "dark" in "".join(b.read()):
                 b.close()
             else:
-                with open(f"{self.taskymain_path}\\settings.txt", "w") as c:
+                with open(settings_path, "w") as c:
                     c.write("dark")
         except FileNotFoundError:
-            with open(f"{self.taskymain_path}\\settings.txt", "w") as b:
+            with open(settings_path, "w") as b:
                 b.write("dark")
 
     def check_sourcefiles(self):
@@ -170,7 +172,7 @@ class Functions:
         self,
     ):  # returns the current data sorted and separately in list
         self.check_sourcefiles()
-        with open(f"{self.taskymain_path}\\tasks.txt", "r") as a:
+        with open(self.tasks_path, "r") as a:
             x = a.readlines()
         y = []
         while "\n" in x:
@@ -197,7 +199,7 @@ class Functions:
                 while o in nums:
                     nums.remove(o)
         sorted_output = "\n".join(nums)
-        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             taskfile.write(sorted_output)
         return nums
 
@@ -206,14 +208,14 @@ class Functions:
         target_task = tasklist[ind]
         tasklist.remove(target_task)
         new_output = "\n".join(tasklist)
-        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             taskfile.write(new_output)
 
     def add_task(self, task):
         tasklist = self.read_and_sort_tasks_file()
         tasklist.append(task)
         new_output = "\n".join(tasklist)
-        with open(f"{self.taskymain_path}\\tasks.txt", "w") as taskfile:
+        with open(self.tasks_path, "w") as taskfile:
             taskfile.write(new_output)
 
 
@@ -480,7 +482,7 @@ class App:
         b.grid_forget()
 
     def is_light(self):
-        a = open(f"{self.fn.taskymain_path}\\settings.txt", "r")
+        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "r")
         b = a.read()
         a.close()
         if "".join(b) == "light":
@@ -505,7 +507,7 @@ class App:
             activebackground=self.mode_bg,
             activeforeground=self.mode_fg,
         )
-        a = open(f"{self.fn.taskymain_path}\\settings.txt", "w")
+        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "w")
         a.write("dark")
         a.close()
 
@@ -526,7 +528,7 @@ class App:
             activebackground=self.mode_bg,
             activeforeground=self.mode_fg,
         )
-        a = open(f"{self.fn.taskymain_path}\\settings.txt", "w")
+        a = open(path.join(self.fn.taskymain_path, "settings.txt"), "w")
         a.write("light")
         a.close()
 
