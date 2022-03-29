@@ -581,7 +581,7 @@ class App:
     def task_details_window(self, n_e_inp):
         self.cancel_delete_task()
         tasky_new_x = self.root.winfo_x() + int(self.root.winfo_width() / 2 - 245)
-        tasky_new_y = self.root.winfo_y() + int(self.root.winfo_height() / 2 - 200)
+        tasky_new_y = self.root.winfo_y() + int(self.root.winfo_height() / 2 - 210)
 
         desc_var_tk = StringVar()
         date_var_tk = StringVar()
@@ -596,9 +596,9 @@ class App:
 
         td_window = Toplevel()
         td_window.title("New Task")
-        td_window.minsize(490, 400)
+        td_window.minsize(490, 420)
         td_window.resizable(False, False)
-        td_window.geometry(f"490x400+{tasky_new_x}+{tasky_new_y}")
+        td_window.geometry(f"490x420+{tasky_new_x}+{tasky_new_y}")
         td_window.config(bg=self.major_bg)
 
         td_window.grab_set()
@@ -615,13 +615,13 @@ class App:
         title = Label(
             mainframe,
             text="New Task Details",
-            height=2,
+            height=1,
             bg=self.major_bg,
             anchor=CENTER,
             fg="orange",
             font=("Calibri", 20, "bold"),
         )
-        title.grid(row=0, column=0, columnspan=2, sticky=EW)
+        title.grid(row=0, column=0, columnspan=2, sticky=EW, pady=8)
 
         desc_label = Label(
             mainframe,
@@ -645,8 +645,9 @@ class App:
         desc_entry.grid(row=1, column=1, sticky=NSEW, padx=8)
         desc_entry.focus_set()
 
-        Frame(mainframe, height=20, bg=self.major_bg).grid(
-            row=2, column=0, columnspan=2, sticky=EW
+        mainframe.rowconfigure(2, weight=1)
+        Frame(mainframe, height=10, bg=self.major_bg).grid(
+            row=2, column=0, columnspan=2, sticky=NSEW
         )
 
         current_date = current_dt.strftime("%d")
@@ -728,8 +729,9 @@ class App:
         )
         year_entry.grid(row=5, column=1, sticky=W, padx=8)
 
-        Frame(mainframe, height=20, bg=self.major_bg).grid(
-            row=6, column=0, columnspan=2, sticky=EW
+        mainframe.rowconfigure(6, weight=1)
+        Frame(mainframe, bg=self.major_bg).grid(
+            row=6, column=0, columnspan=2, sticky=NSEW
         )
 
         hours_label = Label(
@@ -809,9 +811,9 @@ class App:
         am_pm_option["menu"].config(
             bg=self.major_bg, fg="white", font=("Calibri", 14, "bold")
         )
-        am_pm_option.grid(row=9, column=1, sticky=W, pady=3, padx=8)
+        am_pm_option.grid(row=9, column=1, sticky=W, pady=2, padx=8)
 
-        msg_frame = Frame(mainframe, height=30, bg=self.major_bg)
+        msg_frame = Frame(mainframe, bg=self.major_bg, height=15)
         msg_frame.grid(row=10, column=0, columnspan=2, sticky=EW)
         msg_frame.grid_propagate(False)
         msg_frame.rowconfigure(0, weight=1)
@@ -823,12 +825,13 @@ class App:
             fg="cyan",
             text="",
             anchor=CENTER,
-            font=("Calibri", 13, "normal"),
+            font=("Calibri", 12, "normal"),
         )
         msg_label.grid(row=0, column=0, sticky=NSEW)
 
         button_frame = Frame(mainframe, bg=self.major_bg, height=30)
-        button_frame.grid(row=11, column=0, columnspan=2, sticky=EW, pady=8)
+
+        button_frame.grid(row=11, column=0, columnspan=2, sticky=NSEW, pady=4)
         button_frame.rowconfigure(0, weight=1)
         button_frame.columnconfigure(0, weight=1)
         button_frame.columnconfigure(1, weight=1)
@@ -842,7 +845,7 @@ class App:
             activeforeground="white",
             text="SAVE",
             width=6,
-            font=("Calibri", 16, "bold"),
+            font=("Calibri", 14, "bold"),
         )
         save_button.grid(row=0, column=0, sticky=E, padx=4)
 
@@ -853,7 +856,7 @@ class App:
             fg="black",
             text="CANCEL",
             width=7,
-            font=("Calibri", 16, "bold"),
+            font=("Calibri", 14, "bold"),
             command=td_window.destroy,
         )
         cancel_button.grid(row=0, column=1, sticky=W, padx=4)
