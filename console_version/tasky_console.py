@@ -1,3 +1,4 @@
+import contextlib
 import datetime
 import os
 from sys import exit as sysend
@@ -12,35 +13,29 @@ class Functions:
 
     def check_tasky_folders(self):
         taskylog_path = f'{self.home_path}\\Tasky\\taskylogs'
-        try:
+        with contextlib.suppress(FileExistsError):
             os.makedirs(f'{taskylog_path}')
-        except FileExistsError:
-            pass
 
     def cookie_dir(self):
         tasky_cookie = f'{self.home_path}\\Tasky\\taskylogs\\cookie'
-        if os.path.isdir(tasky_cookie):
-            if os.path.isfile(f'{tasky_cookie}\\cookies.txt'):
-                cookiefile = open(f'{tasky_cookie}\\cookies.txt', 'r')
-                count = cookiefile.readlines()
-                cookiefile.close()
-                while '\n' in count:
-                    count.remove('\n')
-                    for i in range(len(count)):
-                        count[i] = count[i].replace('\n', '')
-                if len(count) == 1 and count[0].isdecimal():
-                    if 0 <= int(count[0]) <= 15:
-                        return True, tasky_cookie, int(count[0])
-                    elif int(count[0]) > 15:
-                        return True, tasky_cookie, 15
-                    else:
-                        return True, tasky_cookie, 0
-                else:
-                    return True, tasky_cookie, 0
-            else:
-                return True, tasky_cookie, 0
-        else:
+        if not os.path.isdir(tasky_cookie):
             return False, tasky_cookie, 0
+        if not os.path.isfile(f'{tasky_cookie}\\cookies.txt'):
+            return True, tasky_cookie, 0
+        with open(f'{tasky_cookie}\\cookies.txt', 'r') as cookiefile:
+            count = cookiefile.readlines()
+        while '\n' in count:
+            count.remove('\n')
+            for i in range(len(count)):
+                count[i] = count[i].replace('\n', '')
+        if len(count) != 1 or not count[0].isdecimal():
+            return True, tasky_cookie, 0
+        if 0 <= int(count[0]) <= 15:
+            return True, tasky_cookie, int(count[0])
+        elif int(count[0]) > 15:
+            return True, tasky_cookie, 15
+        else:
+            return True, tasky_cookie, 0
 
     def main_dir(self):
         taskymain_path = f'{self.home_path}\\Tasky'
@@ -70,24 +65,20 @@ class Functions:
 
     def log(self, data):
         logdir = self.log_dir()
-        file = open(f'{logdir}\\{self.log_prefix}.log', 'a')
-        current_dt = str(datetime.datetime.now())[:-4]
-        file.write(current_dt + " >> " + str(data) + '\n')
-        file.close()
+        with open(f'{logdir}\\{self.log_prefix}.log', 'a') as file:
+            current_dt = str(datetime.datetime.now())[:-4]
+            file.write(f'{current_dt} >> {str(data)}' + '\n')
 
     def check_tasks_txt(self):
         maindir = self.main_dir()
         try:
             self.log("[INFO] attempted to open tasks.txt in read mode")
-            b = open(f'{maindir}\\tasks.txt', 'r')
-            self.log("[INFO] attempt successful")
-            b.close()
+            with open(f'{maindir}\\tasks.txt', 'r') as b:
+                self.log("[INFO] attempt successful")
         except FileNotFoundError:
             self.log("[ERROR] attempt failed, can't find tasks.txt")
-            b = open(f'{maindir}\\tasks.txt', 'w')
-            self.log("[INFO] created empty text file 'tasks.txt'")
-            b.close()
-            
+            with open(f'{maindir}\\tasks.txt', 'w') as b:
+                self.log("[INFO] created empty text file 'tasks.txt'")
     def make_dicts(self):
         months = {
             "01": 31, "02": 29, "03": 31, "04": 30,
@@ -115,14 +106,14 @@ class Functions:
         data = str(data)
         self.clear()
         self.status(monthsdict)
-        print("<< " + data.center(40) + " >>" + '\n')
+        print(f"<< {data.center(40)} >>" + '\n')
 
     def timediff(self, tt, monthsdict):
         self.log("[FUNCTION] starts -> timediff()")
         tt = tt.split(':')
         self.log(f"[INFO] split variable named 'tt' {tt} into 5 parts")
         # time now
-        tn = datetime.datetime.today()
+        tn = datetime.datetime.now()
         self.log("[INFO] calculated current date-time as variables")
         tny = tn.strftime('%y')
         self.log(f"[INFO] year: {tny}")
@@ -197,10 +188,9 @@ class Functions:
     def read_and_sort_tasks_file(self):  # returns the current data sorted and separately in list
         self.log("[FUNCTION] starts -> read_and_sort_tasks_file()")
         maindir = self.main_dir()
-        a = open(f'{maindir}\\tasks.txt', 'r')
-        self.log("[INFO] opened 'tasks.txt' in read mode")
-        x = a.readlines()
-        a.close()
+        with open(f'{maindir}\\tasks.txt', 'r') as a:
+            self.log("[INFO] opened 'tasks.txt' in read mode")
+            x = a.readlines()
         self.log("[INFO] stored every raw line of 'tasks.txt' in a list called 'x'")
         self.log(x)
         y = []
@@ -220,11 +210,11 @@ class Functions:
         return tasklist
 
     def sort_tasks(self, tlist, tdir):
-        self.log(f"[FUNCTION] starts -> sort_tasks(tlist, tdir)")
+        self.log("[FUNCTION] starts -> sort_tasks(tlist, tdir)")
         nums = []
-        self.log(f"[INFO] created empty list nums")
+        self.log("[INFO] created empty list nums")
         temp_dict = {}
-        self.log(f"[INFO] created empty dictionary temp_dict")
+        self.log("[INFO] created empty dictionary temp_dict")
         for task in tlist:
             rawtime = task[:14]
             rawtime = rawtime.replace(":", "")
@@ -236,14 +226,16 @@ class Functions:
         self.log(f"[INFO] sorted nums list = {nums}")
         for k, v in temp_dict.items():
             nums[nums.index(v)] = tlist[k]
-        self.log(f"[INFO] replaced respective numbers with tasks of same index as nums' initial index")
+        self.log(
+            "[INFO] replaced respective numbers with tasks of same index as nums' initial index"
+        )
+
         sorted_output = '\n'.join(nums)
-        taskfile = open(f"{str(tdir)}\\tasks.txt", 'w')
-        taskfile.write(sorted_output)
-        taskfile.close()
-        self.log(f"[INFO] sorted output written to tasks.txt")
+        with open(f"{str(tdir)}\\tasks.txt", 'w') as taskfile:
+            taskfile.write(sorted_output)
+        self.log("[INFO] sorted output written to tasks.txt")
         self.log(f"[INFO] returned nums = {nums}")
-        self.log(f"[FUNCTION] ends -> sort_tasks()")
+        self.log("[FUNCTION] ends -> sort_tasks()")
         return nums
 
     def status(self, monthsdict):
@@ -283,11 +275,10 @@ class Functions:
         self.log(f"[INFO] removed requested task [{rem_task}] from the list")
         self.log(last)
         new_output = '\n'.join(last)
-        taskfile = open(f'{maindir}\\tasks.txt', 'w')
-        self.log("[INFO] opened 'tasks.txt' in write mode")
-        taskfile.write(new_output)
-        self.log("[INFO] wrote new output to 'tasks.txt'")
-        taskfile.close()
+        with open(f'{maindir}\\tasks.txt', 'w') as taskfile:
+            self.log("[INFO] opened 'tasks.txt' in write mode")
+            taskfile.write(new_output)
+            self.log("[INFO] wrote new output to 'tasks.txt'")
         self.log(f"[FUNCTION] ends -> remove({num})")
         self.info_bar(f"removed task {num} from the list", monthsdict)
 
@@ -365,12 +356,11 @@ class Functions:
                     self.log("[INFO] replaced old task in 'last' with edited task")
                     self.log(f"[INFO] new task: {edited_task}")
                     maindir = self.main_dir()
-                    taskfile = open(f"{maindir}\\tasks.txt", 'w')
-                    new_output = '\n'.join(last)
-                    taskfile.write(new_output)
-                    self.log(f"[INFO] updated output written to 'tasks.txt'")
-                    self.log(last)
-                    taskfile.close()
+                    with open(f"{maindir}\\tasks.txt", 'w') as taskfile:
+                        new_output = '\n'.join(last)
+                        taskfile.write(new_output)
+                        self.log("[INFO] updated output written to 'tasks.txt'")
+                        self.log(last)
                     self.log("[INFO] refreshing output screen with updated values of tasks")
                     self.info_bar("requested edit successful", monthsdict)
                     print(edit_task_help)
