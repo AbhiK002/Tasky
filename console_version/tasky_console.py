@@ -886,7 +886,7 @@ class App(Functions):
                         if not cookie:
                             if n == 31:
                                 cookie = True
-                                makedirs(f"{ckdir}")
+                                ckdir.mkdir(parents=True,exist_ok=True)
                                 cookie_count += 1
                                 cookiefile = open(self.cookie_folder_path / "cookies.txt", "w")
                                 cookiefile.write(str(cookie_count))
