@@ -1,4 +1,3 @@
-import contextlib
 import datetime
 from os import makedirs, startfile, system
 from pathlib import Path
@@ -18,8 +17,7 @@ class Functions:
         self.cookie_folder_path = self.taskylog_path/ "cookie"
 
     def check_tasky_folders(self):
-        with contextlib.suppress(FileExistsError):
-            makedirs(f"{self.taskylog_path}")
+            self.taskylog_path.mkdir(parents=True,exist_ok=True)
 
     def cookie_dir(self):
         if not self.cookie_folder_path.is_dir() :
