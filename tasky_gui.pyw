@@ -217,7 +217,7 @@ class Functions:
 
 
 class App:
-    def __init__(self):
+    def __init__(self, root):
         self.fn = Functions()
 
         # colors
@@ -244,7 +244,7 @@ class App:
         self.mode_bg = self.dark_gray
 
         # main window
-        self.root = Tk()
+        self.root = root
         self.root.title("Tasky - Deadline Tracker")
         self.root.config(bg=self.minor_bg)
 
@@ -1165,5 +1165,6 @@ class App:
 
 
 if __name__ == "__main__":
-    app = App()
+    main = Tk()
+    app = App(main)
     app.start()
