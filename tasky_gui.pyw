@@ -899,7 +899,7 @@ class App:
                     hours_var_tk.set("12")
                     if p1s[4] == "00":
                         am_pm_var.set("PM/Night")
-            elif int(p1s[3]) in range(12, 23):
+            elif int(p1s[3]) in range(12, 24):
                 hours_var_tk.set(str(int(p1s[3]) - 12).zfill(2))
                 if p1s[3] == "12":
                     hours_var_tk.set("12")
