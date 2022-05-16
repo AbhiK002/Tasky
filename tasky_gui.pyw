@@ -352,7 +352,8 @@ class App:
             bg=self.major_bg,
             highlightthickness=1,
             highlightbackground=self.major_bg,
-        )
+        )  # highlight attrs helped in fixing empty gui bug that bugged me for days
+        
         self.tasks_frame.grid(row=1, column=0, padx=3, sticky=NSEW)
         self.tasks_frame.columnconfigure(0, weight=1)
 
@@ -535,7 +536,7 @@ class App:
         self.mainframe.config(bg=self.major_bg)
         self.title_frame.config(bg=self.major_bg)
         self.title_label.config(bg=self.major_bg, fg=self.text_fg)
-        self.tasks_frame.config(bg=self.major_bg, highlightbackground=self.major_bg)
+        self.tasks_frame.config(bg=self.major_bg, highlightbackground=self.major_bg)   # highlight attr fixed empty gui bug
 
         self.sync_tasks_display()
 
