@@ -282,7 +282,7 @@ class Functions:
         self.log("[INFO] stored returned 'y' as 'last'")
         self.log(f"[INFO] task {num} requested to be removed ")
         last.remove(last[int(num) - 1])
-        self.log(f"[INFO] removed requested task [{last[int(num) - 1]}] from the list")
+        self.log(f"[INFO] removed requested task from the list")
         self.log(last)
         new_output = "\n".join(last)
         with open(self.tasks_path, "w") as taskfile:
