@@ -1,10 +1,13 @@
 ![tlogosmol](https://user-images.githubusercontent.com/68178267/155870910-63057524-5817-4ae1-9c21-79b90d0d16d6.png)
-# Tasky
-Task Deadline Tracker
-
+# Tasky (GUI)
+Task Deadline Tracker:
 This program will show you the time remaining for each task you feed in it.
+### ** Click [here](https://github.com/AbhiK002/Tasky/tree/main/console_version) to check out the CLI (console) version of Tasky **
 
-(Click [here](https://github.com/AbhiK002/Tasky/tree/main/console_version) to check out the non-GUI (console) version of Tasky)
+## [Download Tasky](https://github.com/AbhiK002/Tasky/releases)
+- Version 1.0.2
+- Version 1.0.1
+
 
 ## Features
 - Add, delete or edit tasks in Tasky using their respective buttons
