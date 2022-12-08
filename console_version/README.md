@@ -1,5 +1,5 @@
 ### This is the latest non-GUI (console) version of Tasky. You can use this in case you like CLI interfaces.
-![tlogosmol](https://user-images.githubusercontent.com/68178267/155870910-63057524-5817-4ae1-9c21-79b90d0d16d6.png)
+![tclogosmol](https://user-images.githubusercontent.com/68178267/206576813-cf6b7e36-ca83-4521-a3a4-d80aaee6e089.png)
 # Tasky
 Task Deadline Tracker
 
