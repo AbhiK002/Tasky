@@ -376,19 +376,13 @@ class App:
         task_list = self.fn.read_and_sort_tasks_file()
 
         if len(task_list) >= 20:
-            self.new_task_button.config(state=DISABLED)
-            while len(task_list) > 20:
-                ind = len(task_list) - 1
-                self.fn.remove_task(ind)
-                task_list = self.fn.read_and_sort_tasks_file()
+            task_list = task_list[:20]
         else:
             if self.new_task_button.cget("state") == DISABLED:
                 self.new_task_button.config(state=NORMAL)
 
         for i in self.tasks_frame.winfo_children():
             i.destroy()
-
-        task_list = self.fn.read_and_sort_tasks_file()
 
         self.tasks_list = []
 
