@@ -163,7 +163,6 @@ class App(QWidget):
 
     def refresh_gui(self):
         self.refresh_tasks()
-        self.setEnabled(True)
 
     def switch_theme(self):
         self.switch_mode_button.setText(f" {TStyle.theme.title()} Theme")
@@ -592,14 +591,9 @@ class ConfirmWindow(QWidget):
         self.confirm_layout.addWidget(buttons)
 
     def yes(self):
-        task_index = self.tasknumber - 1
         print(f"CURRENT: {self.tlist}")
         try:
-            self.tlist.pop(task_index)
-            final_list = self.tlist
-
-            TBackEnd.write_tasks(final_list)
-
+            TBackEnd.remove(self.tasknumber, self.tlist)
         except IndexError:
             print("index error occured while deleting")
 
