@@ -141,7 +141,7 @@ class Functions:
 
         with open(self.tasks_path, "w") as taskfile:
             taskfile.write('\n'.join(last))
-            taskfile.close()
+
         self.TL.function(f"wrote given tasks into tasks.txt")
         self.TL.info(last)
 
@@ -153,7 +153,6 @@ class Functions:
             self.TL.info(f"opened 'tasks.txt' in read mode")
 
             taskslist = sorted(filter(self.is_valid_task, taskfile.read().split('\n')))
-            taskfile.close()
 
         self.TL.info(f"tasks list filtered and sorted")
         self.TL.info(taskslist)
@@ -174,7 +173,7 @@ class Functions:
 
         self.TL.info(f"task {num} requested to be removed ")
 
-        last.remove(last[int(num) - 1])
+        last.pop(int(num) - 1)
         self.TL.info(f"removed requested task from the list")
         self.TL.info(last)
 
