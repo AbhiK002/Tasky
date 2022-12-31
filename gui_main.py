@@ -131,6 +131,15 @@ class App(QWidget):
             task_box.delete_button.pressed.connect(lambda p=int(task[0]): [self.direct_delete(p)])
             self.tasks_layout.addWidget(task_box)
 
+        self.clear_all = QtWidgets.QPushButton("CLEAR ALL TASKS")
+        self.clear_all.setObjectName("ClearAllButton")
+        self.clear_all.setCursor(QCursor(Qt.PointingHandCursor))
+        self.clear_all.clicked.connect(self.clear_all_tasks)
+
+        if not self.tasks_list:
+            self.clear_all.setEnabled(False)
+
+        self.tasks_layout.addWidget(self.clear_all, alignment=Qt.AlignCenter)
         self.tasks_layout.addStretch()
 
     def open_task(self, num=False):
@@ -153,10 +162,15 @@ class App(QWidget):
     def direct_delete(self, tasknum):
         if tasknum - 1 in range(len(TBackEnd.return_deadlines())):
             self.setEnabled(False)
-            self.a = ConfirmWindow(ref_window=self, tasknum=tasknum)
-            self.a.show()
+            self.del_window = ConfirmWindow(ref_window=self, tasknum=tasknum)
+            self.del_window.show()
         else:
             self.refresh_tasks()
+
+    def clear_all_tasks(self):
+        self.setEnabled(False)
+        self.cls_window = ConfirmWindow(ref_window=self, tasknum=None, clear=True)
+        self.cls_window.show()
 
     def closeEvent(self, e):
         exit()
@@ -369,10 +383,11 @@ class TaskWindow(QWidget):
         self.save_task_button = QtWidgets.QPushButton("Save")
         self.save_task_button.setObjectName("SaveButton")
         self.save_task_button.clicked.connect(self.save_task)
+        self.save_task_button.setAutoDefault(True)
 
         self.cancel_button = QtWidgets.QPushButton("Cancel")
         self.cancel_button.setObjectName("CancelButton")
-        self.cancel_button.clicked.connect(self.close_task_window)
+        self.cancel_button.clicked.connect(self.close)
 
         self.buttons_layout.addWidget(self.delete_button)
         self.buttons_layout.addStretch()
@@ -424,7 +439,6 @@ class TaskWindow(QWidget):
         valid = self.validate_entries()
 
         if valid:
-            print("CURRENT: ", self.tlist)
             tname = self.tnf_entry.text().strip()
             if not tname:
                 self.tnf_entry.setText(f"Task {len(self.tlist) + 1}")
@@ -453,13 +467,14 @@ class TaskWindow(QWidget):
                 except IndexError:
                     print("index error while saving task")
             else:
+                self.tlist = TBackEnd.read_and_sort_tasks_file()
                 self.tlist.append(task_string)
 
             print("NEW:", self.tlist)
             TBackEnd.write_tasks(self.tlist)
 
             self.mainWindow.refresh_tasks()
-            self.close_task_window()
+            self.close()
 
     def validate_entries(self):
         check = True
@@ -524,26 +539,20 @@ class TaskWindow(QWidget):
         self.confirm_window = None
 
         if task_index in range(len(self.tlist)):
-            self.setVisible(False)
             self.confirm_window = ConfirmWindow(ref_window=self, tasknum=self.task_number)
             self.confirm_window.show()
 
     def closeEvent(self, e):
         self.mainWindow.task_window = None
         self.mainWindow.setEnabled(True)
-        self.close()
-
-    def close_task_window(self):
-        self.mainWindow.task_window = None
-        self.mainWindow.setEnabled(True)
-        self.close()
 
 
 class ConfirmWindow(QWidget):
-    def __init__(self, ref_window=None, tasknum=None):
+    def __init__(self, ref_window=None, tasknum=None, clear=False):
         super(ConfirmWindow, self).__init__()
 
         self.tasknumber = tasknum
+        self.clear = clear
 
         if type(ref_window) is TaskWindow:
             self.tlist = ref_window.tlist
@@ -556,10 +565,9 @@ class ConfirmWindow(QWidget):
             self.refresh_tasks = ref_window.refresh_tasks
 
         self.ref_window = ref_window
-        tname = self.tlist[tasknum - 1].split("=", 1)[1]
 
         self.setWindowIcon(QIcon(TStyle.tlogo_path))
-        self.setWindowTitle("Confirmation")
+        self.setWindowTitle("Delete Confirmation")
         self.setMaximumSize(420, 180)
         self.setMinimumSize(420, 180)
 
@@ -570,19 +578,25 @@ class ConfirmWindow(QWidget):
         buttons_layout = QtWidgets.QHBoxLayout(buttons)
         buttons.setLayout(buttons_layout)
 
-        yes_button = QtWidgets.QPushButton("Yes")
-        yes_button.clicked.connect(self.yes)
-        no_button = QtWidgets.QPushButton("No")
-        no_button.clicked.connect(self.no)
+        self.yes_button = QtWidgets.QPushButton("Yes")
+        self.yes_button.clicked.connect(self.yes)
+        self.no_button = QtWidgets.QPushButton("No")
+        self.no_button.clicked.connect(self.no)
 
         self.setStyleSheet("QPushButton {font-size: 16px;}")
 
         buttons_layout.addStretch()
-        buttons_layout.addWidget(yes_button)
-        buttons_layout.addWidget(no_button)
+        buttons_layout.addWidget(self.yes_button)
+        buttons_layout.addWidget(self.no_button)
 
-        display_text = f"Are you sure you want to delete Task {self.tasknumber}?\n\n" \
-                       f"Task name: {tname}\n"
+        if self.clear:
+            self.setWindowTitle("Clear Confirmation")
+            display_text = f"Are you sure you want to CLEAR ALL tasks?\n\n" \
+                           f"(You cannot undo this)"
+        else:
+            tname = self.tlist[tasknum - 1].split("=", 1)[1]
+            display_text = f"Are you sure you want to delete Task {self.tasknumber}?\n\n" \
+                           f"Task name: {tname}\n"
 
         message = QtWidgets.QLabel(display_text, self)
         message.setStyleSheet("font-size: 18px;")
@@ -590,31 +604,36 @@ class ConfirmWindow(QWidget):
         self.confirm_layout.addWidget(message)
         self.confirm_layout.addWidget(buttons)
 
+        self.setWindowModality(Qt.ApplicationModal)
+        self.yes_button.setAutoDefault(True)
+        self.no_button.setAutoDefault(True)
+        if not clear:
+            QTimer.singleShot(10, self.yes_button.setFocus)
+        else:
+            QTimer.singleShot(10, self.no_button.setFocus)
+
     def yes(self):
         print(f"CURRENT: {self.tlist}")
-        try:
-            TBackEnd.remove(self.tasknumber, self.tlist)
-        except IndexError:
-            print("index error occured while deleting")
+        if self.clear:
+            TBackEnd.clear_tasks()
+        else:
+            try:
+                TBackEnd.remove(self.tasknumber, self.tlist)
+            except IndexError:
+                print("index error occured while deleting")
 
         print("NEW:", self.tlist)
-        self.refresh_tasks()
-        self.close()
         if self.is_task_window:
-            self.ref_window.close_task_window()
-        else:
-            self.ref_window.setEnabled(True)
+            self.ref_window.close()
+        self.close()
 
     def no(self):
         self.close()
-        if self.is_task_window:
-            self.ref_window.setVisible(True)
-        else:
-            self.ref_window.setEnabled(True)
-        self.refresh_tasks()
 
     def closeEvent(self, e):
-        self.no()
+        if not self.is_task_window:
+            self.ref_window.setEnabled(True)
+        self.refresh_tasks()
 
 
 if __name__ == '__main__':
