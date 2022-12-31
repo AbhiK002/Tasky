@@ -206,7 +206,7 @@ class App(QWidget):
             print(f"Clear Tasks cancelled")
 
     def closeEvent(self, e):
-        exit()
+        sys.exit()
 
     def refresh_gui(self):
         self.refresh_tasks()
