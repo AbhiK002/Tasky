@@ -113,13 +113,17 @@ class Functions:
         # YY:mm:HH:MM:ss=[text]
 
         stage1 = task.split("=", 1)
-        s1_conditions = (
-            not all(stage1),  # stage1 should not contain empty strings
-            len(stage1) != 2,  # task datetime and task name
-            not 1 <= len(stage1[1].strip()) <= 30,  # task name between 1 and 30 chars
-            len(stage1[0]) != 14,  # "yy:mm:dd:HH:MM"
-            not '22' <= stage1[0][:2] <= '99'  # year -> 2022 to 2099
-        )
+        try:
+            s1_conditions = (
+                not all(stage1),  # stage1 should not contain empty strings
+                len(stage1) != 2,  # task datetime and task name
+                not 1 <= len(stage1[1].strip()) <= 30,  # task name between 1 and 30 chars
+                len(stage1[0]) != 14,  # "yy:mm:dd:HH:MM"
+                not '22' <= stage1[0][:2] <= '99'  # year -> 2022 to 2099
+            )
+        except IndexError:
+            self.TL.error("GIVEN TASK STRING IS INVALID")
+            return False
 
         if any(s1_conditions):
             self.TL.error(f"GIVEN TASK STRING IS INVALID")
@@ -151,8 +155,8 @@ class Functions:
         self.check_tasks_txt()
         with open(self.tasks_path, "r") as taskfile:
             self.TL.info(f"opened 'tasks.txt' in read mode")
-
-            taskslist = sorted(filter(self.is_valid_task, taskfile.read().split('\n')))
+            read_data = taskfile.read().split('\n')
+            taskslist = sorted(filter(self.is_valid_task, read_data))
 
         self.TL.info(f"tasks list filtered and sorted")
         self.TL.info(taskslist)
@@ -197,7 +201,3 @@ class Functions:
             deadlines.append((num, deadline, tname.strip()))
 
         return deadlines
-
-
-if __name__ == '__main__':
-    print(Functions().return_deadlines())
