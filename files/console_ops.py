@@ -70,6 +70,9 @@ class ConsoleFunctions(Functions):
         tYY, tMM, tDD, tHH, tmm = dt.split(":")
 
         tYY = 2000 + int(tYY)
+        prevMM = str((int(tMM) - 1) % 12).zfill(2)
+        if prevMM == "00":
+            prevMM = "12"
         tMM = self.month_names[int(tMM)]
         self.TL.info(f"changed year to YYYY form and month number to Name")
 
@@ -78,11 +81,12 @@ class ConsoleFunctions(Functions):
 
         if tt12h == 0:
             tt12h = 12
-            if int(tmm) == 0:
-                if tHH == "00":
-                    ttampm = f"MIDNIGHT ({int(tDD) - 1} | {int(tDD)})"
-                else:
-                    ttampm = "NOON"
+            if int(tmm) == 0 and tHH == "00":
+                ttampm = f"MIDNIGHT ({int(tDD) - 1} | {int(tDD)})"
+                if int(tDD) == 1:
+                    ttampm = f"MIDNIGHT ({self.months[prevMM]} | {int(tDD)})"
+            elif int(tmm) == 0 and tHH == "12":
+                ttampm = "NOON"
         self.TL.info(f"changed hours to 12h format with AM/PM/NOON/MIDNIGHT")
 
         width = 60

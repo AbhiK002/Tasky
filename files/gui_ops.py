@@ -116,7 +116,11 @@ class TaskyStyle:
             "QWidget {"
             f"color: {self.text_fg};"
             "}"
-
+            
+            "QMessageBox QLabel, QMessageBox QPushButton {"
+            f"color: black;"
+            "}"
+            
             "QWidget#MainWindow, QWidget#TasksFrame {"
             f"background-color: {self.minor_bg};"
             "}"
@@ -132,8 +136,9 @@ class TaskyStyle:
 
             "QPushButton#SwitchModeButton {"
             f"background-color: {self.mode_bg};"
-            f"color: {self.mode_fg};"
+            f"color: {self.mode_fg}"
             "}"
+            
 
             "QPushButton#NewTaskButton:hover {"
             f"background-color: {self.major_hg};"
@@ -185,6 +190,19 @@ class TaskyStyle:
             f"font-size: {self.task_text_size - 1};"
             f"background-color: {self.task_bg_trans};"
             "}"
+            
+            "QPushButton#DeleteButton {"
+            f"background-color: {Colors.lighter_gray};"
+            f"border: 3px solid black; border-radius: 15px;"
+            f"min-width: 15px; max-width: 20px; "
+            "padding: 6px;"
+            "}"
+            "QPushButton#DeleteButton:hover {"
+            f"background-color: #AAAAAA;"
+            "}"
+            "QPushButton#DeleteButton:pressed, QPushButton#DeleteButton:disabled {"
+            f"background-color: {Colors.light_gray};"
+            "}"
 
             "QScrollArea#TasksScrollArea {"
             f"background-color: {self.major_bg};"
@@ -218,6 +236,17 @@ class TaskyStyle:
             "border: none;"
             "background: none;"
             "}"
+            
+            "QPushButton#ClearAllButton {"
+            f"background: transparent; color: {self.text_fg}; font-weight: bold; border-radius: 15px;"
+            "font-size: 14px; min-width: 150px; border: 0px; min-height: 30px"
+            "}"
+            "QPushButton#ClearAllButton:hover {"
+            f"background: {self.major_hg};"
+            "}"
+            "QPushButton#ClearAllButton:disabled {"
+            "color: transparent;"
+            "}"
         )
 
     def twindow_stylesheet(self):
@@ -229,6 +258,13 @@ class TaskyStyle:
             "QLabel {"
             f"color: {self.mode_bg};"
             f"font-size: {self.task_text_size}px"
+            "}"
+            
+            "QMessageBox QLabel, QMessageBox QPushButton {"
+            f"color: black;"
+            "}"
+            "QMessageBox QLabel {"
+            "font-size: 18px;"
             "}"
 
             "QLabel#TaskWindowTitle {"
@@ -296,5 +332,4 @@ class TaskyStyle:
             "QPushButton#SaveButton:disabled {"
             f"background-color: {Colors.gray};"
             "}"
-
         )
