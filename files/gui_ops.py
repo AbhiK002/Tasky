@@ -231,6 +231,17 @@ class TaskyStyle:
             "border: none;"
             "background: none;"
             "}"
+            
+            "QPushButton#ClearAllButton {"
+            f"background: transparent; color: {self.text_fg}; font-weight: bold; border-radius: 15px;"
+            "font-size: 14px; min-width: 150px; border: 0px; min-height: 30px"
+            "}"
+            "QPushButton#ClearAllButton:hover {"
+            f"background: {self.major_hg};"
+            "}"
+            "QPushButton#ClearAllButton:disabled {"
+            "color: transparent;"
+            "}"
         )
 
     def twindow_stylesheet(self):
@@ -309,5 +320,4 @@ class TaskyStyle:
             "QPushButton#SaveButton:disabled {"
             f"background-color: {Colors.gray};"
             "}"
-
         )
