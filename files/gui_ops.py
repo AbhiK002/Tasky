@@ -116,7 +116,11 @@ class TaskyStyle:
             "QWidget {"
             f"color: {self.text_fg};"
             "}"
-
+            
+            "QMessageBox QLabel, QMessageBox QPushButton {"
+            f"color: black;"
+            "}"
+            
             "QWidget#MainWindow, QWidget#TasksFrame {"
             f"background-color: {self.minor_bg};"
             "}"
@@ -132,8 +136,9 @@ class TaskyStyle:
 
             "QPushButton#SwitchModeButton {"
             f"background-color: {self.mode_bg};"
-            f"color: {self.mode_fg};"
+            f"color: {self.mode_fg}"
             "}"
+            
 
             "QPushButton#NewTaskButton:hover {"
             f"background-color: {self.major_hg};"
@@ -253,6 +258,13 @@ class TaskyStyle:
             "QLabel {"
             f"color: {self.mode_bg};"
             f"font-size: {self.task_text_size}px"
+            "}"
+            
+            "QMessageBox QLabel, QMessageBox QPushButton {"
+            f"color: black;"
+            "}"
+            "QMessageBox QLabel {"
+            "font-size: 18px;"
             "}"
 
             "QLabel#TaskWindowTitle {"
