@@ -38,6 +38,7 @@ class Functions:
 
     def check_tasks_txt(self):
         self.TL.info("creating tasks.txt if it doesn't exist")
+        self.taskymain_path.mkdir(parents=True, exist_ok=True)
         open(self.tasks_path, "a").close()
 
     @staticmethod
