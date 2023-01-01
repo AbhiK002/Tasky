@@ -172,9 +172,8 @@ class TaskyStyle:
             "}"
             
             "QToolTip {"
-            "border: 2px solid black;"
+            "border: 2px solid black; font-size: 20px;"
             f"background: {Colors.white}; color: black;"
-            f"font-size: 20px; min-width: 300px;"
             "}"
 
             "QLabel#TaskNum, QLabel#TaskDead, QLabel#TaskName {"
@@ -297,6 +296,11 @@ class TaskyStyle:
 
             "QLineEdit#NameEntry {"
             "max-width: 1800px;"
+            "}"
+            
+            "QTextEdit#DescriptionEntry {"
+            "font-size: 20px; border-radius: 18px; padding: 4px;"
+            "border: 2px solid black; background: white"
             "}"
 
             "QPushButton#DeleteButton {"
