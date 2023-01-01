@@ -315,7 +315,7 @@ class TaskWindow(QWidget):
         self.setWindowIcon(QIcon(TStyle.tlogo_path))
         self.setStyleSheet(self.window_style)
         self.setMinimumSize(630, 370)
-        self.setMaximumSize(740, 370)
+        # self.setMaximumSize(740, 370)
         self.setObjectName("TaskWindow")
         self.win_layout = QtWidgets.QVBoxLayout(self)
         self.setLayout(self.win_layout)
@@ -402,6 +402,28 @@ class TaskWindow(QWidget):
         self.ttif_layout.addWidget(self.ttf_mins_entry)
         self.ttif_layout.addStretch()
 
+        # Task Description Frame
+        self.task_desc_frame = QWidget(self.win_items)
+        self.task_desc_frame.setContentsMargins(0, 10, 0, 0)
+        self.task_desc_layout = QtWidgets.QHBoxLayout(self.task_desc_frame)
+        self.task_desc_frame.setLayout(self.task_desc_layout)
+
+        self.tdesc_label = QtWidgets.QLabel("Task Description\n(Optional)", self.task_name_frame)
+        self.tdesc_label.setAlignment(Qt.AlignTop)
+        self.tdesc_entry = QtWidgets.QTextEdit(self.task_name_frame)
+        self.tdesc_entry.setObjectName("DescriptionEntry")
+        self.tdesc_entry.setTabChangesFocus(True)
+        self.tdesc_entry.setPlaceholderText("Describe the task in max 168 characters")
+
+        self.task_desc_layout.addWidget(self.tdesc_label)
+        self.task_desc_layout.addWidget(self.tdesc_entry, 1)
+
+        # Items Frames Placement
+        self.items_layout.addWidget(self.task_name_frame)
+        self.items_layout.addWidget(self.task_date_frame)
+        self.items_layout.addWidget(self.task_time_frame)
+        self.items_layout.addWidget(self.task_desc_frame)
+
         # Bottom Buttons Frame
         self.buttons_frame = QWidget(self)
         self.buttons_layout = QtWidgets.QHBoxLayout(self.buttons_frame)
@@ -439,17 +461,14 @@ class TaskWindow(QWidget):
         self.buttons_layout.addWidget(self.cancel_button)
         self.buttons_layout.addStretch()
 
-        # Main Frames Placement
-        self.items_layout.addWidget(self.task_name_frame)
-        self.items_layout.addWidget(self.task_date_frame)
-        self.items_layout.addWidget(self.task_time_frame)
-
+        # Window Frames Placement
         self.win_layout.addWidget(self.win_title)
         self.win_layout.addWidget(self.win_items, 1)
         self.win_layout.addWidget(self.buttons_frame)
 
         self.tnf_entry.textEdited.connect(self.validate_entries)
         self.tdf_date_entry.textEdited.connect(self.validate_entries)
+        self.tdf_month_entry.currentTextChanged.connect(self.validate_entries)
         self.tdf_year_entry.textEdited.connect(self.validate_entries)
         self.ttf_hours_entry.textEdited.connect(self.validate_entries)
         self.ttf_mins_entry.textEdited.connect(self.validate_entries)
@@ -478,6 +497,8 @@ class TaskWindow(QWidget):
         self.tdf_date_entry.setText(dd.strip())
         self.ttf_hours_entry.setText(HH.strip())
         self.ttf_mins_entry.setText(MM.strip())
+
+        self.validate_entries()
 
     def save_task(self):
         valid = self.validate_entries()
@@ -529,17 +550,19 @@ class TaskWindow(QWidget):
             self.ttf_hours_entry.setStyleSheet(f"border: 1px solid black;")
             self.ttf_mins_entry.setStyleSheet(f"border: 1px solid black;")
 
-        tdate = self.tdf_date_entry.text().strip()
+        tdate = self.tdf_date_entry.text().strip().zfill(2)
 
         tmonth = self.tdf_month_entry.currentText()
+        tmonth_num = str(TBackEnd.reversed_dict(TBackEnd.month_names)[tmonth.lower()]).zfill(2)
+        days_in_month = TBackEnd.months[tmonth_num]
 
         tyear = self.tdf_year_entry.text().strip()
 
-        thour = self.ttf_hours_entry.text().strip()
+        thour = self.ttf_hours_entry.text().strip().zfill(2)
 
-        tmins = self.ttf_mins_entry.text().strip()
+        tmins = self.ttf_mins_entry.text().strip().zfill(2)
 
-        if not tdate.isdecimal() or int(tdate) not in range(1, 32):
+        if not tdate.isdecimal() or int(tdate) not in range(1, days_in_month+1):
             self.tdf_date_entry.setStyleSheet(f"border: 4px solid red;")
             check = False
 
