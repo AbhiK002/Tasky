@@ -127,8 +127,14 @@ class App(QWidget):
         self.tasks_list = TBackEnd.return_deadlines()
 
         for task in self.tasks_list:
-            task_box = TaskBox(*task, self)
+            *task_items, task_desc = task
+
+            task_box = TaskBox(*task_items, self)
             task_box.delete_button.pressed.connect(lambda p=int(task[0]): [self.direct_delete(p)])
+
+            if task_desc:
+                tooltip_text = f"<FONT color=black> {task_desc} </FONT>"
+                task_box.setToolTip(tooltip_text)
 
             self.tasks_layout.addWidget(task_box)
 
@@ -163,7 +169,7 @@ class App(QWidget):
     def direct_delete(self, tasknum):
         tlist = TBackEnd.read_and_sort_tasks_file()
         if tasknum - 1 in range(len(tlist)):
-            tname = tlist[tasknum - 1].split("=", 1)[1]
+            tname = tlist[tasknum - 1].split("\t", 2)[1]
             display_text = f"Are you sure you want to delete Task {tasknum}?\n\n" \
                            f"Task Name: {tname}\n"
 
@@ -296,6 +302,7 @@ class TaskWindow(QWidget):
 
         self.task_number = task_num
         self.tlist = TBackEnd.read_and_sort_tasks_file()
+        self.desc = "SAMPLE DESC (TaskWindow)"
 
         if task_num in range(1, len(self.tlist) + 1):
             title = f"Edit Task {task_num}"
@@ -457,7 +464,7 @@ class TaskWindow(QWidget):
             index = self.task_number - 1
             task = self.tlist[index]
 
-            ttime, name = task.split("=", 1)
+            ttime, name, self.desc = task.split("\t", 2)
             yy, mm, dd, HH, MM = ttime.split(":")
 
             self.tnf_entry.setPlaceholderText(f"Task {self.task_number}")
@@ -494,7 +501,7 @@ class TaskWindow(QWidget):
             task_mins = self.ttf_mins_entry.text().strip().zfill(2)
 
             task_string = f"{task_year}:{task_month}:{task_date}:{task_hours}:{task_mins}" \
-                          f"={task_name}"
+                          f"\t{task_name}\t{self.desc}"
             print("final task:", task_string)
 
             if self.task_number:
@@ -573,7 +580,7 @@ class TaskWindow(QWidget):
         task_index = self.task_number - 1
 
         if task_index in range(len(self.tlist)):
-            tname = self.tlist[self.task_number - 1].split("=", 1)[1]
+            tname = self.tlist[self.task_number - 1].split("\t", 2)[1]
             display_text = f"Are you sure you want to delete Task {self.task_number}?\n\n" \
                            f"Task name: {tname}\n"
 
