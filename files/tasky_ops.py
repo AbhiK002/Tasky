@@ -111,29 +111,33 @@ class Functions:
     def is_valid_task(self, task):
         self.TL.function(f"CHECKING IF '{task}' IS VALID TASK STRING")
         # checks if the given string is of valid task form
-        # YY:mm:HH:MM:ss=[text]
-
-        stage1 = task.split("=", 1)
+        # YY:mm:HH:MM:ss{TAB}[text]{TAB}[text]
+        try:
+            ttime, tname, tdesc = task.split("\t", 2)
+        except ValueError:  # not enough values to unpack
+            self.TL.error("GIVEN TASK STRING IS INVALID (unpack error)")
+            return False
         try:
             s1_conditions = (
-                not all(stage1),  # stage1 should not contain empty strings
-                len(stage1) != 2,  # task datetime and task name
-                not 1 <= len(stage1[1].strip()) <= 30,  # task name between 1 and 30 chars
-                len(stage1[0]) != 14,  # "yy:mm:dd:HH:MM"
-                not '22' <= stage1[0][:2] <= '99'  # year -> 2022 to 2099
+                not all((ttime, tname)),  # name and time cannot be empty
+                not 1 <= len(tname) <= 30,  # task name between 1 and 30 chars
+                len(tdesc) > 168,  # task description cannot be more than 168 characters
+                len(ttime) != 14,  # "yy:mm:dd:HH:MM"
+                not str(self.current_year)[-2:] <= ttime[:2] <= '99',  # year -> CURRENT to 2099
             )
         except IndexError:
-            self.TL.error("GIVEN TASK STRING IS INVALID")
+            self.TL.error("GIVEN TASK STRING IS INVALID (index error)")
             return False
 
+        self.TL.info(s1_conditions)
         if any(s1_conditions):
-            self.TL.error(f"GIVEN TASK STRING IS INVALID")
+            self.TL.error(f"GIVEN TASK STRING IS INVALID (any cond1)")
             return False
 
         try:
-            datetime.datetime.strptime(stage1[0], "%y:%m:%d:%H:%M")
+            datetime.datetime.strptime(ttime, "%y:%m:%d:%H:%M")
         except ValueError:
-            self.TL.error(f"GIVEN TASK STRING IS INVALID")
+            self.TL.error(f"GIVEN TASK STRING IS INVALID (date conversion)")
             return False
 
         self.TL.info(f"GIVEN TASK STRING IS VALID")
@@ -141,8 +145,8 @@ class Functions:
 
     def write_tasks(self, last):
         for i, task in enumerate(last):
-            ttime, tname = task.split("=", 1)
-            last[i] = f"{ttime}={tname.strip()}"
+            ttime, tname, tdesc = task.split("\t", 2)
+            last[i] = f"{ttime}\t{tname.strip()}\t{tdesc.strip()}"
 
         with open(self.tasks_path, "w") as taskfile:
             taskfile.write('\n'.join(last))
@@ -157,12 +161,13 @@ class Functions:
         with open(self.tasks_path, "r") as taskfile:
             self.TL.info(f"opened 'tasks.txt' in read mode")
             read_data = taskfile.read().split('\n')
-            taskslist = sorted(filter(self.is_valid_task, read_data))
+            taskslist = sorted(filter(self.is_valid_task, read_data))  # sorts filtered valid tasks from file
 
         self.TL.info(f"tasks list filtered and sorted")
         self.TL.info(taskslist)
 
         if len(taskslist) > 100:  # maximum tasks allowed = 100
+            self.TL.error("more than 100 tasks detected")
             taskslist = taskslist[:100]
 
         self.write_tasks(taskslist)
@@ -177,8 +182,11 @@ class Functions:
         self.TL.info(f"stored tasks as 'last'")
 
         self.TL.info(f"task {num} requested to be removed ")
-
-        last.pop(int(num) - 1)
+        try:
+            last.pop(int(num) - 1)
+        except IndexError:
+            self.TL.error("invalid task number to be removed")
+            return
         self.TL.info(f"removed requested task from the list")
         self.TL.info(last)
 
@@ -195,10 +203,10 @@ class Functions:
         deadlines = []
 
         for i, task in enumerate(tasks):
-            ttime, tname = task.split("=", 1)
+            ttime, tname, tdesc = task.split("\t", 2)
             deadline = self.timediff(ttime)
             num = str(i + 1)
 
-            deadlines.append((num, deadline, tname.strip()))
+            deadlines.append((num, deadline, tname.strip(), tdesc.strip()))
 
         return deadlines
