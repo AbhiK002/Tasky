@@ -50,7 +50,7 @@ class TaskyStyle:
 
         self.taskydir = taskydir = Path.home() / "Tasky"
         taskydir.mkdir(parents=True, exist_ok=True)
-        
+
         open(taskydir / "settings.txt", 'a').close()
         with open(taskydir / "settings.txt") as f:
             self.theme = f.read().replace("\n", "")
@@ -68,7 +68,8 @@ class TaskyStyle:
         else:
             self.theme = "light"
 
-        open(taskydir / "settings.txt", 'a').close()
+        self.taskydir.mkdir(parents=True, exist_ok=True)
+        open(self.taskydir / "settings.txt", 'a').close()
         with open(self.taskydir / "settings.txt", "w") as f:
             f.write(self.theme)
 
