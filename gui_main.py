@@ -129,6 +129,7 @@ class App(QWidget):
         for task in self.tasks_list:
             task_box = TaskBox(*task, self)
             task_box.delete_button.pressed.connect(lambda p=int(task[0]): [self.direct_delete(p)])
+
             self.tasks_layout.addWidget(task_box)
 
         self.clear_all = QtWidgets.QPushButton("CLEAR ALL TASKS")
@@ -205,6 +206,8 @@ class App(QWidget):
         else:
             print(f"Clear Tasks cancelled")
 
+        self.refresh_tasks()
+
     def closeEvent(self, e):
         sys.exit()
 
@@ -231,6 +234,7 @@ class TaskBox(QtWidgets.QPushButton):
         super(TaskBox, self).__init__()
         self.main_window = mainwindow
         self.setStyleSheet(TStyle.stylesheet())
+
         task_lay = QtWidgets.QHBoxLayout(self)
         task_lay.setContentsMargins(0, 0, 0, 0)
         self.setLayout(task_lay)
