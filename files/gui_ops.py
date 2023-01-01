@@ -50,7 +50,8 @@ class TaskyStyle:
 
         self.taskydir = taskydir = Path.home() / "Tasky"
         taskydir.mkdir(parents=True, exist_ok=True)
-
+        
+        open(taskydir / "settings.txt", 'a').close()
         with open(taskydir / "settings.txt") as f:
             self.theme = f.read().replace("\n", "")
             if self.theme not in ("dark", "light"):
@@ -67,6 +68,7 @@ class TaskyStyle:
         else:
             self.theme = "light"
 
+        open(taskydir / "settings.txt", 'a').close()
         with open(self.taskydir / "settings.txt", "w") as f:
             f.write(self.theme)
 
@@ -116,11 +118,11 @@ class TaskyStyle:
             "QWidget {"
             f"color: {self.text_fg};"
             "}"
-            
+
             "QMessageBox QLabel, QMessageBox QPushButton {"
             f"color: black;"
             "}"
-            
+
             "QWidget#MainWindow, QWidget#TasksFrame {"
             f"background-color: {self.minor_bg};"
             "}"
@@ -138,7 +140,7 @@ class TaskyStyle:
             f"background-color: {self.mode_bg};"
             f"color: {self.mode_fg}"
             "}"
-            
+
 
             "QPushButton#NewTaskButton:hover {"
             f"background-color: {self.major_hg};"
@@ -146,7 +148,7 @@ class TaskyStyle:
             "QPushButton#SwitchModeButton:hover {"
             f"background-color: {self.mode_hg};"
             "}"
-            
+
             "QPushButton#NewTaskButton:pressed {"
             f"background-color: {self.major_abg};"
             "}"
@@ -190,7 +192,7 @@ class TaskyStyle:
             f"font-size: {self.task_text_size - 1};"
             f"background-color: {self.task_bg_trans};"
             "}"
-            
+
             "QPushButton#DeleteButton {"
             f"background-color: {Colors.lighter_gray};"
             f"border: 3px solid black; border-radius: 15px;"
@@ -236,7 +238,7 @@ class TaskyStyle:
             "border: none;"
             "background: none;"
             "}"
-            
+
             "QPushButton#ClearAllButton {"
             f"background: transparent; color: {self.text_fg}; font-weight: bold; border-radius: 15px;"
             "font-size: 14px; min-width: 150px; border: 0px; min-height: 30px"
@@ -259,7 +261,7 @@ class TaskyStyle:
             f"color: {self.mode_bg};"
             f"font-size: {self.task_text_size}px"
             "}"
-            
+
             "QMessageBox QLabel, QMessageBox QPushButton {"
             f"color: black;"
             "}"
@@ -289,7 +291,7 @@ class TaskyStyle:
             "QLineEdit#NameEntry {"
             "max-width: 1800px;"
             "}"
-            
+
             "QPushButton#DeleteButton {"
             f"background-color: {Colors.white};"
             f"border: 4px solid black; border-radius: 26px;"
@@ -302,7 +304,7 @@ class TaskyStyle:
             "QPushButton#DeleteButton:pressed, QPushButton#DeleteButton:disabled {"
             f"background-color: {Colors.light_gray};"
             "}"
-            
+
             "QPushButton#SaveButton, QPushButton#CancelButton {"
             f"background-color: {self.mode_bg}; color: {self.mode_fg};"
             f"border: 2px solid black; border-radius: 20px;"
@@ -328,7 +330,7 @@ class TaskyStyle:
             "QPushButton#CancelButton:pressed {"
             f"background-color: {Colors.dark_red};"
             "}"
-            
+
             "QPushButton#SaveButton:disabled {"
             f"background-color: {Colors.gray};"
             "}"
