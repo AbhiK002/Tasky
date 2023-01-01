@@ -40,19 +40,23 @@ class App(ConsoleFunctions):
                     "(Press ENTER to refresh the tasks list)\n".center(56),
                     f"{'Add a New Task'.ljust(20)} --  add / new / create",
                     f"{'Delete Task N'.ljust(20)} --  delete N / del N / remove N / rem N",
+                    f"{'Delete All Tasks'.ljust(20)} --  clear",
                     f"{'Edit Task N'.ljust(20)} --  edit N / ed N / change N",
-                    f"{'Task Details'.ljust(20)} --  (ENTER TASK NUMBER)",
-                    f"{'Clear All Tasks'.ljust(20)} --  clear",
+                    f"{'View Task Details'.ljust(20)} --  ENTER TASK NUMBER",
                     f"{'Open Help Menu'.ljust(20)} --  help / h",
                     f"{'Exit Tasky'.ljust(20)} --  quit / bye",
                     sep="\n"
                 )
                 print("-" * 60)
 
-            elif user_inp.isdecimal() and int(user_inp) in range(1, total_tasks + 1):
-                self.TL.info(f"user requested to view task {int(user_inp)}")
-                self.info_bar(f"viewing task {int(user_inp)}")
-                self.view_task(int(user_inp))
+            elif user_inp.isdecimal():
+                if int(user_inp) in range(1, total_tasks + 1):
+                    self.TL.info(f"user requested to view task {int(user_inp)}")
+                    self.info_bar(f"viewing task {int(user_inp)}")
+                    self.view_task(int(user_inp))
+                else:
+                    self.TL.error(f"user requested to view an invalid task number {int(user_inp)}")
+                    self.info_bar(f"invalid task number to view")
 
             elif user_inp in ("add", "new", "create"):
                 self.TL.info(f"user requested to add a new task")
