@@ -164,11 +164,17 @@ class TaskyStyle:
             "}"
 
             "QWidget#TaskItem {"
-            f"min-height: 40px; max-height: 40px;"
+            f"min-height: 40px; "  # max-height: 40px;"
             f"border-radius: 15px;"
             "}"
             "QWidget#TaskItem:hover {"
             f"background-color: {self.task_bg};"
+            "}"
+            
+            "QToolTip {"
+            "border: 2px solid black;"
+            f"background: {Colors.white}; color: black;"
+            f"font-size: 20px; min-width: 300px;"
             "}"
 
             "QLabel#TaskNum, QLabel#TaskDead, QLabel#TaskName {"
@@ -304,6 +310,12 @@ class TaskyStyle:
             "}"
             "QPushButton#DeleteButton:pressed, QPushButton#DeleteButton:disabled {"
             f"background-color: {Colors.light_gray};"
+            "}"
+            
+            "QToolTip {"
+            "border: 2px solid black;"
+            f"background: {Colors.white}; color: black;"
+            f"font-size: 20px;"
             "}"
 
             "QPushButton#SaveButton, QPushButton#CancelButton {"
