@@ -302,7 +302,6 @@ class TaskWindow(QWidget):
 
         self.task_number = task_num
         self.tlist = TBackEnd.read_and_sort_tasks_file()
-        self.desc = "SAMPLE DESC (TaskWindow)"
 
         if task_num in range(1, len(self.tlist) + 1):
             title = f"Edit Task {task_num}"
@@ -314,8 +313,8 @@ class TaskWindow(QWidget):
 
         self.setWindowIcon(QIcon(TStyle.tlogo_path))
         self.setStyleSheet(self.window_style)
-        self.setMinimumSize(630, 370)
-        # self.setMaximumSize(740, 370)
+        self.setMinimumSize(630, 600)
+        self.setMaximumSize(700, 670)
         self.setObjectName("TaskWindow")
         self.win_layout = QtWidgets.QVBoxLayout(self)
         self.setLayout(self.win_layout)
@@ -472,6 +471,7 @@ class TaskWindow(QWidget):
         self.tdf_year_entry.textEdited.connect(self.validate_entries)
         self.ttf_hours_entry.textEdited.connect(self.validate_entries)
         self.ttf_mins_entry.textEdited.connect(self.validate_entries)
+        self.tdesc_entry.textChanged.connect(self.validate_entries)
 
         self.fill_task_details()
 
@@ -483,20 +483,21 @@ class TaskWindow(QWidget):
             index = self.task_number - 1
             task = self.tlist[index]
 
-            ttime, name, self.desc = task.split("\t", 2)
+            ttime, name, desc = task.split("\t", 2)
             yy, mm, dd, HH, MM = ttime.split(":")
 
             self.tnf_entry.setPlaceholderText(f"Task {self.task_number}")
+            self.tdesc_entry.setText(desc)
             self.tnf_entry.setText(name.strip())
 
         month = TBackEnd.month_names[int(mm)].title()
         yyyy = str(int(yy) + 2000)
 
-        self.tdf_year_entry.setText(yyyy.strip())
-        self.tdf_month_entry.setCurrentText(month.strip())
-        self.tdf_date_entry.setText(dd.strip())
-        self.ttf_hours_entry.setText(HH.strip())
-        self.ttf_mins_entry.setText(MM.strip())
+        self.tdf_year_entry.setText(yyyy)
+        self.tdf_month_entry.setCurrentText(month)
+        self.tdf_date_entry.setText(dd)
+        self.ttf_hours_entry.setText(HH)
+        self.ttf_mins_entry.setText(MM)
 
         self.validate_entries()
 
@@ -520,9 +521,10 @@ class TaskWindow(QWidget):
             task_year = self.tdf_year_entry.text().strip()[-2:]
             task_hours = self.ttf_hours_entry.text().strip().zfill(2)
             task_mins = self.ttf_mins_entry.text().strip().zfill(2)
+            task_desc = self.tdesc_entry.toPlainText().strip().replace('\n', ' ')
 
             task_string = f"{task_year}:{task_month}:{task_date}:{task_hours}:{task_mins}" \
-                          f"\t{task_name}\t{self.desc}"
+                          f"\t{task_name}\t{task_desc}"
             print("final task:", task_string)
 
             if self.task_number:
@@ -549,6 +551,7 @@ class TaskWindow(QWidget):
             self.tdf_year_entry.setStyleSheet(f"border: 1px solid black;")
             self.ttf_hours_entry.setStyleSheet(f"border: 1px solid black;")
             self.ttf_mins_entry.setStyleSheet(f"border: 1px solid black;")
+            self.tdesc_entry.setStyleSheet("border: 1px solid black;")
 
         tdate = self.tdf_date_entry.text().strip().zfill(2)
 
@@ -557,10 +560,9 @@ class TaskWindow(QWidget):
         days_in_month = TBackEnd.months[tmonth_num]
 
         tyear = self.tdf_year_entry.text().strip()
-
         thour = self.ttf_hours_entry.text().strip().zfill(2)
-
         tmins = self.ttf_mins_entry.text().strip().zfill(2)
+        tdesc = self.tdesc_entry.toPlainText().strip().replace('\n', ' ')
 
         if not tdate.isdecimal() or int(tdate) not in range(1, days_in_month+1):
             self.tdf_date_entry.setStyleSheet(f"border: 4px solid red;")
@@ -587,12 +589,17 @@ class TaskWindow(QWidget):
             self.ttf_mins_entry.setStyleSheet(f"border: 4px solid red;")
             check = False
 
+        if len(tdesc) > 168:
+            self.tdesc_entry.setStyleSheet("border: 4px solid red;")
+            check = False
+
         if check:
             self.tnf_entry.setStyleSheet(f"border: 1px solid black;")
             self.tdf_date_entry.setStyleSheet(f"border: 1px solid black;")
             self.tdf_year_entry.setStyleSheet(f"border: 1px solid black;")
             self.ttf_hours_entry.setStyleSheet(f"border: 1px solid black;")
             self.ttf_mins_entry.setStyleSheet(f"border: 1px solid black;")
+            self.tdesc_entry.setStyleSheet("border: 1px solid black;")
             self.save_task_button.setEnabled(True)
             return True
         else:
