@@ -60,10 +60,10 @@ class ConsoleFunctions(Functions):
 
         self.TL.function(f"ends -> status()")
 
-    def view_task(self, num):
+    def view_task(self, num, tlist):
         self.TL.function(f"starts -> view_task({num})")
 
-        task_list = self.read_and_sort_tasks_file()
+        task_list = tlist
         self.TL.info(f"stored tasks as 'task_list'")
 
         if (num - 1) not in range(len(task_list)):
@@ -101,15 +101,18 @@ class ConsoleFunctions(Functions):
                 ttampm = "NOON"
         self.TL.info(f"changed hours to 12h format with AM/PM/NOON/MIDNIGHT")
 
+        def description_splitter(d):
+            words = d.split()
+
         width = 60
         output = (
             "-" * width,
             f" TASK {num} ".center(width, '-'),
-            f'\n{"TASK NAME : ".rjust(30)}{t_name.strip()}',
+            f'\n{"TASK NAME : ".rjust(30)}{t_name}',
             f'{"DATE : ".rjust(30)}{tDD} {tMM.title()}, {tYY}',
             f'{"TIME : ".rjust(30)}{tt12h}:{tmm} {ttampm}',
             f'{"DEADLINE : ".rjust(30)}{self.timediff(dt).strip()}',
-            f'\n{"TASK DESCRIPTION : ".rjust(30)}{t_desc.strip()}',
+            f'\n{"TASK DESCRIPTION : ".rjust(30)}{t_desc}',
             "-" * width
         )
         print(*output, sep="\n")
