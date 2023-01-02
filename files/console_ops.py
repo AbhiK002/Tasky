@@ -1,5 +1,6 @@
 from os import system
 from .tasky_ops import Functions
+from textwrap import wrap
 
 
 class ConsoleFunctions(Functions):
@@ -101,9 +102,8 @@ class ConsoleFunctions(Functions):
                 ttampm = "NOON"
         self.TL.info(f"changed hours to 12h format with AM/PM/NOON/MIDNIGHT")
 
-        def description_splitter(d):
-            words = d.split()
-
+        desc_first_line, *desc_remaining = wrap(t_desc, width=30)
+        desc_remaining = list(map(lambda line: ' '*30 + line, desc_remaining))
         width = 60
         output = (
             "-" * width,
@@ -112,7 +112,7 @@ class ConsoleFunctions(Functions):
             f'{"DATE : ".rjust(30)}{tDD} {tMM.title()}, {tYY}',
             f'{"TIME : ".rjust(30)}{tt12h}:{tmm} {ttampm}',
             f'{"DEADLINE : ".rjust(30)}{self.timediff(dt).strip()}',
-            f'\n{"TASK DESCRIPTION : ".rjust(30)}{t_desc}',
+            f'\n{"TASK DESCRIPTION : ".rjust(30)}{desc_first_line}', *desc_remaining,
             "-" * width
         )
         print(*output, sep="\n")
