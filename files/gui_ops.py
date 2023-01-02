@@ -300,7 +300,7 @@ class TaskyStyle:
             
             "QTextEdit#DescriptionEntry {"
             "font-size: 20px; border-radius: 18px; padding: 4px;"
-            "border: 2px solid black; background: white"
+            "border: 1px solid black; background: white"
             "}"
 
             "QPushButton#DeleteButton {"
