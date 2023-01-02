@@ -52,8 +52,9 @@ class App(ConsoleFunctions):
             elif user_inp.isdecimal():
                 if int(user_inp) in range(1, total_tasks + 1):
                     self.TL.info(f"user requested to view task {int(user_inp)}")
+                    self.write_tasks(task_list)
                     self.info_bar(f"viewing task {int(user_inp)}")
-                    self.view_task(int(user_inp))
+                    self.view_task(int(user_inp), task_list)
                 else:
                     self.TL.error(f"user requested to view an invalid task number {int(user_inp)}")
                     self.info_bar(f"invalid task number to view")
@@ -77,7 +78,7 @@ class App(ConsoleFunctions):
                     )
                     if int(words[1]) in range(1, total_tasks + 1):
                         self.TL.info(f"task number confirmed valid")
-                        tasks_copy = self.read_and_sort_tasks_file()
+                        tasks_copy = task_list.copy()
                         confirm = self.is_confirmed(f"\nConfirm removal of task {words[1]}? (enter y/n):  ")
                         if confirm:
                             self.TL.info(f"confirmed")
@@ -104,7 +105,7 @@ class App(ConsoleFunctions):
                     )
                     if int(words[1]) in range(1, total_tasks + 1):
                         self.TL.info(f"task number confirmed valid")
-                        tasks_copy = self.read_and_sort_tasks_file()
+                        tasks_copy = task_list.copy()
                         self.edit_task(int(words[1]), tasks_copy)
                         n = 0
                     else:
