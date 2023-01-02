@@ -9,8 +9,11 @@ class Functions:
         self.TL.info("Tasky's functions accessed")
 
         self.taskymain_path = Path.home() / "Tasky"
-        self.tasks_path = self.taskymain_path / "tasks.txt"
+        self.tasks_path = self.taskymain_path / "newtasks.txt"
+        self.old_tasks_path = self.taskymain_path / 'tasks.txt'
         self.check_tasks_txt()
+
+        self.old_tasks = []
 
         self.months = {
             "01": 31, "02": 29, "03": 31, "04": 30,
@@ -37,9 +40,10 @@ class Functions:
         return datetime.datetime.now().strftime("%y %m %d %H %M").split()
 
     def check_tasks_txt(self):
-        self.TL.info("creating tasks.txt if it doesn't exist")
+        self.TL.info("creating newtasks.txt and tasks.txt if it doesn't exist")
         self.taskymain_path.mkdir(parents=True, exist_ok=True)
         open(self.tasks_path, "a").close()
+        open(self.old_tasks_path, "a").close()
 
     @staticmethod
     def reversed_dict(d):
@@ -119,9 +123,9 @@ class Functions:
             return False
         try:
             s1_conditions = (
-                not all((ttime, tname)),  # name and time cannot be empty
-                not 1 <= len(tname) <= 30,  # task name between 1 and 30 chars
-                len(tdesc) > 168,  # task description cannot be more than 168 characters
+                not all((ttime, tname.strip())),  # name and time cannot be empty
+                not 1 <= len(tname.strip()) <= 30,  # task name between 1 and 30 chars
+                len(tdesc.strip()) > 168,  # task description cannot be more than 168 characters
                 len(ttime) != 14,  # "yy:mm:dd:HH:MM"
                 not str(self.current_year)[-2:] <= ttime[:2] <= '99',  # year -> CURRENT to 2099
             )
@@ -143,15 +147,18 @@ class Functions:
         self.TL.info(f"GIVEN TASK STRING IS VALID")
         return True
 
-    def write_tasks(self, last):
-        for i, task in enumerate(last):
+    def strip_tasks(self, tlist):
+        for i, task in enumerate(tlist):
             ttime, tname, tdesc = task.split("\t", 2)
-            last[i] = f"{ttime}\t{tname.strip()}\t{tdesc.strip()}"
+            tlist[i] = f"{ttime}\t{tname.strip()}\t{tdesc.strip()}"
 
+        return tlist
+
+    def write_tasks(self, last):
         with open(self.tasks_path, "w") as taskfile:
             taskfile.write('\n'.join(last))
 
-        self.TL.function(f"wrote given tasks into tasks.txt")
+        self.TL.function(f"wrote given tasks into newtasks.txt (new format)")
         self.TL.info(last)
 
     def read_and_sort_tasks_file(self):  # returns the current data sorted and separately in list
@@ -159,9 +166,19 @@ class Functions:
 
         self.check_tasks_txt()
         with open(self.tasks_path, "r") as taskfile:
-            self.TL.info(f"opened 'tasks.txt' in read mode")
+            self.TL.info(f"opened 'newtasks.txt' in read mode")
             read_data = taskfile.read().split('\n')
             taskslist = sorted(filter(self.is_valid_task, read_data))  # sorts filtered valid tasks from file
+
+        if not self.converted():
+            self.TL.info("adding old tasks to new version")
+            self.get_old_tasks()
+            taskslist = sorted(set(taskslist) | set(self.old_tasks))  # union of unique old and new tasks
+            check_path = self.taskymain_path / 'old_checked'
+            check_path.mkdir(parents=True, exist_ok=True)
+
+        taskslist = self.remove_duplicates(self.strip_tasks(taskslist))
+        # remove old tasks that have a description in the new tasks file
 
         self.TL.info(f"tasks list filtered and sorted")
         self.TL.info(taskslist)
@@ -174,6 +191,44 @@ class Functions:
 
         self.TL.function(f"ends -> read_and_sort_tasks_file()")
         return taskslist
+
+    def converted(self):
+        check_path = self.taskymain_path / 'old_checked'
+        return check_path.exists()
+
+    def get_old_tasks(self):  # tasks stored by previous versions of tasky, which cannot be directly read
+        self.TL.function("starts -> get_old_tasks()")
+
+        with open(self.old_tasks_path, "r") as taskfile:
+            self.TL.info(f"opened 'tasks.txt' in read mode")
+
+            read_data = taskfile.read().split('\n')
+            self.TL.info(f"old tasks: {read_data}")
+
+            if not read_data:
+                self.TL.info("old tasks file empty")
+                self.old_tasks = []
+
+            converted_data = list(map(lambda task: '\t'.join(task.split("=", 2) + ['']), read_data))
+            self.TL.info(f"converted old tasks: {converted_data}")
+
+        self.old_tasks = sorted(filter(self.is_valid_task, converted_data))  # sorts filtered valid tasks from file
+
+    def remove_duplicates(self, tlist):
+        final = []
+        descriptions = {}
+        for task in tlist:
+            ttime, tname, tdesc = task.split('\t', 2)
+            key = f"{ttime}\t{tname}\t"
+            if tdesc != '':
+                descriptions[key] = tdesc
+            if key not in final:
+                final.append(key)
+
+        for i, key in enumerate(final):
+            final[i] = key + descriptions.get(key, '')
+
+        return final
 
     def remove(self, num, last_copy):
         self.TL.function(f"starts -> remove({num})")
@@ -191,7 +246,7 @@ class Functions:
         self.TL.info(last)
 
         self.write_tasks(last)
-        self.TL.info(f"wrote new output to 'tasks.txt'")
+        self.TL.info(f"wrote new output to 'newtasks.txt'")
 
         self.TL.function(f"ends -> remove({num})")
 
@@ -207,6 +262,7 @@ class Functions:
             deadline = self.timediff(ttime)
             num = str(i + 1)
 
-            deadlines.append((num, deadline, tname.strip(), tdesc.strip()))
+            deadlines.append((num, deadline, tname, tdesc))
 
         return deadlines
+
