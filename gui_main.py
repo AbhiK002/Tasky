@@ -120,8 +120,8 @@ class App(QWidget):
 
     def refresh_tasks(self):  # read and display tasks from tasks file
         print("refreshing tasks")
-        if not self.gui_refresh_timer:
-            self.gui_refresh_timer.stop()
+        self.gui_refresh_timer.stop()
+
         while self.tasks_layout.count():
             child = self.tasks_layout.takeAt(0)
             if child.widget():
@@ -187,6 +187,8 @@ class App(QWidget):
             print("request to add new task")
 
         if self.task_window is None:  # if no other task window open, open the requested one
+            self.gui_refresh_timer.stop()
+
             self.setEnabled(False)
             self.task_window = TaskWindow(num, self)
             win_timer = QTimer(self.task_window)
@@ -199,6 +201,8 @@ class App(QWidget):
 
     def direct_delete(self, tasknum, tlist):
         if tasknum - 1 in range(len(tlist)):
+            self.gui_refresh_timer.stop()
+
             tname = tlist[tasknum - 1].split("\t", 2)[1]
             display_text = f"Are you sure you want to delete Task {tasknum}?\n\n" \
                            f"Task Name: {tname}\n"
@@ -221,6 +225,7 @@ class App(QWidget):
                 print("NEW:", tlist)
             else:
                 print(f"Task {tasknum} deletion cancelled")
+
         self.refresh_tasks()
 
     def clear_all_tasks(self):
