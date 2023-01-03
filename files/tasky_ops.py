@@ -52,6 +52,10 @@ class Functions:
         open(self.tasks_path, "a").close()
         open(self.old_tasks_path, "a").close()
 
+    def read_tasks_file(self):
+        self.check_tasks_txt()
+        return open(self.tasks_path).read()
+
     @staticmethod
     def is_leap(year):
         return int(year) % 4 == 0 and (int(year) % 100 != 0 or int(year) % 400 == 0)
@@ -205,6 +209,7 @@ class Functions:
     def get_old_tasks(self):  # tasks stored by previous versions of tasky, which cannot be directly read
         self.TL.function("starts -> get_old_tasks()")
 
+        self.check_tasks_txt()
         with open(self.old_tasks_path, "r") as taskfile:
             self.TL.info(f"opened 'tasks.txt' in read mode")
 
