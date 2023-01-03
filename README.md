@@ -56,7 +56,7 @@ Note:
 - Exit Tasky           -  `quit` `bye`
 
 # Requirements
-Only required if you want to run the `.pyw` or `.py` file directly. Otherwise click [here](https://github.com/AbhiK002/Tasky#Releases)
+Only required if you want to run the `.pyw` or `.py` file directly. Otherwise use the binary (ZIP, EXE) files in releases.
 * 🐍 [Python 3.9.x or 3.10.x](https://www.python.org/downloads/)
 * 🟣 [PyQt5 - PyPi Page](https://pypi.org/project/PyQt5/)
 
@@ -69,7 +69,7 @@ pip install PyQt5
 # Usage
 ### Repository
 - Clone the repository or download the repository ZIP file
-- Make sure you have met the [requirements](https://github.com/AbhiK002/Tasky#Requirements)
+- Make sure you have met the requirements above
   - Run `gui_main.pyw` to use Tasky
   - Run `console_main.py` to use the CLI (Command Line Interface) version of Tasky
 
