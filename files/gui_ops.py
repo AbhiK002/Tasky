@@ -69,7 +69,6 @@ class TaskyStyle:
             self.theme = "light"
 
         self.taskydir.mkdir(parents=True, exist_ok=True)
-        open(self.taskydir / "settings.txt", 'a').close()
         with open(self.taskydir / "settings.txt", "w") as f:
             f.write(self.theme)
 
