@@ -285,7 +285,7 @@ class ConsoleFunctions(Functions):
 
         while True:
             self.TL.waiting("for task description")
-            task_desc = input(f"\n{'Description (Can be empty)'.ljust(27)}:  ").strip().replace('\t', ' ')
+            task_desc = input(f"\n{'Description (Optional)'.ljust(27)}:  ").strip().replace('\t', ' ')
 
             if len(task_desc) > 168:
                 print("Task Description cannot be more than 168 characters\n")
