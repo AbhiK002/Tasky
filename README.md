@@ -77,5 +77,5 @@ pip install PyQt5
 ![edit_desc](https://user-images.githubusercontent.com/68178267/210434733-ce5ccc60-54ee-4eb9-9b5a-f59012ea4b3b.png)
 
 ## Tasky CLI
-![cli_help_new_view](https://user-images.githubusercontent.com/68178267/210433950-fd3808c9-4b37-4068-a308-173d26b61466.png)
+![cli_help_new_view](https://user-images.githubusercontent.com/68178267/210437602-60d64186-846d-4673-936e-107a63433e64.png)
 ![cli_edit_delete](https://user-images.githubusercontent.com/68178267/210433958-524d07c9-671e-4e60-a3a3-262d161d3fb9.png)
