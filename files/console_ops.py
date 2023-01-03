@@ -16,9 +16,10 @@ class ConsoleFunctions(Functions):
         self.TL.info("refreshed output screen")
         self.TL.info(f"status bar: {data}")
 
-    def is_confirmed(self, msg):
+    def is_confirmed(self, msg, last):
         self.TL.waiting("for confirmation from user")
         while True:
+            self.write_tasks(last)
             choice = input(msg).strip().lower()
             if choice == 'y':
                 self.TL.info("input: 'y', confirmed")
