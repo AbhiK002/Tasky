@@ -351,4 +351,20 @@ class TaskyStyle:
             "QPushButton#SaveButton:disabled {"
             f"background-color: {Colors.gray};"
             "}"
+            
+            "QLabel#DescHelpLabel {"
+            f"color: {self.mode_bg}; border: 2px solid {self.mode_bg};"
+            f"font-size: {self.big_text_size}px; border-radius: 15px;"
+            f"max-height: 30px; max-width: 30px;"
+            "}"
+            
+            "QLabel#CharIndicator, QLabel#DescCharIndicator {"
+            f"color: blue; font-size:{self.text_size-2}px;"
+            f"border: 0px solid black; min-width: 40px;"
+            f"min-height: 30px; background: white; border-radius: 10px;"
+            "}"
+            
+            "QLabel#CharIndicator {"
+            "min-width: 30px; max-width: 30px;"
+            "}"
         )
