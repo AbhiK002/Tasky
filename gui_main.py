@@ -56,9 +56,9 @@ class App(QWidget):
         self.tasks_frame_layout.setContentsMargins(8, 0, 8, 0)
         self.tasks_frame_layout.addWidget(self.heading_label)
 
+        self.tasks_parted_list = []
         self.tasks_list = []
-        self.tasks_container = None
-        self.tasks_layout = None
+        self.task_boxes = []
         self.add_tasks_container()
 
         self.task_window = None
@@ -88,10 +88,14 @@ class App(QWidget):
         self.mainlayout.addWidget(self.buttons_frame)
 
         # run main loop and periodically update tasks list
-        timer = QTimer()
-        timer.timeout.connect(self.refresh_gui)
-        timer.setInterval(10000)
-        timer.start()
+        self.last_datetime = TBackEnd.return_datetime_now_parts()
+        self.gui_refresh_timer = QTimer()
+        self.gui_refresh_timer.timeout.connect(self.refresh_gui)
+        self.gui_refresh_timer.setInterval(500)
+        self.gui_refresh_timer.start()
+
+        # add tasks into the GUI
+        self.refresh_tasks()
 
         self.show()
         sys.exit(app.exec_())
@@ -106,9 +110,6 @@ class App(QWidget):
         self.tasks_layout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.tasks_layout.setContentsMargins(12, 12, 5, 12)
 
-        # adds tasks to the container
-        self.refresh_tasks()
-
         tasks_scroll_area = QtWidgets.QScrollArea()
         tasks_scroll_area.setObjectName("TasksScrollArea")
         tasks_scroll_area.setWidgetResizable(True)
@@ -116,38 +117,66 @@ class App(QWidget):
 
         self.tasks_frame_layout.addWidget(tasks_scroll_area, 1)
 
-    def refresh_tasks(self):
-        print("refreshing")
+    def refresh_tasks(self):  # read and display tasks from tasks file
+        print("refreshing tasks")
+        if not self.gui_refresh_timer:
+            self.gui_refresh_timer.stop()
         while self.tasks_layout.count():
             child = self.tasks_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
 
-        # get tasks
-        self.tasks_list = TBackEnd.return_deadlines()
+        self.task_boxes.clear()
 
-        for task in self.tasks_list:
+        # get tasks
+        self.tasks_list = TBackEnd.read_and_sort_tasks_file()
+        self.tasks_parted_list = TBackEnd.return_deadlines(self.tasks_list)
+
+        for task in self.tasks_parted_list:
             *task_items, task_desc = task
 
             task_box = TaskBox(*task_items, self)
-            task_box.delete_button.pressed.connect(lambda p=int(task[0]): [self.direct_delete(p)])
+            task_box.delete_button.pressed.connect(lambda p=int(task[0]), q=self.tasks_list: [self.direct_delete(p, q)])
 
             if task_desc:
                 tooltip_text = f"<FONT color=black> {task_desc} </FONT>"
                 task_box.setToolTip(tooltip_text)
 
             self.tasks_layout.addWidget(task_box)
+            self.task_boxes.append(task_box)
 
         self.clear_all = QtWidgets.QPushButton("CLEAR ALL TASKS")
         self.clear_all.setObjectName("ClearAllButton")
         self.clear_all.setCursor(QCursor(Qt.PointingHandCursor))
         self.clear_all.clicked.connect(self.clear_all_tasks)
 
-        if not self.tasks_list:
+        if not self.tasks_parted_list:
             self.clear_all.setEnabled(False)
 
         self.tasks_layout.addWidget(self.clear_all, alignment=Qt.AlignCenter)
         self.tasks_layout.addStretch()
+
+        self.gui_refresh_timer.start()
+
+    def refresh_gui(self):  # update only task deadlines in the GUI, or update tasks in case any changes in file
+        if TBackEnd.read_and_sort_tasks_file() != self.tasks_list:
+            self.refresh_tasks()
+            return
+
+        time_now = TBackEnd.return_datetime_now_parts()
+        if self.last_datetime == time_now:
+            return
+
+        self.last_datetime = time_now
+
+        print("refreshing gui")
+        if len(self.tasks_parted_list) != len(self.task_boxes):
+            self.refresh_tasks()
+            return
+
+        self.tasks_parted_list = TBackEnd.return_deadlines(self.tasks_list)
+        for i, taskbox in enumerate(self.task_boxes):
+            taskbox.td.setText(self.tasks_parted_list[i][1])
 
     def open_task(self, num=False):
         if num:
@@ -166,8 +195,7 @@ class App(QWidget):
         else:
             print("another window already open")
 
-    def direct_delete(self, tasknum):
-        tlist = TBackEnd.read_and_sort_tasks_file()
+    def direct_delete(self, tasknum, tlist):
         if tasknum - 1 in range(len(tlist)):
             tname = tlist[tasknum - 1].split("\t", 2)[1]
             display_text = f"Are you sure you want to delete Task {tasknum}?\n\n" \
@@ -217,9 +245,6 @@ class App(QWidget):
     def closeEvent(self, e):
         sys.exit()
 
-    def refresh_gui(self):
-        self.refresh_tasks()
-
     def switch_theme(self):
         self.switch_mode_button.setText(f" {TStyle.theme.title()} Theme")
         TStyle.switch_mode()
@@ -238,7 +263,6 @@ class App(QWidget):
 class TaskBox(QtWidgets.QPushButton):
     def __init__(self, task_number, task_deadline, task_name, mainwindow: App):
         super(TaskBox, self).__init__()
-        self.main_window = mainwindow
         self.setStyleSheet(TStyle.stylesheet())
 
         task_lay = QtWidgets.QHBoxLayout(self)
@@ -249,9 +273,9 @@ class TaskBox(QtWidgets.QPushButton):
         t.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
         t.setObjectName("TaskNum")
 
-        td = QtWidgets.QLabel(task_deadline.strip())
-        td.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        td.setObjectName("TaskDead")
+        self.td = QtWidgets.QLabel(task_deadline.strip())
+        self.td.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.td.setObjectName("TaskDead")
 
         tn = QtWidgets.QLabel(task_name)
         tn.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
@@ -277,7 +301,7 @@ class TaskBox(QtWidgets.QPushButton):
 
         task_lay.addWidget(t)
         task_lay.addStretch()
-        task_lay.addWidget(td, 5)
+        task_lay.addWidget(self.td, 5)
         task_lay.addWidget(tn, 8)
         task_lay.addStretch()
 
@@ -295,13 +319,13 @@ class TaskBox(QtWidgets.QPushButton):
 
 
 class TaskWindow(QWidget):
-    def __init__(self, task_num=False, mainWindow=None):
+    def __init__(self, task_num=False, mainWindow: App = None):
         super(TaskWindow, self).__init__()
         self.window_style = TStyle.twindow_stylesheet()
         self.mainWindow = mainWindow
 
         self.task_number = task_num
-        self.tlist = TBackEnd.read_and_sort_tasks_file()
+        self.tlist = mainWindow.tasks_list.copy()
 
         if task_num in range(1, len(self.tlist) + 1):
             title = f"Edit Task {task_num}"
@@ -339,6 +363,15 @@ class TaskWindow(QWidget):
         self.tnf_entry = QtWidgets.QLineEdit(self.task_name_frame)
         self.tnf_entry.setObjectName("NameEntry")
         self.tnf_entry.setMaxLength(30)
+
+        temp_layout = QtWidgets.QHBoxLayout(self.tnf_entry)
+        temp_layout.setContentsMargins(0, 0, 8, 0)
+        temp_layout.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.tnf_entry.setLayout(temp_layout)
+        self.name_char_indicator = QtWidgets.QLabel("30")
+        self.name_char_indicator.setObjectName("CharIndicator")
+        self.name_char_indicator.setAlignment(Qt.AlignCenter)
+        temp_layout.addWidget(self.name_char_indicator)
 
         self.tnf_layout.addWidget(self.tnf_label)
         self.tnf_layout.addWidget(self.tnf_entry, 1)
@@ -409,10 +442,30 @@ class TaskWindow(QWidget):
 
         self.tdesc_label = QtWidgets.QLabel("Task Description\n(Optional)", self.task_name_frame)
         self.tdesc_label.setAlignment(Qt.AlignTop)
+
+        temp_layout = QtWidgets.QVBoxLayout(self.tdesc_label)
+        self.tdesc_label.setLayout(temp_layout)
+        help_label = QtWidgets.QLabel("<b>?</b>")
+        help_label.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        help_label.setObjectName("DescHelpLabel")
+        help_label.setToolTip(
+            "<FONT><i>The task description is displayed when "
+            "you hover your mouse over the task</i></FONT>")
+        temp_layout.addWidget(help_label)
+
         self.tdesc_entry = QtWidgets.QTextEdit(self.task_name_frame)
         self.tdesc_entry.setObjectName("DescriptionEntry")
         self.tdesc_entry.setTabChangesFocus(True)
         self.tdesc_entry.setPlaceholderText("Describe the task in max 168 characters")
+
+        temp_layout = QtWidgets.QHBoxLayout(self.tdesc_entry)
+        temp_layout.setContentsMargins(0, 0, 8, 0)
+        temp_layout.setAlignment(Qt.AlignRight | Qt.AlignBottom)
+        self.tdesc_entry.setLayout(temp_layout)
+        self.desc_char_indicator = QtWidgets.QLabel("168")
+        self.desc_char_indicator.setObjectName("DescCharIndicator")
+        self.desc_char_indicator.setAlignment(Qt.AlignCenter)
+        temp_layout.addWidget(self.desc_char_indicator)
 
         self.task_desc_layout.addWidget(self.tdesc_label)
         self.task_desc_layout.addWidget(self.tdesc_entry, 1)
@@ -473,6 +526,13 @@ class TaskWindow(QWidget):
         self.ttf_mins_entry.textEdited.connect(self.validate_entries)
         self.tdesc_entry.textChanged.connect(self.validate_entries)
 
+        # sync date-time entries to live date-time until user enters anything
+        self.time_checker = QTimer()
+        self.time_checker.timeout.connect(self.update_entries_time)
+        self.time_checker.setInterval(500)
+        if not self.task_number:
+            self.time_checker.start()
+
         self.fill_task_details()
 
     def fill_task_details(self):
@@ -501,6 +561,40 @@ class TaskWindow(QWidget):
 
         self.validate_entries()
 
+    def update_entries_time(self):
+        y = self.tdf_year_entry.text().strip()[-2:]
+        m = str(TBackEnd.month_name_to_num[self.tdf_month_entry.currentText().lower()]).zfill(2)
+        d = self.tdf_date_entry.text().strip().zfill(2)
+        h = self.ttf_hours_entry.text().strip().zfill(2)
+        mi = self.ttf_mins_entry.text().strip().zfill(2)
+
+        try:
+            TBackEnd.str_to_date_obj(f'{y} {m} {d} {h} {mi}', '%y %m %d %H %M')
+        except ValueError:
+            print("stopping entries checking timer")
+            self.time_checker.stop()
+
+        current_entry_times = [y, m, d, h, mi]
+        current_time = TBackEnd.return_datetime_now_parts()
+
+        if current_time == current_entry_times:
+            return
+
+        current_time = ":".join(current_time)
+
+        diff = TBackEnd.timediff(current_time, diff_of=current_entry_times, tasky_output=False)
+        if sum(diff) == 1 and diff[-1] == 1:
+            print("1 min diff = updating entries to live time")
+            yy, mm, dd, HH, MM = TBackEnd.return_datetime_now_parts()
+            self.tdf_year_entry.setText(str(2000 + int(yy)))
+            self.tdf_month_entry.setCurrentText(TBackEnd.month_names[int(mm)].title())
+            self.tdf_date_entry.setText(dd)
+            self.ttf_hours_entry.setText(HH)
+            self.ttf_mins_entry.setText(MM)
+        else:
+            print("stopping entries checking timer")
+            self.time_checker.stop()
+
     def save_task(self):
         valid = self.validate_entries()
 
@@ -515,7 +609,7 @@ class TaskWindow(QWidget):
 
             task_name = self.tnf_entry.text().strip()
             task_date = self.tdf_date_entry.text().strip().zfill(2)
-            task_month = str(TBackEnd.reversed_dict(TBackEnd.month_names)[
+            task_month = str(TBackEnd.month_name_to_num[
                             self.tdf_month_entry.currentText().lower()
                         ]).zfill(2)
             task_year = self.tdf_year_entry.text().strip()[-2:]
@@ -534,7 +628,6 @@ class TaskWindow(QWidget):
                 except IndexError:
                     print("index error while saving task")
             else:
-                self.tlist = TBackEnd.read_and_sort_tasks_file()
                 self.tlist.append(task_string)
 
             print("NEW:", self.tlist)
@@ -544,6 +637,8 @@ class TaskWindow(QWidget):
 
     def validate_entries(self):
         check = True
+        self.name_char_indicator.setStyleSheet("border: 0")
+        self.desc_char_indicator.setStyleSheet("border: 0")
         self.save_task_button.setEnabled(True)
         if check:
             self.tnf_entry.setStyleSheet(f"border: 1px solid black;")
@@ -553,16 +648,18 @@ class TaskWindow(QWidget):
             self.ttf_mins_entry.setStyleSheet(f"border: 1px solid black;")
             self.tdesc_entry.setStyleSheet("border: 1px solid black;")
 
+        self.name_char_indicator.setText(f"{30 - len(self.tnf_entry.text().strip())}")
         tdate = self.tdf_date_entry.text().strip().zfill(2)
 
         tmonth = self.tdf_month_entry.currentText()
-        tmonth_num = str(TBackEnd.reversed_dict(TBackEnd.month_names)[tmonth.lower()]).zfill(2)
+        tmonth_num = str(TBackEnd.month_name_to_num[tmonth.lower()]).zfill(2)
         days_in_month = TBackEnd.months[tmonth_num]
 
         tyear = self.tdf_year_entry.text().strip()
         thour = self.ttf_hours_entry.text().strip().zfill(2)
         tmins = self.ttf_mins_entry.text().strip().zfill(2)
         tdesc = self.tdesc_entry.toPlainText().strip().replace('\n', ' ')
+        self.desc_char_indicator.setText(str(168 - len(tdesc)))
 
         if not tdate.isdecimal() or int(tdate) not in range(1, days_in_month+1):
             self.tdf_date_entry.setStyleSheet(f"border: 4px solid red;")
@@ -593,6 +690,8 @@ class TaskWindow(QWidget):
             self.tdesc_entry.setStyleSheet("border: 4px solid red;")
             check = False
 
+        self.name_char_indicator.setStyleSheet("border: 0")
+        self.desc_char_indicator.setStyleSheet("border: 0")
         if check:
             self.tnf_entry.setStyleSheet(f"border: 1px solid black;")
             self.tdf_date_entry.setStyleSheet(f"border: 1px solid black;")
