@@ -69,7 +69,6 @@ class TaskyStyle:
             self.theme = "light"
 
         self.taskydir.mkdir(parents=True, exist_ok=True)
-        open(self.taskydir / "settings.txt", 'a').close()
         with open(self.taskydir / "settings.txt", "w") as f:
             f.write(self.theme)
 
@@ -164,11 +163,16 @@ class TaskyStyle:
             "}"
 
             "QWidget#TaskItem {"
-            f"min-height: 40px; max-height: 40px;"
+            f"min-height: 40px; "  # max-height: 40px;"
             f"border-radius: 15px;"
             "}"
             "QWidget#TaskItem:hover {"
             f"background-color: {self.task_bg};"
+            "}"
+            
+            "QToolTip {"
+            "border: 2px solid black; font-size: 20px;"
+            f"background: {Colors.white}; color: black;"
             "}"
 
             "QLabel#TaskNum, QLabel#TaskDead, QLabel#TaskName {"
@@ -292,6 +296,11 @@ class TaskyStyle:
             "QLineEdit#NameEntry {"
             "max-width: 1800px;"
             "}"
+            
+            "QTextEdit#DescriptionEntry {"
+            "font-size: 20px; border-radius: 18px; padding: 4px;"
+            "border: 1px solid black; background: white"
+            "}"
 
             "QPushButton#DeleteButton {"
             f"background-color: {Colors.white};"
@@ -304,6 +313,12 @@ class TaskyStyle:
             "}"
             "QPushButton#DeleteButton:pressed, QPushButton#DeleteButton:disabled {"
             f"background-color: {Colors.light_gray};"
+            "}"
+            
+            "QToolTip {"
+            "border: 2px solid black;"
+            f"background: {Colors.white}; color: black;"
+            f"font-size: 20px;"
             "}"
 
             "QPushButton#SaveButton, QPushButton#CancelButton {"
@@ -334,5 +349,21 @@ class TaskyStyle:
 
             "QPushButton#SaveButton:disabled {"
             f"background-color: {Colors.gray};"
+            "}"
+            
+            "QLabel#DescHelpLabel {"
+            f"color: {self.mode_bg}; border: 2px solid {self.mode_bg};"
+            f"font-size: {self.big_text_size}px; border-radius: 15px;"
+            f"max-height: 30px; max-width: 30px;"
+            "}"
+            
+            "QLabel#CharIndicator, QLabel#DescCharIndicator {"
+            f"color: blue; font-size:{self.text_size-2}px;"
+            f"border: 0px solid black; min-width: 40px;"
+            f"min-height: 30px; background: white; border-radius: 10px;"
+            "}"
+            
+            "QLabel#CharIndicator {"
+            "min-width: 30px; max-width: 30px;"
             "}"
         )

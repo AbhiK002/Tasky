@@ -1,5 +1,6 @@
 from os import system
 from .tasky_ops import Functions
+from textwrap import wrap
 
 
 class ConsoleFunctions(Functions):
@@ -15,9 +16,10 @@ class ConsoleFunctions(Functions):
         self.TL.info("refreshed output screen")
         self.TL.info(f"status bar: {data}")
 
-    def is_confirmed(self, msg):
+    def is_confirmed(self, msg, last):
         self.TL.waiting("for confirmation from user")
         while True:
+            self.write_tasks(last)
             choice = input(msg).strip().lower()
             if choice == 'y':
                 self.TL.info("input: 'y', confirmed")
@@ -44,8 +46,11 @@ class ConsoleFunctions(Functions):
             self.TL.info("no tasks available to display")
             return
 
-        outputs = list(map(lambda task: f"{f'({task[0]})'.rjust(4)} {task[1]} >>>  {task[2]}", self.return_deadlines(task_list)))
-        # task = [("[TASK NUMBER]", "[TASK DEADLINE]", "[TASK NAME]"), (...) ... ]
+        outputs = list(map(
+            lambda task: f"{f'({task[0]})'.rjust(4)} {task[1]} >>>  {task[2]}",
+            self.return_deadlines(task_list)
+        ))
+        # task = [("[TASK NUMBER]", "[TASK DEADLINE]", "[TASK NAME]", "[TASK DESCRIPTION]"), (...) ... ]
 
         self.TL.info('outputs created from the tasks list')
         self.TL.info(outputs)
@@ -57,16 +62,25 @@ class ConsoleFunctions(Functions):
 
         self.TL.function(f"ends -> status()")
 
-    def view_task(self, num):
+    def view_task(self, num, tlist):
         self.TL.function(f"starts -> view_task({num})")
 
-        task_list = self.read_and_sort_tasks_file()
+        task_list = tlist
         self.TL.info(f"stored tasks as 'task_list'")
+
+        if (num - 1) not in range(len(task_list)):
+            self.info_bar("invalid task to view")
+            self.TL.error(f"invalid task number {num} to view")
+            return
 
         target_task = task_list[num - 1]
         self.TL.info(f"target task : {target_task}")
 
-        dt, t_desc = target_task.split("=", 1)
+        dt, t_name, t_desc = target_task.split("\t", 2)
+
+        if not t_desc.strip():
+            t_desc = "(Empty)"
+
         tYY, tMM, tDD, tHH, tmm = dt.split(":")
 
         tYY = 2000 + int(tYY)
@@ -89,14 +103,17 @@ class ConsoleFunctions(Functions):
                 ttampm = "NOON"
         self.TL.info(f"changed hours to 12h format with AM/PM/NOON/MIDNIGHT")
 
+        desc_first_line, *desc_remaining = wrap(t_desc, width=30)
+        desc_remaining = list(map(lambda line: ' '*30 + line, desc_remaining))
         width = 60
         output = (
             "-" * width,
-            f" TASK {num} ".center(width, '-'), ' ',
-            f'{"TASK DESCRIPTION : ".rjust(30)}{t_desc.title()}',
+            f" TASK {num} ".center(width, '-'),
+            f'\n{"TASK NAME : ".rjust(30)}{t_name}',
             f'{"DATE : ".rjust(30)}{tDD} {tMM.title()}, {tYY}',
             f'{"TIME : ".rjust(30)}{tt12h}:{tmm} {ttampm}',
             f'{"DEADLINE : ".rjust(30)}{self.timediff(dt).strip()}',
+            f'\n{"TASK DESCRIPTION : ".rjust(30)}{desc_first_line}', *desc_remaining,
             "-" * width
         )
         print(*output, sep="\n")
@@ -113,18 +130,16 @@ class ConsoleFunctions(Functions):
 
         task_ind = int(num) - 1
         target_task = last[int(num) - 1]
-        self.TL.info(f"task number {num} requested for edit")
 
-        ttask_time, ttask_name = target_task.split("=", 1)
-        self.TL.info(f"stored values of task to be edited as ttask_time and ttask_name")
-        self.TL.info(f"original values: {ttask_time} and {ttask_name}")
+        ttask_time, ttask_name, ttask_desc = target_task.split("\t", 2)
+        self.TL.info(f"original values of task: {ttask_time}, {ttask_name} and {ttask_desc}")
 
         edit_task_help = (
             '-' * 60, f" EDIT TASK {num} ".center(60, '-'), '',
             '(Enter the corresponding number)'.center(60),
             "1. DATE-TIME",
             "2. TASK NAME",
-            "3. BOTH",
+            "3. TASK DESCRIPTION",
             "4. EXIT EDIT MODE"
         )
         self.info_bar(f"edit mode for task {num}")
@@ -145,7 +160,7 @@ class ConsoleFunctions(Functions):
                     self.TL.info(f"user input 1 to edit date-time only")
 
                     self.info_bar(f"task {num} edit: type '/cancel' to cancel")
-                    print('-' * 60, f" EDIT TASK {num} ".center(60, '-'), sep='\n', end='\n\n')
+                    print(*edit_task_help[:2], sep='\n', end='\n\n')
 
                     mn, hr, dt, mth, yr = self.new_task_time()
 
@@ -165,7 +180,7 @@ class ConsoleFunctions(Functions):
                     self.TL.info(f"user input 2 to edit name only")
 
                     self.info_bar(f"task {num} edit: type '/cancel' to cancel")
-                    print('-' * 60, f" EDIT TASK {num} ".center(60, '-'), sep='\n', end='\n\n')
+                    print(*edit_task_help[:2], sep='\n', end='\n\n')
 
                     ttask_name = self.new_task_name()
 
@@ -179,31 +194,19 @@ class ConsoleFunctions(Functions):
                         print(*edit_task_help, sep='\n', end='\n\n')
 
                 elif edit_choice == 3:
-                    self.TL.info(f"user input 3 to edit both task name and date-time")
+                    self.TL.info(f"user input 3 to edit task description")
 
                     self.info_bar(f"task {num} edit: type '/cancel' to cancel")
-                    print('-' * 60, f" EDIT TASK {num} ".center(60, '-'), sep='\n', end='\n\n')
+                    print(*edit_task_help[:2], sep='\n', end='\n\n')
 
-                    ttask_name = self.new_task_name()
+                    ttask_desc = self.new_task_description()
 
-                    if ttask_name != "/cancel":
-                        mn, hr, dt, mth, yr = self.new_task_time()
-
-                        if (mn, hr, dt, mth, yr) != (0, 0, 0, 0, 0):
-                            ttask_time = f"{yr}:{mth}:{dt}:{hr}:{mn}"
-                            self.TL.info(f"updated task details saved")
-
-                            edited = True
-
-                        else:
-                            self.write_tasks(last)
-
-                            self.info_bar(f"edit mode for task {num}")
-                            print(*edit_task_help, sep='\n', end='\n\n')
+                    if ttask_desc != "/cancel":
+                        self.TL.info(f"updated task description saved")
+                        edited = True
 
                     else:
                         self.write_tasks(last)
-
                         self.info_bar(f"edit mode for task {num}")
                         print(*edit_task_help, sep='\n', end='\n\n')
 
@@ -220,15 +223,14 @@ class ConsoleFunctions(Functions):
                     print(*edit_task_help, sep='\n', end='\n\n')
 
                 if edited:
-                    edited_task = f"{ttask_time}={ttask_name}"
-                    self.TL.info(f"new task: {edited_task}")
                     self.TL.info(f"old task: {last[task_ind]}")
+                    edited_task = f"{ttask_time}\t{ttask_name}\t{ttask_desc}"
+                    self.TL.info(f"new task: {edited_task}")
 
                     last[task_ind] = edited_task
                     self.TL.info(f"replaced old task in 'last' with edited task")
 
                     self.write_tasks(last)
-                    self.TL.info(f"updated output written to 'tasks.txt'")
                     self.TL.info(last)
 
                     self.info_bar("requested edit successful")
@@ -248,8 +250,6 @@ class ConsoleFunctions(Functions):
                 self.info_bar("numbers 1, 2, 3, 4 allowed only")
                 print(*edit_task_help, sep='\n', end='\n\n')
 
-        self.TL.info(f"edited name/date-time of requested task")
-
         self.TL.function(f"ends -> edit_task({num})")
 
     def new_task_name(self):
@@ -257,31 +257,47 @@ class ConsoleFunctions(Functions):
 
         while True:
             self.TL.waiting(f"for task name input")
-            taskinfo = input(f"{'New Task Name (30 chars)'.ljust(27)}:  ").strip()
+            taskname = input(f"{'New Task Name (30 chars)'.ljust(27)}:  ").strip().replace('\t', ' ')
 
-            self.TL.info(f"task name input: {taskinfo}")
+            self.TL.info(f"task name input: {taskname}")
 
-            if taskinfo == "/cancel":
+            if taskname == "/cancel":
                 self.TL.info(f"user chose to cancel new task addition")
-
                 self.TL.function(f"ends -> new_task_name()")
-                return taskinfo
+                return taskname
 
-            if taskinfo == "":
+            if not taskname:
                 print("Task Name cannot be empty\n")
                 self.TL.error(f"task description cannot be empty")
 
                 continue
 
-            if 1 <= len(taskinfo) <= 30:
-                self.TL.info(f"stored input from user as task name")
-                self.TL.info(f"new task name: {taskinfo}")
+            if 1 <= len(taskname) <= 30:
+                self.TL.info(f"new task name: {taskname}")
 
                 self.TL.function(f"ends -> new_task_name()")
-                return taskinfo
+                return taskname
             else:
                 print("Task Name cannot be more than 30 characters\n")
                 self.TL.error(f"task name is more than 30 characters")
+
+    def new_task_description(self):
+        self.TL.function("starts -> new_task_description()")
+
+        while True:
+            self.TL.waiting("for task description")
+            task_desc = input(f"\n{'Description (Optional)'.ljust(27)}:  ").strip().replace('\t', ' ')
+
+            if len(task_desc) > 168:
+                print("Task Description cannot be more than 168 characters\n")
+                self.TL.error("task description is more than 168 characters")
+                continue
+            if task_desc == "/cancel":
+                self.TL.info("user chose to cancel task edition/addition")
+                return task_desc
+            else:
+                self.TL.info("task description valid and returned")
+                return task_desc
 
     def new_task_time(self):
         self.TL.function(f"starts -> new_task_time()")
@@ -466,26 +482,29 @@ class ConsoleFunctions(Functions):
 
         self.write_tasks(last_copy)
 
-        taskinfo = self.new_task_name()
+        taskname = self.new_task_name()
+        if taskname == "/cancel":
+            self.write_tasks(last_copy)
+            self.info_bar("task addition cancelled")
+            return
 
-        if taskinfo == "/cancel":
+        tmin, thour, tdate, tmonth, tyear = self.new_task_time()
+        if (tmin, thour, tdate, tmonth, tyear) == (0, 0, 0, 0, 0):
+            self.write_tasks(last_copy)
+            self.info_bar("task addition cancelled")
+            return
+
+        taskdesc = self.new_task_description()
+        if taskdesc == '/cancel':
             self.write_tasks(last_copy)
             self.info_bar("task addition cancelled")
 
-        else:
-            tmin, thour, tdate, tmonth, tyear = self.new_task_time()
+        taskcell = f"{tyear}:{tmonth}:{tdate}:{thour}:{tmin}\t{taskname}\t{taskdesc}"
+        self.TL.info(f"combined values of new_task_name(), new_task_time() and new_task_description()")
+        self.TL.info(f"{taskcell}")
 
-            if (tmin, thour, tdate, tmonth, tyear) == (0, 0, 0, 0, 0):
-                self.write_tasks(last_copy)
-                self.info_bar("task addition cancelled")
-
-            else:
-                taskcell = f"{tyear}:{tmonth}:{tdate}:{thour}:{tmin}={taskinfo}"
-                self.TL.info(f"combined values of new_task_name() and new_task_time()")
-                self.TL.info(f"{taskcell}")
-
-                last_copy.append(taskcell)
-                self.write_tasks(last_copy)
-                self.info_bar("new task added")
+        last_copy.append(taskcell)
+        self.write_tasks(last_copy)
+        self.info_bar("new task added")
 
         self.TL.function(f"ends -> new_task()")
