@@ -52,7 +52,6 @@ class App(ConsoleFunctions):
             elif user_inp.isdecimal():
                 if int(user_inp) in range(1, total_tasks + 1):
                     self.TL.info(f"user requested to view task {int(user_inp)}")
-                    self.write_tasks(task_list)
                     self.info_bar(f"viewing task {int(user_inp)}")
                     self.view_task(int(user_inp), task_list)
                 else:
@@ -79,7 +78,7 @@ class App(ConsoleFunctions):
                     if int(words[1]) in range(1, total_tasks + 1):
                         self.TL.info(f"task number confirmed valid")
                         tasks_copy = task_list.copy()
-                        confirm = self.is_confirmed(f"\nConfirm removal of task {words[1]}? (enter y/n):  ")
+                        confirm = self.is_confirmed(f"\nConfirm removal of task {words[1]}? (enter y/n):  ", tasks_copy)
                         if confirm:
                             self.TL.info(f"confirmed")
                             self.remove(words[1], tasks_copy)
@@ -126,7 +125,8 @@ class App(ConsoleFunctions):
                     continue
                 self.TL.info("user requested to delete all tasks/clear tasks")
                 confirm = self.is_confirmed(
-                    "\nWARNING: Clear all existing tasks? (Cannot be undone)\n\t(Enter y/n) :  "
+                    "\nWARNING: Clear all existing tasks? (Cannot be undone)\n\t(Enter y/n) :  ",
+                    last=task_list
                 )
                 if confirm:
                     self.clear_tasks()
