@@ -19,6 +19,7 @@ Tasky is a simple deadline tracker program that displays a pretty list showing t
 - 💻 Has a console version for people who prefer CLI
 
 - 💫 Offers 2 themes:
+
   - 🖤 Dark mode (Grayscale)
   - 🧡 Light mode (Gold and Orange)
  
@@ -89,10 +90,14 @@ pip install PyQt5
 ![edit_desc](https://user-images.githubusercontent.com/68178267/210434733-ce5ccc60-54ee-4eb9-9b5a-f59012ea4b3b.png)
 
 ## Tasky CLI
-- (Left to Right) These commands have been used: `help` , `new` and `5`
+- (Left to Right) These commands have been used: `help` and `new`
 
-![cli_help_new_view](https://user-images.githubusercontent.com/68178267/210437602-60d64186-846d-4673-936e-107a63433e64.png)
+![cli_help_new](https://user-images.githubusercontent.com/68178267/210443417-900e0fb1-d0e9-4171-a60c-4e6c1b5bf897.png)
 
 - (Left to Right) These commands have been used: `edit 9` then `remove 1`
 
-![cli_edit_delete](https://user-images.githubusercontent.com/68178267/210433958-524d07c9-671e-4e60-a3a3-262d161d3fb9.png)
+![cli_edit_delete](https://user-images.githubusercontent.com/68178267/210443484-aa285595-8df0-46f7-9d9b-1ef421091417.png)
+
+- The command `5` has been used to view the details of task number 5 in the list
+
+![cli_view](https://user-images.githubusercontent.com/68178267/210443633-6425281a-ef04-4829-bf98-fc574b1001cb.png)
