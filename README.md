@@ -1,5 +1,5 @@
-![g893](https://user-images.githubusercontent.com/68178267/210425539-6f4c4895-e36c-43be-a889-73d463882380.svg) ![tclogo](https://user-images.githubusercontent.com/68178267/210426055-be55876f-eb94-4208-aee2-5bd8cd9c59aa.svg)
-
+![tlogosmol](https://user-images.githubusercontent.com/68178267/210429637-d4486b70-941b-4250-9423-81b6b54c2832.png)
+![tclogosmol](https://user-images.githubusercontent.com/68178267/210429655-f58e1369-184b-4e42-884d-137a98f5ab94.png)
 
 # Tasky
 📜 Have a lot of tasks you need to complete before their deadlines? ⏰
@@ -47,3 +47,14 @@ pip install PyQt5
 - In the folder,
   - Run `Tasky.exe` to use Tasky
   - Run `Tasky Console.exe` to use the CLI (Command Line Interface) version of Tasky
+
+# Tasky CLI Commands
+Here `N` refers to the task number of any task you want to operate on (task numbers are displayed with the tasks in the output)
+
+- Add Task             -  `add` `new` `create`
+- Delete Task          -  `delete N` `del N` `remove N` `rem N`
+- Delete All Tasks     -  `clear`
+- Edit Task            -  `edit N` `ed N` `change N`
+- View Task Details    -  `ENTER TASK NUMBER`
+- Open Help Menu       -  `help` `h`
+- Exit Tasky           -  `quit` `bye`
