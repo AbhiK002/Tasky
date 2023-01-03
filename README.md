@@ -1,50 +1,48 @@
-![tlogosmol](https://user-images.githubusercontent.com/68178267/155870910-63057524-5817-4ae1-9c21-79b90d0d16d6.png)
-# Tasky (GUI)
-Task Deadline Tracker:
-This program will show you the time remaining for each task you feed in it.
-### ** Click [here](https://github.com/AbhiK002/Tasky/tree/main/console_version) to check out the CLI (console) version of Tasky **
-
-## [Download Tasky](https://github.com/AbhiK002/Tasky/releases)
-- Version 1.0.2
-- Version 1.0.1
+![g893](https://user-images.githubusercontent.com/68178267/210425539-6f4c4895-e36c-43be-a889-73d463882380.svg) ![tclogo](https://user-images.githubusercontent.com/68178267/210426055-be55876f-eb94-4208-aee2-5bd8cd9c59aa.svg)
 
 
-## Features
-- Add, delete or edit tasks in Tasky using their respective buttons
-- Tasky will show you the time remaining for each task in a list form
-- Interactive GUI where the tasks list will update every minute
-- Tasky has 2 Color Themes: Dark Mode and Light Mode. Switch easily between these using just a button.
-- Once the deadline of a certain task is crossed, Tasky will print "Task Expired" for that particular task.
-- Add upto 20 tasks at a time
-- Your tasks information is stored in a remote location, so Tasky will always show your tasks even if you close and reopen it.
+# Tasky
+📜 Have a lot of tasks you need to complete before their deadlines? ⏰
 
-## Images
-- 2 color schemes available - Dark Mode and Light Mode
+Tasky is a simple deadline tracker program that gives you a pretty list showing the time remaining for each task, making it easier to prioritize tasks to complete.
 
-![modes](https://user-images.githubusercontent.com/68178267/158247840-6d14ab01-cb82-40be-9351-46d5dea032c9.png)
 
-- "edit" and "delete" buttons show up when mouse pointer hovers over any task
+# Download
+[Click here](https://github.com/AbhiK002/Tasky/releases/latest) to download the latest version of Tasky (v2.0)
 
-![hover](https://user-images.githubusercontent.com/68178267/158247837-e3e6b5bc-7bc6-4b1b-b5d3-50503d42de31.png)
+# Features
 
-- Tasky confirms the action before deleting a requested task
+- ⚜ Simple and interactive graphical user interface
+- 👁 Visual track of task deadlines
+- 🔁 Live updates of the time remaining for upto 100 tasks
+- 💻 Has a console version for people who prefer CLI
 
-![delete](https://user-images.githubusercontent.com/68178267/160482824-b15cbf01-26e4-4f54-a0cd-670ff7517978.png)
+- 💫 Offers 2 themes:
+  - 🖤 Dark Mode (Grayscale)
+  - 🧡 Light Mode (Gold and Orange)
+ 
+- ⚙ Add, edit or remove tasks
+- 💬 Enter a task description for each task to store more helpful details
 
-- New task window
+# Requirements
+Only required if you want to run the `.pyw` or `.py` file directly. Otherwise click [here](https://github.com/AbhiK002/Tasky#Releases)
+* 🐍 [Python 3.9.x or 3.10.x](https://www.python.org/downloads/)
+* 🟣 [PyQt5 - PyPi Page](https://pypi.org/project/PyQt5/)
+Install from pip via CMD (Windows Terminal)
+```
+pip install PyQt5
+```
 
-![new](https://user-images.githubusercontent.com/68178267/158247842-df7f291a-2ed2-44ec-8481-0b3986217c03.png)
+# Usage
+### Repository
+- Clone the repository or Download the repository ZIP file
+- Make sure you have met the [requirements](https://github.com/AbhiK002/Tasky#Requirements)
+  - Run `gui_main.pyw` to use Tasky
+  - Run `console_main.py` to use the CLI (Command Line Interface) version of Tasky
 
-- Editing a task
-
-![edit](https://user-images.githubusercontent.com/68178267/158247833-98cfe927-de8d-473f-b69c-05c82f68022f.png)
-
-## Usage
-![help](https://user-images.githubusercontent.com/68178267/160485795-411c9ccb-a133-4eea-a3ac-213c91ae2669.png)
-- Run the file `tasky_gui.pyw`.
-- In the Tasky window, click "New Task" button to create new tasks.
-- Hover over any task in the list to show the "Edit" and "Delete" buttons for that task.
-- To change the color scheme of the program, just click the "Light Mode"/"Dark Mode" button (depends on the current color scheme)
-
-## Thank You
-Hope this program is helpful to you in keeping track the deadlines of your tasks.
+### Releases
+- [Download the ZIP file from the latest release of Tasky](https://github.com/AbhiK002/Tasky/releases/latest)
+- Extract contents from the ZIP file using WinRAR or other software
+- In the folder,
+  - Run `Tasky.exe` to use Tasky
+  - Run `Tasky Console.exe` to use the CLI (Command Line Interface) version of Tasky
