@@ -59,6 +59,7 @@ class App(QWidget):
         self.tasks_parted_list = []
         self.tasks_list = []
         self.task_boxes = []
+        self.last_read = ''
         self.add_tasks_container()
 
         self.task_window = None
@@ -129,6 +130,7 @@ class App(QWidget):
         self.task_boxes.clear()
 
         # get tasks
+        self.last_read = open(TBackEnd.tasks_path).read()
         self.tasks_list = TBackEnd.read_and_sort_tasks_file()
         self.tasks_parted_list = TBackEnd.return_deadlines(self.tasks_list)
 
@@ -159,7 +161,7 @@ class App(QWidget):
         self.gui_refresh_timer.start()
 
     def refresh_gui(self):  # update only task deadlines in the GUI, or update tasks in case any changes in file
-        if TBackEnd.read_and_sort_tasks_file() != self.tasks_list:
+        if open(TBackEnd.tasks_path).read() != self.last_read:
             self.refresh_tasks()
             return
 
