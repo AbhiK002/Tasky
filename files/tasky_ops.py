@@ -27,7 +27,14 @@ class Functions:
             9: "september", 10: "october", 11: "november", 12: "december",
         }
 
+        self.month_name_to_num = {
+            'january': 1, 'february': 2, 'march': 3, 'april': 4,
+            'may': 5, 'june': 6, 'july': 7, 'august': 8,
+            'september': 9, 'october': 10, 'november': 11, 'december': 12
+        }
+
         self.current_year = int(datetime.datetime.today().strftime("%Y"))
+        self.str_to_date_obj = datetime.datetime.strptime
 
         self.spl = [":)", ":(", ":D", ":>", ":<", ":|", ":/", ":\\", ":O", ":P", "XD",
                     ">:(", ">:)", "._.", ".-.", "O_O", "LOL", "LMAO", "-_-",
@@ -46,21 +53,17 @@ class Functions:
         open(self.old_tasks_path, "a").close()
 
     @staticmethod
-    def reversed_dict(d):
-        result = {}
-        for k, v in d.items():
-            result[v] = k
-        return result
-
-    @staticmethod
     def is_leap(year):
         return int(year) % 4 == 0 and (int(year) % 100 != 0 or int(year) % 400 == 0)
 
-    def timediff(self, tt):
+    def timediff(self, tt, diff_of: list = False, tasky_output=True):
         self.TL.function(f"timediff({tt})")
 
         # time now
-        tny, tnm, tnd, tnh, tnmin = self.return_datetime_now_parts()
+        if not diff_of:
+            tny, tnm, tnd, tnh, tnmin = self.return_datetime_now_parts()
+        else:
+            tny, tnm, tnd, tnh, tnmin = diff_of
 
         # task time, tt -> "yy:mm:dd:HH:MM"
         tty, ttm, ttd, tth, ttmin = tt.split(":")
@@ -91,6 +94,9 @@ class Functions:
         if diffm < 0:
             diffm += 12
             diffy -= 1
+
+        if not tasky_output:
+            return [diffy, diffm, diffd, diffh, diffmin]
 
         if diffy < 0:
             output = "Task Expired".rjust(19)
@@ -241,6 +247,7 @@ class Functions:
             last.pop(int(num) - 1)
         except IndexError:
             self.TL.error("invalid task number to be removed")
+            self.write_tasks(last)
             return
         self.TL.info(f"removed requested task from the list")
         self.TL.info(last)
@@ -265,4 +272,3 @@ class Functions:
             deadlines.append((num, deadline, tname, tdesc))
 
         return deadlines
-
