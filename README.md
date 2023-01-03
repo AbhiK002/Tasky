@@ -8,7 +8,7 @@ Tasky is a simple deadline tracker program that gives you a pretty list showing 
 
 
 ## Download
-[Click here to download Tasky](https://github.com/AbhiK002/Tasky/releases/latest) to download the latest version of Tasky (v2.0)
+[Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.0)
 
 # Features
 
