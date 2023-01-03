@@ -247,7 +247,6 @@ class Functions:
             last.pop(int(num) - 1)
         except IndexError:
             self.TL.error("invalid task number to be removed")
-            self.write_tasks(last)
             return
         self.TL.info(f"removed requested task from the list")
         self.TL.info(last)
