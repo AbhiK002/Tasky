@@ -12,7 +12,8 @@ Tasky is a simple deadline tracker program that gives you a pretty list showing 
 
 # Features
 
-- ⚜ Simple and interactive graphical user interface
+- 🐤 Simple and easy to use application
+- ⚜ Modern and interactive graphical user interface
 - 👁 Visual track of task deadlines
 - 🔁 Live updates of the time remaining for upto 100 tasks
 - 💻 Has a console version for people who prefer CLI
@@ -23,6 +24,27 @@ Tasky is a simple deadline tracker program that gives you a pretty list showing 
  
 - ⚙ Add, edit or remove tasks
 - 💬 Enter a task description for each task to store more helpful details
+
+# How To Use
+- Click the 'New Task' button to add a new task
+- Click the 'Dark Theme' or 'Light Theme' button to switch color themes
+- Click on a task to edit its details
+- Hover over a task to view the task description
+- To delete a task, you can either:
+  - Click the 'dustbin' icon button in the 'Edit Task' window, OR
+  - Hover over the task and click the 'dustbin' icon button in the far right
+- Click the 'Clear All' button in the end of the tasks list to delete all tasks
+
+# Tasky CLI Commands
+Here `N` refers to the task number of any task you want to operate on (task numbers are displayed with the tasks in the output)
+
+- Add Task             -  `add` `new` `create`
+- Delete Task          -  `delete N` `del N` `remove N` `rem N`
+- Delete All Tasks     -  `clear`
+- Edit Task            -  `edit N` `ed N` `change N`
+- View Task Details    -  `ENTER TASK NUMBER`
+- Open Help Menu       -  `help` `h`
+- Exit Tasky           -  `quit` `bye`
 
 # Requirements
 Only required if you want to run the `.pyw` or `.py` file directly. Otherwise click [here](https://github.com/AbhiK002/Tasky#Releases)
@@ -48,13 +70,12 @@ pip install PyQt5
   - Run `Tasky.exe` to use Tasky
   - Run `Tasky Console.exe` to use the CLI (Command Line Interface) version of Tasky
 
-# Tasky CLI Commands
-Here `N` refers to the task number of any task you want to operate on (task numbers are displayed with the tasks in the output)
+# Screenshots
+- Light mode and Dark mode of Tasky
+![modes](https://user-images.githubusercontent.com/68178267/210431442-47c1f2c3-3be4-438f-b8a1-f77ba6f6d25a.png)
+- Edit Task window and visible task description of a hovered over task
+![edit_desc](https://user-images.githubusercontent.com/68178267/210434733-ce5ccc60-54ee-4eb9-9b5a-f59012ea4b3b.png)
 
-- Add Task             -  `add` `new` `create`
-- Delete Task          -  `delete N` `del N` `remove N` `rem N`
-- Delete All Tasks     -  `clear`
-- Edit Task            -  `edit N` `ed N` `change N`
-- View Task Details    -  `ENTER TASK NUMBER`
-- Open Help Menu       -  `help` `h`
-- Exit Tasky           -  `quit` `bye`
+## Tasky CLI
+![cli_help_new_view](https://user-images.githubusercontent.com/68178267/210433950-fd3808c9-4b37-4068-a308-173d26b61466.png)
+![cli_edit_delete](https://user-images.githubusercontent.com/68178267/210433958-524d07c9-671e-4e60-a3a3-262d161d3fb9.png)
