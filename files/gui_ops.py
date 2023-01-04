@@ -155,6 +155,15 @@ class TaskyStyle:
             "QPushButton#SwitchModeButton:pressed {"
             f"background-color: {self.mode_abg};"
             "}"
+            
+            "QPushButton#AboutButton {"
+            f"background-color: {self.major_hg};"
+            f"min-width: 40px; min-height: 40px;"
+            f"border-radius: 20px;"
+            "}"
+            "QPushButton#AboutButton:hover, QPushButton#AboutButton:pressed {"
+            f"background-color: {self.major_bg};"
+            "}"
 
             "QLabel#TasksHeadingLabel {"
             f"font-size: {self.big_text_size}px; font-weight: bolder;"
