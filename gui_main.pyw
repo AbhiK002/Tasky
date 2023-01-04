@@ -79,10 +79,18 @@ class App(QWidget):
         self.switch_mode_button.setObjectName("SwitchModeButton")
         self.switch_mode_button.clicked.connect(self.switch_theme)
 
+        # About Tasky
+        self.about_tasky = QtWidgets.QPushButton()
+        self.about_tasky.setIcon(QIcon(TStyle.tlogo_path))
+        self.about_tasky.setObjectName("AboutButton")
+        self.about_tasky.setToolTip("About Tasky")
+        self.about_tasky.clicked.connect(self.show_about_tasky)
+
         self.buttons_layout.addStretch()
         self.buttons_layout.addWidget(self.new_task_button)
         self.buttons_layout.addWidget(self.switch_mode_button)
         self.buttons_layout.addStretch()
+        self.buttons_layout.addWidget(self.about_tasky)
 
         # place top and bottom frames
         self.mainlayout.addWidget(self.tasks_frame, 1)
@@ -100,6 +108,14 @@ class App(QWidget):
 
         self.show()
         sys.exit(app.exec_())
+
+    def show_about_tasky(self):
+        QtWidgets.QMessageBox.information(
+            self,
+            'Tasky',
+            TBackEnd.tasky_version(1),
+            QtWidgets.QMessageBox.Ok
+        )
 
     def add_tasks_container(self):
         self.tasks_container = QWidget(self.tasks_frame)
