@@ -3,6 +3,15 @@ import datetime
 from .taskylog import TaskyLog
 
 
+class AboutTasky:
+    # ------------------  About Tasky -------------------- #
+    version = 'v2.0'
+    creator = 'Abhineet Kelley'
+    release = '04 / 01 / 2023'
+    github = 'https://github.com/AbhiK002/Tasky'
+    # ---------------------------------------------------- #
+
+
 class Functions:
     def __init__(self):
         self.TL = TaskyLog()
@@ -41,6 +50,21 @@ class Functions:
                     ">_<", "(:", "):", "D:", ":^*", ";-;", ":'D", ":')", ":'("]
 
         self.TL.info(f"defined datasets for months, month names and special inputs")
+
+    def tasky_version(self, left_width=23):
+        t_width = 60
+        l_width = left_width
+
+        about = '\n'.join((
+            '-' * t_width,
+            '  About Tasky  '.center(t_width, '-'),
+            f'\n{"VERSION".ljust(l_width)} = {AboutTasky.version}',
+            f'{"RELEASE DATE".ljust(l_width)} = {AboutTasky.release}',
+            f'{"CREATOR".ljust(l_width)} = {AboutTasky.creator}',
+            f'{"GITHUB REPO".ljust(l_width)} = {AboutTasky.github}',
+            '-' * t_width
+        ))
+        return about
 
     @staticmethod
     def return_datetime_now_parts():
