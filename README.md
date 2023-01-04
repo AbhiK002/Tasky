@@ -10,6 +10,10 @@ Tasky is a simple deadline tracker program that displays a pretty list showing t
 ## Download
 [Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.0)
 
+Includes:
+- Tasky
+- Tasky CLI Version (Command Line Interface)
+
 # Features
 
 - 🐤 Simple and easy to use application
