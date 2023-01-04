@@ -44,6 +44,7 @@ class App(ConsoleFunctions):
                     f"{'Edit Task N'.ljust(20)} --  edit N / ed N / change N",
                     f"{'View Task Details'.ljust(20)} --  ENTER TASK NUMBER",
                     f"{'Open Help Menu'.ljust(20)} --  help / h",
+                    f"{'About Tasky'.ljust(20)} --  version / about",
                     f"{'Exit Tasky'.ljust(20)} --  quit / bye",
                     sep="\n"
                 )
@@ -134,6 +135,11 @@ class App(ConsoleFunctions):
                 else:
                     self.TL.info("user cancelled clearing all tasks")
                     self.info_bar("cancelled clearing all tasks")
+
+            elif user_inp in ("version", "about"):
+                self.TL.info("user requested to check the version of Tasky")
+                self.info_bar("viewing current version")
+                print(self.tasky_version())
 
             # (not so) secret commands
             elif words[0] in ("hi", "hello", "hey"):
