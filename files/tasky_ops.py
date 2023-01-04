@@ -51,17 +51,21 @@ class Functions:
 
         self.TL.info(f"defined datasets for months, month names and special inputs")
 
-    def tasky_version(self, left_width=23):
+    def tasky_version(self, left_width=23, link=False):
         t_width = 60
         l_width = left_width
+        github = AboutTasky.github
+        if link:
+            github = f"<a href='{github}'> AbhiK002/Tasky </a>"
+            print(github)
 
         about = '\n'.join((
-            '-' * t_width,
-            '  About Tasky  '.center(t_width, '-'),
-            f'\n{"VERSION".ljust(l_width)} = {AboutTasky.version}',
-            f'{"RELEASE DATE".ljust(l_width)} = {AboutTasky.release}',
-            f'{"CREATOR".ljust(l_width)} = {AboutTasky.creator}',
-            f'{"GITHUB REPO".ljust(l_width)} = {AboutTasky.github}',
+            '-' * t_width + "<br>"*link,
+            '  About Tasky  '.center(t_width, '-') + "<br>"*link,
+            f'\n{"VERSION".ljust(l_width)} = {AboutTasky.version}{"<br>"*link}',
+            f'{"RELEASE DATE".ljust(l_width)} = {AboutTasky.release}{"<br>"*link}',
+            f'{"CREATOR".ljust(l_width)} = {AboutTasky.creator}{"<br>"*link}',
+            f'{"GITHUB REPO".ljust(l_width)} = {github}{"<br>"*link}',
             '-' * t_width
         ))
         return about
