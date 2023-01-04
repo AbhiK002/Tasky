@@ -53,6 +53,7 @@ Note:
 - Edit Task            -  `edit X` `ed X` `change X`
 - View Task Details    -  `ENTER TASK NUMBER` (Examples: `1`, `2`, `3`, `4` ...)
 - Open Help Menu       -  `help` `h`
+- About Tasky          -  `version` `about`
 - Exit Tasky           -  `quit` `bye`
 
 # Requirements
