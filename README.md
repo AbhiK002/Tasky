@@ -63,7 +63,7 @@ Note:
 # Requirements
 Only required if you want to run the `.pyw` or `.py` file directly. Otherwise use the binary (ZIP, EXE) files in releases.
 * 🐍 [Python 3.9.x or 3.10.x](https://www.python.org/downloads/)
-* 🟣 [PyQt5 - PyPi Page](https://pypi.org/project/PyQt5/)
+* 🟣 [PyQt5](https://pypi.org/project/PyQt5/)
 
 Install PyQt5 using `pip` via terminal
 ```
