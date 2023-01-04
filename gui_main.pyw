@@ -113,7 +113,7 @@ class App(QWidget):
         QtWidgets.QMessageBox.information(
             self,
             'Tasky',
-            TBackEnd.tasky_version(1),
+            f"<FONT>{TBackEnd.tasky_version(1, link=True)}</FONT>",
             QtWidgets.QMessageBox.Ok
         )
 
