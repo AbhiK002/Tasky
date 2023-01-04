@@ -1,50 +1,104 @@
-![tlogosmol](https://user-images.githubusercontent.com/68178267/155870910-63057524-5817-4ae1-9c21-79b90d0d16d6.png)
-# Tasky (GUI)
-Task Deadline Tracker:
-This program will show you the time remaining for each task you feed in it.
-### ** Click [here](https://github.com/AbhiK002/Tasky/tree/main/console_version) to check out the CLI (console) version of Tasky **
+![tlogosmol](https://user-images.githubusercontent.com/68178267/210429637-d4486b70-941b-4250-9423-81b6b54c2832.png)
+![tclogosmol](https://user-images.githubusercontent.com/68178267/210429655-f58e1369-184b-4e42-884d-137a98f5ab94.png)
 
-## [Download Tasky](https://github.com/AbhiK002/Tasky/releases)
-- Version 1.0.2
-- Version 1.0.1
+# Tasky
+📜 Have a lot of tasks you need to complete before their deadlines? ⏰
+
+Tasky is a simple deadline tracker program that displays a pretty list showing the time remaining for each task, making it easier to prioritize tasks to complete.
 
 
-## Features
-- Add, delete or edit tasks in Tasky using their respective buttons
-- Tasky will show you the time remaining for each task in a list form
-- Interactive GUI where the tasks list will update every minute
-- Tasky has 2 Color Themes: Dark Mode and Light Mode. Switch easily between these using just a button.
-- Once the deadline of a certain task is crossed, Tasky will print "Task Expired" for that particular task.
-- Add upto 20 tasks at a time
-- Your tasks information is stored in a remote location, so Tasky will always show your tasks even if you close and reopen it.
+## Download
+[Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.0)
 
-## Images
-- 2 color schemes available - Dark Mode and Light Mode
+# Features
 
-![modes](https://user-images.githubusercontent.com/68178267/158247840-6d14ab01-cb82-40be-9351-46d5dea032c9.png)
+- 🐤 Simple and easy to use application
+- ⚜ Modern and interactive graphical user interface
+- 👁 Visual track of task deadlines
+- 🔁 Live updates of the time remaining for upto 100 tasks
+- 💻 Has a console version for people who prefer CLI
 
-- "edit" and "delete" buttons show up when mouse pointer hovers over any task
+- 💫 Offers 2 themes:
 
-![hover](https://user-images.githubusercontent.com/68178267/158247837-e3e6b5bc-7bc6-4b1b-b5d3-50503d42de31.png)
+  - 🖤 Dark mode (Grayscale)
+  - 🧡 Light mode (Gold and Orange)
+ 
+- ⚙ Add, edit or remove tasks
+- 💬 Enter a task description for each task to store more helpful details
 
-- Tasky confirms the action before deleting a requested task
+# How To Use
+- Click the 'New Task' button to add a new task
+- Click the 'Dark Theme' or 'Light Theme' button to switch color themes
+- Click on a task to edit its details
+- Hover over a task to view the task description
+- To delete a task, you can either:
+  - Click the 'TRASH' icon button in the 'Edit Task' window, OR 
+  - Hover over the task and click the 'TRASH' icon button in the far right
+- Click the 'Clear All' button in the end of the tasks list to delete all tasks
 
-![delete](https://user-images.githubusercontent.com/68178267/160482824-b15cbf01-26e4-4f54-a0cd-670ff7517978.png)
+#### 'TRASH' icon buttons: 
+![de2](https://user-images.githubusercontent.com/68178267/210439366-4876bdc5-0a1a-441f-a7ae-9d8a09bd0ff8.png)
+![de](https://user-images.githubusercontent.com/68178267/210439196-1b8e0773-625d-4463-bc63-39905b38752f.png)
 
-- New task window
 
-![new](https://user-images.githubusercontent.com/68178267/158247842-df7f291a-2ed2-44ec-8481-0b3986217c03.png)
+# Tasky CLI Commands
+Note:  
+  ▷ Here `X` refers to the task number (`1`, `2`, `3` ...) of any task you want to operate on (task numbers are displayed with the tasks in the output)  
+  ▷ None of the commands shown below are case-sensitive  
 
-- Editing a task
+### Commands
+- Add Task             -  `add` `new` `create`
+- Delete Task          -  `delete X` `del X` `remove X` `rem X`
+- Delete All Tasks     -  `clear`
+- Edit Task            -  `edit X` `ed X` `change X`
+- View Task Details    -  `ENTER TASK NUMBER` (Examples: `1`, `2`, `3`, `4` ...)
+- Open Help Menu       -  `help` `h`
+- About Tasky          -  `version` `about`
+- Exit Tasky           -  `quit` `bye`
 
-![edit](https://user-images.githubusercontent.com/68178267/158247833-98cfe927-de8d-473f-b69c-05c82f68022f.png)
+# Requirements
+Only required if you want to run the `.pyw` or `.py` file directly. Otherwise use the binary (ZIP, EXE) files in releases.
+* 🐍 [Python 3.9.x or 3.10.x](https://www.python.org/downloads/)
+* 🟣 [PyQt5 - PyPi Page](https://pypi.org/project/PyQt5/)
 
-## Usage
-![help](https://user-images.githubusercontent.com/68178267/160485795-411c9ccb-a133-4eea-a3ac-213c91ae2669.png)
-- Run the file `tasky_gui.pyw`.
-- In the Tasky window, click "New Task" button to create new tasks.
-- Hover over any task in the list to show the "Edit" and "Delete" buttons for that task.
-- To change the color scheme of the program, just click the "Light Mode"/"Dark Mode" button (depends on the current color scheme)
+Install PyQt5 using `pip` via terminal
+```
+pip install PyQt5
+```
+#### (NOTE: Tasky's CLI version does not require any additional modules other than in-built Python modules & libraries)
 
-## Thank You
-Hope this program is helpful to you in keeping track the deadlines of your tasks.
+# Usage
+### Repository
+- Clone the repository or download the repository ZIP file
+- Make sure you have met the requirements above
+  - Run `gui_main.pyw` to use Tasky
+  - Run `console_main.py` to use the CLI (Command Line Interface) version of Tasky
+
+### Releases
+- [Download the ZIP file from the latest release of Tasky](https://github.com/AbhiK002/Tasky/releases/latest)
+- Extract contents from the ZIP file using WinRAR or other software
+- In the extracted folder,
+  - Run `Tasky.exe` to use Tasky
+  - Run `Tasky Console.exe` to use the CLI (Command Line Interface) version of Tasky
+
+# Screenshots
+- Light mode and Dark mode of Tasky
+
+![modes](https://user-images.githubusercontent.com/68178267/210431442-47c1f2c3-3be4-438f-b8a1-f77ba6f6d25a.png)
+
+- Edit Task window and visible task description on hovering mouse over a task
+
+![edit_desc](https://user-images.githubusercontent.com/68178267/210434733-ce5ccc60-54ee-4eb9-9b5a-f59012ea4b3b.png)
+
+## Tasky CLI
+- (Left to Right) These commands have been used: `help` and `new`
+
+![cli_help_new](https://user-images.githubusercontent.com/68178267/210443417-900e0fb1-d0e9-4171-a60c-4e6c1b5bf897.png)
+
+- (Left to Right) These commands have been used: `edit 9` then `remove 1`
+
+![cli_edit_delete](https://user-images.githubusercontent.com/68178267/210443484-aa285595-8df0-46f7-9d9b-1ef421091417.png)
+
+- The command `5` has been used to view the details of task number 5 in the list
+
+![cli_view](https://user-images.githubusercontent.com/68178267/210443633-6425281a-ef04-4829-bf98-fc574b1001cb.png)
