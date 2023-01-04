@@ -106,3 +106,7 @@ pip install PyQt5
 - The command `5` has been used to view the details of task number 5 in the list
 
 ![cli_view](https://user-images.githubusercontent.com/68178267/210443633-6425281a-ef04-4829-bf98-fc574b1001cb.png)
+
+
+### Created by Abhineet Kelley (Github: AbhiK002)
+Enjoy!
