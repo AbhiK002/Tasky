@@ -1,13 +1,15 @@
-![tlogosmol](https://user-images.githubusercontent.com/68178267/210429637-d4486b70-941b-4250-9423-81b6b54c2832.png)
-![tclogosmol](https://user-images.githubusercontent.com/68178267/210429655-f58e1369-184b-4e42-884d-137a98f5ab94.png)
+<p align='center'>
+<image src='https://user-images.githubusercontent.com/68178267/210774045-c83e75ae-a2f2-40e3-b260-e24139271aec.png' height=120>
+<image src='https://user-images.githubusercontent.com/68178267/210774312-416d35a3-ad67-46f1-9f46-693e2592fd48.png' height=120>
+<h1 align='center'> Tasky </h2>
 
-# Tasky
-📜 Have a lot of tasks you need to complete within their deadlines? ⏰
-
+<p align='center'> 📜 Have a lot of tasks you need to complete within their deadlines? ⏰ </p>
+</p>
+<br>
 Tasky is a simple deadline tracker program that displays a pretty list showing the time remaining for each task, making it easier to prioritize tasks to complete.
 
 
-## Download
+# Download
 [Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.0)
 
 Includes:
