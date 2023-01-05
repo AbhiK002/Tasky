@@ -5,9 +5,9 @@ from .taskylog import TaskyLog
 
 class AboutTasky:
     # ------------------  About Tasky -------------------- #
-    version = 'v2.0'
+    version = 'v2.0.1'
     creator = 'Abhineet Kelley'
-    release = '04 / 01 / 2023'
+    release = '05-01-2023 (GMT +5:30)'
     github = 'https://github.com/AbhiK002/Tasky'
     # ---------------------------------------------------- #
 
