@@ -75,7 +75,6 @@ class Functions:
         return datetime.datetime.now().strftime("%y %m %d %H %M").split()
 
     def check_tasks_txt(self):
-        self.TL.info("creating newtasks.txt and tasks.txt if it doesn't exist")
         self.taskymain_path.mkdir(parents=True, exist_ok=True)
         open(self.tasks_path, "a").close()
         open(self.old_tasks_path, "a").close()
