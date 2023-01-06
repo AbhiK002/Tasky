@@ -1,6 +1,6 @@
 <p align='center'>
-<image src='https://user-images.githubusercontent.com/68178267/210774045-c83e75ae-a2f2-40e3-b260-e24139271aec.png' height=120>
-<image src='https://user-images.githubusercontent.com/68178267/210774312-416d35a3-ad67-46f1-9f46-693e2592fd48.png' height=120>
+<image src='https://user-images.githubusercontent.com/68178267/210774045-c83e75ae-a2f2-40e3-b260-e24139271aec.png' height=100>
+<image src='https://user-images.githubusercontent.com/68178267/210774312-416d35a3-ad67-46f1-9f46-693e2592fd48.png' height=100>
 <h1 align='center'> Tasky </h1>
 
 <p align='center'> 📜 Have a lot of tasks you need to complete within their deadlines? ⏰ </p>
