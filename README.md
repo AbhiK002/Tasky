@@ -82,11 +82,9 @@ pip install PyQt5
   - Run `console_main.py` to use the CLI (Command Line Interface) version of Tasky
 
 ### Releases
-- [Download the ZIP file from the latest release of Tasky](https://github.com/AbhiK002/Tasky/releases/latest)
-- Extract contents from the ZIP file using WinRAR or other software
-- In the extracted folder,
-  - Run `Tasky.exe` to use Tasky
-  - Run `Tasky-Console.exe` to use the CLI (Command Line Interface) version of Tasky
+- [Download the setup file from the latest release of Tasky](https://github.com/AbhiK002/Tasky/releases/latest)
+- Run the setup `tasky-setup.exe`
+- Tasky will be installed on your computer. Check the start menu to find the apps `Tasky` and `Tasky Console` under `Tasky` folder in the apps list.
 
 # Screenshots
 - Light mode and Dark mode of Tasky
