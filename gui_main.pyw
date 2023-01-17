@@ -349,7 +349,7 @@ class TaskBox(QtWidgets.QPushButton):
         task_lay.addStretch()
 
         # open task window on click
-        self.clicked.connect(lambda p=int(task_number): [mainwindow.open_task(p)])
+        self.pressed.connect(lambda p=int(task_number): [mainwindow.open_task(p)])
 
         self.setObjectName("TaskItem")
         self.setCursor(QCursor(Qt.PointingHandCursor))
