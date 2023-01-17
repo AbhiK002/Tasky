@@ -10,7 +10,7 @@ Tasky is a simple deadline tracker program that displays a pretty list showing t
 
 
 # Download
-[Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.0.1)
+[Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.0.2)
 
 Includes:
 - Tasky
@@ -42,7 +42,8 @@ Includes:
   - Hover over the task and click the 'TRASH' icon button in the far right
 - Click the 'Clear All' button in the end of the tasks list to delete all tasks
 
-#### 'TRASH' icon buttons: 
+<b> 'TRASH' icon buttons: </b>  
+
 ![de2](https://user-images.githubusercontent.com/68178267/210439366-4876bdc5-0a1a-441f-a7ae-9d8a09bd0ff8.png)
 ![de](https://user-images.githubusercontent.com/68178267/210439196-1b8e0773-625d-4463-bc63-39905b38752f.png)
 
@@ -71,7 +72,7 @@ Install PyQt5 using `pip` via terminal
 ```
 pip install PyQt5
 ```
-#### (NOTE: Tasky's CLI version does not require any additional modules other than in-built Python modules & libraries)
+<b> (NOTE: Tasky's CLI version does not require any additional modules other than in-built Python modules & libraries)</b>
 
 # Usage
 ### Repository
@@ -85,7 +86,7 @@ pip install PyQt5
 - Extract contents from the ZIP file using WinRAR or other software
 - In the extracted folder,
   - Run `Tasky.exe` to use Tasky
-  - Run `Tasky Console.exe` to use the CLI (Command Line Interface) version of Tasky
+  - Run `Tasky-Console.exe` to use the CLI (Command Line Interface) version of Tasky
 
 # Screenshots
 - Light mode and Dark mode of Tasky
