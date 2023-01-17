@@ -1,3 +1,23 @@
+"""
+    Tasky is a task deadline tracker application
+    Copyright (C) 2022-2023  Abhineet Kelley (AbhiK002)
+
+    This file is part of Tasky.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
 from pathlib import Path
 import datetime
 from .taskylog import TaskyLog
@@ -5,10 +25,11 @@ from .taskylog import TaskyLog
 
 class AboutTasky:
     # ------------------  About Tasky -------------------- #
-    version = 'v2.0.1'
+    version = 'v2.0.2'
     creator = 'Abhineet Kelley'
-    release = '05-01-2023 (GMT +5:30)'
+    release = '17-01-2023 (GMT +5:30)'
     github = 'https://github.com/AbhiK002/Tasky'
+    license = 'https://github.com/AbhiK002/Tasky/blob/main/LICENSE'
     # ---------------------------------------------------- #
 
 
@@ -55,9 +76,10 @@ class Functions:
         t_width = 60
         l_width = left_width
         github = AboutTasky.github
+        licc = AboutTasky.license
         if link:
             github = f"<a href='{github}'> AbhiK002/Tasky </a>"
-            print(github)
+            licc = f"<a href='{licc}'> View License </a>"
 
         about = '\n'.join((
             '-' * t_width + "<br>"*link,
@@ -65,7 +87,8 @@ class Functions:
             f'\n{"VERSION".ljust(l_width)} = {AboutTasky.version}{"<br>"*link}',
             f'{"RELEASE DATE".ljust(l_width)} = {AboutTasky.release}{"<br>"*link}',
             f'{"CREATOR".ljust(l_width)} = {AboutTasky.creator}{"<br>"*link}',
-            f'{"GITHUB REPO".ljust(l_width)} = {github}{"<br>"*link}',
+            f'{"SOURCE CODE".ljust(l_width)} = {github}{"<br>"*link}',
+            f'{"LICENSE".ljust(l_width)} = {licc}{"<br>"*link}',
             '-' * t_width
         ))
         return about
