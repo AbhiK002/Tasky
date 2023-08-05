@@ -352,7 +352,8 @@ class App:
             bg=self.major_bg,
             highlightthickness=1,
             highlightbackground=self.major_bg,
-        )
+        )  # highlight attrs helped in fixing empty gui bug that bugged me for days
+        
         self.tasks_frame.grid(row=1, column=0, padx=3, sticky=NSEW)
         self.tasks_frame.columnconfigure(0, weight=1)
 
@@ -375,19 +376,13 @@ class App:
         task_list = self.fn.read_and_sort_tasks_file()
 
         if len(task_list) >= 20:
-            self.new_task_button.config(state=DISABLED)
-            while len(task_list) > 20:
-                ind = len(task_list) - 1
-                self.fn.remove_task(ind)
-                task_list = self.fn.read_and_sort_tasks_file()
+            task_list = task_list[:20]
         else:
             if self.new_task_button.cget("state") == DISABLED:
                 self.new_task_button.config(state=NORMAL)
 
         for i in self.tasks_frame.winfo_children():
             i.destroy()
-
-        task_list = self.fn.read_and_sort_tasks_file()
 
         self.tasks_list = []
 
@@ -535,7 +530,7 @@ class App:
         self.mainframe.config(bg=self.major_bg)
         self.title_frame.config(bg=self.major_bg)
         self.title_label.config(bg=self.major_bg, fg=self.text_fg)
-        self.tasks_frame.config(bg=self.major_bg, highlightbackground=self.major_bg)
+        self.tasks_frame.config(bg=self.major_bg, highlightbackground=self.major_bg)   # highlight attr fixed empty gui bug
 
         self.sync_tasks_display()
 
