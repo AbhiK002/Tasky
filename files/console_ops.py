@@ -1,6 +1,6 @@
 """
     Tasky is a task deadline tracker application
-    Copyright (C) 2022-2023  Abhineet Kelley (AbhiK002)
+    Copyright (C) 2022-2025  Abhineet Kelley (AbhiK002)
 
     This file is part of Tasky.
 
@@ -18,19 +18,21 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from os import system
-from .tasky_ops import Functions
+from .tasky_ops import Functions, OSFunctions
 from textwrap import wrap
+if OSFunctions.is_linux_system():
+    import readline
 
 
 class ConsoleFunctions(Functions):
     def clear_window(self):
-        system("cls")
+        OSFunctions.clear_terminal()
         self.TL.function(f"output screen cleared")
 
-    def info_bar(self, data):
+    def info_bar(self, data, clear_console=True):
         data = str(data)
-        self.clear_window()
+        if clear_console:
+            self.clear_window()
         self.status()
         print(f"<< {data.center(54)} >>\n")
         self.TL.info("refreshed output screen")

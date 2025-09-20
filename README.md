@@ -10,11 +10,27 @@ Tasky is a simple deadline tracker program that displays a pretty list showing t
 
 
 # Download
-[Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.0.2)
+[Click here to download](https://github.com/AbhiK002/Tasky/releases/latest) the latest version of Tasky (v2.1)
 
 Includes:
 - Tasky
-- Tasky CLI Version (Command Line Interface)
+- Tasky Console (CLI Version)
+
+
+### How To Install
+- For Windows:
+  - [Download the setup file from the latest release of Tasky](https://github.com/AbhiK002/Tasky/releases/latest)
+  - Run the setup `tasky-setup.exe`
+  - Tasky will be installed on your computer. Check the start menu to find the apps `Tasky` and `Tasky Console` under `Tasky` folder in the apps list.
+- For Linux:
+  - Download the zip file containing the Linux executables from the [latest release](https://github.com/AbhiK002/Tasky/releases/latest)
+    - There will be two binary executable files in the unzipped folder: `tasky` and `tasky-console`
+  - Manually move the binary executable files to a folder that is included in the system PATH (For example: `/usr/local/bin`)
+  - Tasky will be ready to use
+- For Mac:
+  - ⚠ <b>*TBA, no executable present for MacOS yet, will work on it soon*</b>
+  - Run the .py and .pyw files directly after fulfilling the [requirements](#requirements)
+
 
 # Features
 
@@ -56,7 +72,7 @@ Note:
 ### Commands
 - Add Task             -  `add` `new` `create`
 - Delete Task          -  `delete X` `del X` `remove X` `rem X`
-- Delete All Tasks     -  `clear`
+- Delete All Tasks     -  `delete-all` `remove-all`
 - Edit Task            -  `edit X` `ed X` `change X`
 - View Task Details    -  `ENTER TASK NUMBER` (Examples: `1`, `2`, `3`, `4` ...)
 - Open Help Menu       -  `help` `h`
@@ -64,15 +80,16 @@ Note:
 - Exit Tasky           -  `quit` `bye`
 
 # Requirements
-Only required if you want to run the `.pyw` or `.py` file directly. Otherwise use the binary (ZIP, EXE) files in releases.
-* 🐍 [Python 3.9.x or 3.10.x](https://www.python.org/downloads/)
-* 🟣 [PyQt5](https://pypi.org/project/PyQt5/)
+Refer to the `requirements.txt` file for the libraries used for Tasky. The only external library being used is PyQt5, which is used for the Tasky GUI.
 
-Install PyQt5 using `pip` via terminal
+To install the libraries from the `requirements.txt` file, use the below command:
+```commandline
+pip install -r requirements.txt
 ```
-pip install PyQt5
-```
-<b> (NOTE: Tasky's CLI version does not require any additional modules other than in-built Python modules & libraries)</b>
+
+Read more:
+- 🐍 [Python 3.10 and above](https://www.python.org/downloads/)
+- 🟣 [PyQt5](https://pypi.org/project/PyQt5/)
 
 # Usage
 ### Repository
@@ -80,11 +97,6 @@ pip install PyQt5
 - Make sure you have met the requirements above
   - Run `gui_main.pyw` to use Tasky
   - Run `console_main.py` to use the CLI (Command Line Interface) version of Tasky
-
-### Releases
-- [Download the setup file from the latest release of Tasky](https://github.com/AbhiK002/Tasky/releases/latest)
-- Run the setup `tasky-setup.exe`
-- Tasky will be installed on your computer. Check the start menu to find the apps `Tasky` and `Tasky Console` under `Tasky` folder in the apps list.
 
 # Screenshots
 - Light mode and Dark mode of Tasky
