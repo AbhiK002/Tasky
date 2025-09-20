@@ -1,6 +1,6 @@
 """
     Tasky is a task deadline tracker application
-    Copyright (C) 2022-2023  Abhineet Kelley (AbhiK002)
+    Copyright (C) 2022-2025  Abhineet Kelley (AbhiK002)
 
     This file is part of Tasky.
 
@@ -29,9 +29,10 @@ class ConsoleFunctions(Functions):
         OSFunctions.clear_terminal()
         self.TL.function(f"output screen cleared")
 
-    def info_bar(self, data):
+    def info_bar(self, data, clear_console=True):
         data = str(data)
-        self.clear_window()
+        if clear_console:
+            self.clear_window()
         self.status()
         print(f"<< {data.center(54)} >>\n")
         self.TL.info("refreshed output screen")

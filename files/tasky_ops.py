@@ -1,6 +1,6 @@
 """
     Tasky is a task deadline tracker application
-    Copyright (C) 2022-2023  Abhineet Kelley (AbhiK002)
+    Copyright (C) 2022-2025  Abhineet Kelley (AbhiK002)
 
     This file is part of Tasky.
 
@@ -33,6 +33,7 @@ class AboutTasky:
     release = '20th September 2025'
     github = 'https://github.com/AbhiK002/Tasky'
     license = 'https://github.com/AbhiK002/Tasky/blob/main/LICENSE'
+    startup_message = "Tasky - Copyright (C) 2022-2025  Abhineet Kelley  -  This program comes with ABSOLUTELY NO WARRANTY. This is a free software, and you are welcome to redistribute it under certain conditions; type `about' to view the license."
     # ---------------------------------------------------- #
 
 

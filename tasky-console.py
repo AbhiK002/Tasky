@@ -1,6 +1,6 @@
 """
     Tasky is a task deadline tracker application
-    Copyright (C) 2022-2023  Abhineet Kelley (AbhiK002)
+    Copyright (C) 2022-2025  Abhineet Kelley (AbhiK002)
 
     This file is part of Tasky.
 
@@ -19,13 +19,16 @@
 """
 
 from files.console_ops import ConsoleFunctions, OSFunctions
+from files.tasky_ops import AboutTasky
 
 
 class App(ConsoleFunctions):
     def console_loop(self):
+        self.clear_window()
         OSFunctions.set_terminal_title("Tasky CLI")
+        print(AboutTasky.startup_message)
         self.TL.info(f"PROGRAM STARTED")
-        self.info_bar("enter 'help' to view valid commands")
+        self.info_bar("enter 'help' to view valid commands", False)
         n = 0  # used variable, do not remove :D
 
         while True:
@@ -60,7 +63,7 @@ class App(ConsoleFunctions):
                     "(Press ENTER to refresh the tasks list)\n".center(56),
                     f"{'Add a New Task'.ljust(20)} --  add / new / create",
                     f"{'Delete Task N'.ljust(20)} --  delete N / del N / remove N / rem N",
-                    f"{'Delete All Tasks'.ljust(20)} --  clear",
+                    f"{'Delete All Tasks'.ljust(20)} --  delete-all / remove-all",
                     f"{'Edit Task N'.ljust(20)} --  edit N / ed N / change N",
                     f"{'View Task Details'.ljust(20)} --  ENTER TASK NUMBER",
                     f"{'Open Help Menu'.ljust(20)} --  help / h",
@@ -139,16 +142,21 @@ class App(ConsoleFunctions):
                     self.TL.error(f"command used incorrectly: {user_inp}")
                     self.info_bar(f"error! try again like '{words[0]} 4'")
 
-            elif user_inp == "clear":
+            elif user_inp in ("delete-all", "remove-all"):
                 if total_tasks == 0:
-                    self.TL.error("Tasky was requested to clear nothing...")
-                    self.info_bar("no tasks available to clear")
+                    self.info_bar("no tasks available to delete")
                     continue
                 self.TL.info("user requested to delete all tasks/clear tasks")
                 confirm = self.is_confirmed(
                     "\nWARNING: Clear all existing tasks? (Cannot be undone)\n\t(Enter y/n) :  ",
                     last=task_list
                 )
+                if confirm:
+                    confirm = self.is_confirmed(
+                        "\nAre you sure? (Enter y/n) : ",
+                        last=task_list
+                    )
+
                 if confirm:
                     self.clear_tasks()
                     self.info_bar("cleared all tasks")

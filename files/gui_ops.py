@@ -1,6 +1,6 @@
 """
     Tasky is a task deadline tracker application
-    Copyright (C) 2022-2023  Abhineet Kelley (AbhiK002)
+    Copyright (C) 2022-2025  Abhineet Kelley (AbhiK002)
 
     This file is part of Tasky.
 

@@ -72,7 +72,7 @@ Note:
 ### Commands
 - Add Task             -  `add` `new` `create`
 - Delete Task          -  `delete X` `del X` `remove X` `rem X`
-- Delete All Tasks     -  `clear`
+- Delete All Tasks     -  `delete-all` `remove-all`
 - Edit Task            -  `edit X` `ed X` `change X`
 - View Task Details    -  `ENTER TASK NUMBER` (Examples: `1`, `2`, `3`, `4` ...)
 - Open Help Menu       -  `help` `h`
