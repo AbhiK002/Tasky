@@ -47,7 +47,7 @@ class App(QWidget):
         tasky_height = 720
 
         # main window properties
-        self.setWindowTitle("Tasky")
+        self.setWindowTitle("Tasky - Deadline Tracker")
         self.setObjectName("MainWindow")
         self.setGeometry(
             int((scr_width - tasky_width) / 2),  # center of screen height
@@ -265,7 +265,7 @@ class App(QWidget):
         self.refresh_tasks()
 
     def clear_all_tasks(self):
-        display_text = f"Are you sure you want to DELETE ALL tasks?\n\n" \
+        display_text = f"Do you want to DELETE ALL tasks?\n\n" \
                        f"(You cannot undo this)"
 
         decision = QtWidgets.QMessageBox.warning(
@@ -274,6 +274,14 @@ class App(QWidget):
             display_text,
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
         )
+
+        if decision == QtWidgets.QMessageBox.Yes:
+            decision = QtWidgets.QMessageBox.warning(
+                self,
+                "Clear All Confirmation",
+                "Are you absolutely sure?",
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+            )
 
         if decision == QtWidgets.QMessageBox.Yes:
             print(f"Clear Tasks requested")
