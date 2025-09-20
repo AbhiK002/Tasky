@@ -25,7 +25,7 @@ from files.tasky_ops import AboutTasky
 class App(ConsoleFunctions):
     def console_loop(self):
         self.clear_window()
-        OSFunctions.set_terminal_title("Tasky CLI")
+        OSFunctions.set_terminal_title("Tasky Console - Deadline Tracker")
         print(AboutTasky.startup_message)
         self.TL.info(f"PROGRAM STARTED")
         self.info_bar("enter 'help' to view valid commands", False)
