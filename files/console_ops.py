@@ -18,9 +18,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from os import system
 from .tasky_ops import Functions, OSFunctions
 from textwrap import wrap
+if OSFunctions.is_linux_system():
+    import readline
 
 
 class ConsoleFunctions(Functions):

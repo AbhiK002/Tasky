@@ -46,6 +46,10 @@ class OSFunctions:
         return sys.platform.startswith("darwin")
 
     @staticmethod
+    def is_linux_system():
+        return sys.platform.startswith("linux")
+
+    @staticmethod
     def open_file(path):
         if OSFunctions.is_windows_system():
             os.startfile(path)
@@ -78,6 +82,10 @@ class OSFunctions:
             base_path = os.path.abspath(".")
 
         return os.path.join(base_path, relative_path)
+
+    @staticmethod
+    def exit_program():
+        sys.exit(0)
 
     @staticmethod
     def set_terminal_title(title: str):
