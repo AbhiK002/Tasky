@@ -18,12 +18,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from os import startfile
 from files.console_ops import ConsoleFunctions
+from files.tasky_ops import OSFunctions
 
 
 class App(ConsoleFunctions):
     def console_loop(self):
+        OSFunctions.set_terminal_title("Tasky CLI")
         self.TL.info(f"PROGRAM STARTED")
         self.info_bar("enter 'help' to view valid commands")
         n = 0  # used variable, do not remove :D
@@ -221,7 +222,7 @@ class App(ConsoleFunctions):
             elif user_inp == "tasky-debug":
                 self.TL.writelog("debug", "opening logs folder for debugging")
                 self.info_bar("request for logs folder")
-                startfile(self.TL.filepath)
+                OSFunctions.open_file(self.TL.filepath)
 
             else:
                 self.TL.error(f"command doesn't exist: {user_inp}")

@@ -19,13 +19,13 @@
 """
 
 from os import system
-from .tasky_ops import Functions
+from .tasky_ops import Functions, OSFunctions
 from textwrap import wrap
 
 
 class ConsoleFunctions(Functions):
     def clear_window(self):
-        system("cls")
+        OSFunctions.clear_terminal()
         self.TL.function(f"output screen cleared")
 
     def info_bar(self, data):

@@ -19,18 +19,73 @@
 """
 
 from pathlib import Path
+import os
+import sys
+import subprocess
 import datetime
 from .taskylog import TaskyLog
 
 
 class AboutTasky:
     # ------------------  About Tasky -------------------- #
-    version = 'v2.0.2'
+    version = 'v2.1'
     creator = 'Abhineet Kelley'
-    release = '17-01-2023 (GMT +5:30)'
+    release = '20th September 2025'
     github = 'https://github.com/AbhiK002/Tasky'
     license = 'https://github.com/AbhiK002/Tasky/blob/main/LICENSE'
     # ---------------------------------------------------- #
+
+
+class OSFunctions:
+    @staticmethod
+    def is_windows_system():
+        return sys.platform.startswith("win")
+
+    @staticmethod
+    def is_system_mac():
+        return sys.platform.startswith("darwin")
+
+    @staticmethod
+    def open_file(path):
+        if OSFunctions.is_windows_system():
+            os.startfile(path)
+        elif OSFunctions.is_system_mac():
+            subprocess.call(["open", path])
+        else:
+            subprocess.call(["xdg-open", path])
+
+    @staticmethod
+    def clear_terminal():
+        if OSFunctions.is_windows_system():
+            os.system('cls')
+        else:
+            os.system('clear')
+
+    @staticmethod
+    def resource_path(relative_path):
+        """
+    - This function returns the absolute path from a given relative path of a file/folder
+    - However, here it has been defined to facilitate embedding asset files into the bundled EXE file made using `pyinstaller` module
+    - This is a workaround for `pyinstaller` to easily find asset files while bundling the EXE file
+
+        :param relative_path:
+        :return absolute_path:
+        """
+
+        try:
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+
+    @staticmethod
+    def set_terminal_title(title: str):
+        if OSFunctions.is_windows_system():
+            os.system(f"title {title}")
+        else:
+            sys.stdout.write(f"\33]0;{title}\a")
+            sys.stdout.flush()
 
 
 class Functions:

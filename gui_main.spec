@@ -1,25 +1,22 @@
 # -*- mode: python ; coding: utf-8 -*-
-
-
-block_cipher = None
-
+import os
 
 a = Analysis(
-    ['gui_main.py'],
+    ['gui_main.pyw'],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=[],
+    datas=[
+        (os.path.join('files', 'resources', '*'), os.path.join('files', 'resources'))
+    ],
+    hiddenimports=['PyQt5'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
     noarchive=False,
+    optimize=0,
 )
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,

@@ -20,6 +20,8 @@
 
 from pathlib import Path
 
+from files.tasky_ops import OSFunctions
+
 
 class Colors:
     dark_yellow = "#9B7D42"
@@ -55,7 +57,7 @@ class Colors:
 
 class TaskyStyle:
     def __init__(self):
-        self.files_path = Path("files").resolve()
+        self.files_path = Path(OSFunctions.resource_path("files")).resolve()
         self.resources_path = Path(self.files_path / "resources").resolve()
         self.colors = Colors()
 
