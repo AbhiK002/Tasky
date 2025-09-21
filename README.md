@@ -19,14 +19,19 @@ Includes:
 
 ### How To Install
 - For Windows:
-  - [Download the setup file from the latest release of Tasky](https://github.com/AbhiK002/Tasky/releases/latest)
+  - Download the `.exe` setup file from the [latest release](https://github.com/AbhiK002/Tasky/releases/latest)
   - Run the setup `tasky-setup.exe`
   - Tasky will be installed on your computer. Check the start menu to find the apps `Tasky` and `Tasky Console` under `Tasky` folder in the apps list.
-- For Linux:
-  - Download the zip file containing the Linux executables from the [latest release](https://github.com/AbhiK002/Tasky/releases/latest)
-    - There will be two binary executable files in the unzipped folder: `tasky` and `tasky-console`
-  - Manually move the binary executable files to a folder that is included in the system PATH (For example: `/usr/local/bin`)
-  - Tasky will be ready to use
+
+- For Linux
+  - Download the `.deb` setup file from the [latest release](https://github.com/AbhiK002/Tasky/releases/latest).
+  - Install it with:
+    ```bash
+    sudo dpkg -i /path/to/debfile/tasky_?.deb
+    sudo apt-get install -f
+    ```
+  - The GUI application (Tasky) will show up in the Applications list, and the CLI version will be accessible via the terminal by entering `tasky-console`
+
 - For Mac:
   - ⚠ <b>*TBA, no executable present for MacOS yet, will work on it soon*</b>
   - Run the .py and .pyw files directly after fulfilling the [requirements](#requirements)
