@@ -36,6 +36,11 @@ Includes:
   - ⚠ <b>*TBA, no executable present for MacOS yet, will work on it soon*</b>
   - Run the .py and .pyw files directly after fulfilling the [requirements](#requirements)
 
+### Uninstallation
+- Windows:
+  - Uninstall it via the "Installed Apps" or "Installed Programs/Applications" section
+- Linux:
+  - Run the command: `sudo dpkg --remove tasky`
 
 # Features
 
